@@ -31,17 +31,6 @@ export function calculateTitleRisk(history: OwnershipHistory): TitleRiskScore {
     });
   }
 
-  // Flips: owned < 24 months
-  const flipPoints = history.flipCount * 15;
-  score += flipPoints;
-  if (flipPoints > 0) {
-    breakdown.push({
-      label: 'Short-term flips',
-      points: flipPoints,
-      description: `${history.flipCount} sale${history.flipCount === 1 ? '' : 's'} within 24 months of purchase — indicates speculative activity`,
-    });
-  }
-
   // Foreclosures
   const foreclosurePoints = history.foreclosureCount * 25;
   score += foreclosurePoints;

@@ -198,7 +198,7 @@ function buildRiskPrompt(
   history: OwnershipHistory,
   report: PropertyRiskReport
 ): string {
-  return `Analyze this Orange County, CA property for insurance risk:
+  return `Analyze this property for insurance risk:
 
 PROPERTY: ${property.address.fullAddress}
 Type: ${property.propertyType}, ${property.beds}bd/${property.baths}ba, ${property.sqft.toLocaleString()} sqft
