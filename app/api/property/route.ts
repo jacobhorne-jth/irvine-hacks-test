@@ -76,6 +76,12 @@ export async function GET(request: NextRequest) {
       }
     }
 
+    // If zestimate is still 0 (ATTOM didn't return a saleAmt for the latest transfer),
+    // fall back to the most recent price visible on the chart.
+    if (result.property.zestimate === 0 && result.priceHistory.length > 0) {
+      result.property.zestimate = result.priceHistory[result.priceHistory.length - 1].price;
+    }
+
     return NextResponse.json(result);
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unknown error';

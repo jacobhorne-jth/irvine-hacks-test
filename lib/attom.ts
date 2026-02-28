@@ -221,6 +221,8 @@ export async function fetchAttomPropertyData(
 
   const saleHistory = propHistory?.salehistory ?? propDetail?.salehistory ?? [];
   const mostRecentSale = saleHistory[0];
+  // First transfer with a disclosed sale amount (saleHistory is newest-first from ATTOM)
+  const mostRecentSaleWithAmt = saleHistory.find((s) => s.amount?.saleAmt && s.amount.saleAmt > 0);
 
   const propTypeRaw = (summary.proptype ?? '').toUpperCase();
   const propertyType = propTypeRaw.includes('CONDO')
@@ -251,8 +253,8 @@ export async function fetchAttomPropertyData(
     lotSqft: building.size?.lotsize2 ?? 0,   // lotsize2 = sq ft, lotsize1 = acres
     yearBuilt: summary.yearbuilt ?? 0,         // yearbuilt is under summary, not building
     propertyType,
-    zestimate: mostRecentSale?.amount?.saleAmt ?? 0,
-    lastSalePrice: mostRecentSale?.amount?.saleAmt ?? 0,
+    zestimate: mostRecentSaleWithAmt?.amount?.saleAmt ?? 0,
+    lastSalePrice: mostRecentSaleWithAmt?.amount?.saleAmt ?? 0,
     lastSaleDate: mostRecentSale?.saleTransDate ?? new Date().toISOString().split('T')[0],
     latitude,   // lat/lng is under location, not address
     longitude,
