@@ -1,35 +1,33 @@
 import { NextRequest } from 'next/server';
 
-// Redfin autocomplete row shape
-interface RedfinRow {
-  url?: string;
-  name?: string;
-  subName?: string;
+interface RadarAddress {
+  formattedAddress?: string;
+  number?: string;
+  street?: string;
+  city?: string;
+  state?: string;
+  postalCode?: string;
 }
 
-interface RedfinSection {
-  rows?: RedfinRow[];
-}
-
-interface RedfinResponse {
-  payload?: {
-    sections?: RedfinSection[];
-  };
+interface RadarResponse {
+  addresses?: RadarAddress[];
 }
 
 export async function GET(req: NextRequest) {
   const q = req.nextUrl.searchParams.get('q')?.trim() ?? '';
   if (q.length < 3) return Response.json([]);
 
+  const apiKey = process.env.RADAR_API_KEY;
+  if (!apiKey) return Response.json([]);
+
   try {
     const url =
-      `https://www.redfin.com/stingray/do/location-autocomplete` +
-      `?location=${encodeURIComponent(q)}&count=10&v=2&al=1&ooa=true`;
+      `https://api.radar.io/v1/search/autocomplete` +
+      `?query=${encodeURIComponent(q)}&country=US&layers=fine&limit=8`;
 
     const res = await fetch(url, {
       headers: {
-        'User-Agent':
-          'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
+        Authorization: apiKey,
         Accept: 'application/json',
       },
       next: { revalidate: 10 },
@@ -38,41 +36,20 @@ export async function GET(req: NextRequest) {
 
     if (!res.ok) return Response.json([]);
 
-    // Redfin prefixes its JSON with "{}&&" as XSS protection — strip it
-    const raw = await res.text();
-    const json: RedfinResponse = JSON.parse(raw.replace(/^\{\}&&/, ''));
+    const json: RadarResponse = await res.json();
+    const addresses = json.addresses ?? [];
 
-    const sections = json?.payload?.sections ?? [];
-    const suggestions: string[] = [];
+    const suggestions = addresses
+      .filter((a) => a.number && a.street) // must have a house number to be a real address
+      .map((a) => {
+        const parts: string[] = [`${a.number} ${a.street}`];
+        if (a.city) parts.push(a.city);
+        if (a.state) parts.push(a.state);
+        return parts.join(', ');
+      })
+      .slice(0, 5);
 
-    for (const section of sections) {
-      for (const row of section.rows ?? []) {
-        const u = row.url ?? '';
-
-        // Skip non-property rows (cities, zipcodes, neighborhoods, schools, etc.)
-        if (
-          !u ||
-          u.includes('/city/') ||
-          u.includes('/zipcode/') ||
-          u.includes('/neighborhood/') ||
-          u.includes('/school/') ||
-          u.includes('/county/')
-        ) {
-          continue;
-        }
-
-        if (!row.name) continue;
-
-        // Combine street name + city/state subName into a single address string
-        const label = row.subName ? `${row.name}, ${row.subName}` : row.name;
-        suggestions.push(label);
-
-        if (suggestions.length >= 5) break;
-      }
-      if (suggestions.length >= 5) break;
-    }
-
-    return Response.json([...new Set(suggestions)]);
+    return Response.json(Array.from(new Set(suggestions)));
   } catch {
     return Response.json([]);
   }

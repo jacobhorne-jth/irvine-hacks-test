@@ -36,7 +36,7 @@ export function AddressSearchForm() {
   const fetchSuggestions = useCallback((value: string) => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
 
-    if (value.trim().length < 4) {
+    if (value.trim().length < 3) {
       setSuggestions([]);
       setNoResults(false);
       setShowDropdown(false);
