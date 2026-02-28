@@ -20,7 +20,7 @@ import type {
   OwnershipEvent,
   PriceHistoryPoint,
 } from './types';
-import { addressToSlug } from './utils';
+import { addressToSlug, getCountyFromLatLng } from './utils';
 
 const ATTOM_BASE = 'https://api.gateway.attomdata.com/propertyapi/v1.0.0';
 
@@ -231,12 +231,17 @@ export async function fetchAttomPropertyData(
     ? 'multi-family'
     : 'single-family';
 
+  const latitude  = parseFloat(loc.latitude  ?? '') || 33.7;
+  const longitude = parseFloat(loc.longitude ?? '') || -117.8;
+  const county = await getCountyFromLatLng(latitude, longitude).catch(() => null);
+
   const property: PropertyDetails = {
     address: {
       street,
       city,
       state,
       zip,
+      county: county ?? undefined,
       fullAddress: `${street}, ${city}, ${state} ${zip}`.trim(),
       slug,
     },
@@ -249,8 +254,8 @@ export async function fetchAttomPropertyData(
     zestimate: mostRecentSale?.amount?.saleAmt ?? 0,
     lastSalePrice: mostRecentSale?.amount?.saleAmt ?? 0,
     lastSaleDate: mostRecentSale?.saleTransDate ?? new Date().toISOString().split('T')[0],
-    latitude: parseFloat(loc.latitude ?? '') || 33.7,   // lat/lng is under location, not address
-    longitude: parseFloat(loc.longitude ?? '') || -117.8,
+    latitude,   // lat/lng is under location, not address
+    longitude,
     redfinUrl: undefined,
   };
 

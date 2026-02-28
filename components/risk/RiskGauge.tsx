@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { getRiskColor } from '@/lib/utils';
 import type { RiskLevel } from '@/lib/types';
 
@@ -12,7 +13,20 @@ interface RiskGaugeProps {
 export function RiskGauge({ score, level, size = 120 }: RiskGaugeProps) {
   const color = getRiskColor(level);
   const circumference = Math.PI * 38; // π × 38 ≈ 119.38
-  const offset = circumference * (1 - score / 100);
+  const targetOffset = circumference * (1 - score / 100);
+
+  // Start fully hidden, animate to target after mount so the arc sweeps in
+  const [offset, setOffset] = useState(circumference);
+
+  useEffect(() => {
+    const t = setTimeout(() => setOffset(targetOffset), 80);
+    return () => clearTimeout(t);
+  }, [targetOffset]);
+
+  // Scale font sizes proportionally to the gauge size (base size = 120)
+  const scale = size / 120;
+  const scoreFontSize = 16 * scale;
+  const subFontSize   = 5.5 * scale;
 
   return (
     <div style={{ width: size, height: Math.round(size * 0.62) }}>
@@ -25,7 +39,7 @@ export function RiskGauge({ score, level, size = 120 }: RiskGaugeProps) {
           strokeWidth="7"
           strokeLinecap="round"
         />
-        {/* Score arc */}
+        {/* Animated score arc */}
         <path
           d="M 12 54 A 38 38 0 0 1 88 54"
           fill="none"
@@ -34,7 +48,10 @@ export function RiskGauge({ score, level, size = 120 }: RiskGaugeProps) {
           strokeLinecap="round"
           strokeDasharray={circumference}
           strokeDashoffset={offset}
-          style={{ filter: `drop-shadow(0 0 8px ${color}80)`, transition: 'stroke-dashoffset 0.6s ease' }}
+          style={{
+            filter: `drop-shadow(0 0 8px ${color}80)`,
+            transition: 'stroke-dashoffset 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+          }}
         />
         {/* Score label */}
         <text
@@ -42,7 +59,7 @@ export function RiskGauge({ score, level, size = 120 }: RiskGaugeProps) {
           y="47"
           textAnchor="middle"
           fill={color}
-          fontSize="16"
+          fontSize={scoreFontSize}
           fontWeight="700"
           fontFamily="var(--font-mono, monospace)"
         >
@@ -53,7 +70,7 @@ export function RiskGauge({ score, level, size = 120 }: RiskGaugeProps) {
           y="55"
           textAnchor="middle"
           fill="#3B4A65"
-          fontSize="5.5"
+          fontSize={subFontSize}
           fontFamily="var(--font-mono, monospace)"
         >
           /100

@@ -93,6 +93,33 @@ export function getRiskLabel(level: RiskLevel): string {
   }
 }
 
+/** Reverse-geocode lat/lng → county name (e.g. "Orange County").
+ *  Requires Geocoding API enabled on the same Google key. */
+export async function getCountyFromLatLng(
+  lat: number,
+  lng: number
+): Promise<string | null> {
+  const apiKey = process.env.GOOGLE_PLACES_API_KEY;
+  if (!apiKey) return null;
+  try {
+    const url =
+      `https://maps.googleapis.com/maps/api/geocode/json` +
+      `?latlng=${lat},${lng}&result_type=administrative_area_level_2&key=${apiKey}`;
+    const res = await fetch(url, { signal: AbortSignal.timeout(5_000) });
+    if (!res.ok) return null;
+    const json = await res.json();
+    if (json.status !== 'OK') return null;
+    const components: { types: string[]; long_name: string }[] =
+      json.results?.[0]?.address_components ?? [];
+    return (
+      components.find((c) => c.types.includes('administrative_area_level_2'))
+        ?.long_name ?? null
+    );
+  } catch {
+    return null;
+  }
+}
+
 export function scoreToLevel(score: number): RiskLevel {
   if (score <= 25) return 'low';
   if (score <= 50) return 'medium';

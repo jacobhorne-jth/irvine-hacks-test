@@ -7,6 +7,7 @@ export interface PropertyAddress {
   city: string;
   state: string;
   zip: string;
+  county?: string;
   fullAddress: string;
   slug: string;
 }

@@ -5,6 +5,7 @@ import { PropertyOverviewCard } from '@/components/property/PropertyOverviewCard
 import { PropertyMap } from '@/components/property/PropertyMap';
 import { OwnershipTimeline } from '@/components/timeline/OwnershipTimeline';
 import { RiskDashboard } from '@/components/risk/RiskDashboard';
+import { RiskGauge } from '@/components/risk/RiskGauge';
 import { RiskHeatmapGrid } from '@/components/risk/RiskHeatmapGrid';
 import { PriceHistoryChart } from '@/components/risk/PriceHistoryChart';
 import { AISummaryCard } from '@/components/ai/AISummaryCard';
@@ -178,54 +179,46 @@ function RiskVerdictBanner({
 
   return (
     <div className="relative border border-line bg-surface rounded-lg overflow-hidden reveal">
-      {/* Colored left accent bar — instant visual risk signal */}
-      <div className="absolute inset-y-0 left-0 w-1" style={{ background: levelColor }} />
+      {/* Colored top accent bar */}
+      <div className="h-1 w-full" style={{ background: levelColor }} />
 
-      <div className="pl-8 pr-6 py-6 flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-8">
+      <div className="px-6 py-8 flex flex-col items-center gap-6">
 
-        {/* Overall score — large, dominant */}
-        <div className="shrink-0">
-          <p
-            className="text-6xl font-bold font-data leading-none tabular-nums"
-            style={{ color: levelColor, textShadow: `0 0 40px ${levelColor}28` }}
-          >
-            {overallScore}
+        {/* Large gauge — centered, dominant */}
+        <div className="flex flex-col items-center gap-4">
+          <p className="text-[10px] font-data text-ghost tracking-[0.2em] uppercase">
+            Overall Risk Score
           </p>
-          <p className="text-[10px] font-data text-ghost tracking-[0.2em] uppercase mt-2">
-            Overall Risk
-          </p>
+          <RiskGauge score={overallScore} level={overallLevel} size={240} />
+          <div className="flex flex-col items-center gap-2 -mt-2">
+            <p
+              className="text-2xl font-bold"
+              style={{ color: levelColor, fontFamily: 'var(--font-syne)' }}
+            >
+              {getRiskLabel(overallLevel)}
+            </p>
+            <span
+              className="inline-flex items-center gap-1.5 text-xs font-bold font-data px-3 py-1.5 rounded border tracking-wide uppercase"
+              style={{
+                color: rec.color,
+                borderColor: `${rec.color}40`,
+                background: `${rec.color}12`,
+              }}
+            >
+              <RecIcon className="h-3.5 w-3.5" />
+              {rec.label}
+            </span>
+            <p className="text-[10px] font-data text-ghost">
+              Title 40% · Disaster 35% · Market 25%
+            </p>
+          </div>
         </div>
 
-        <div className="hidden sm:block w-px self-stretch bg-line" />
-
-        {/* Level label + recommendation badge */}
-        <div className="shrink-0 space-y-3">
-          <p
-            className="text-2xl font-bold"
-            style={{ color: levelColor, fontFamily: 'var(--font-syne)' }}
-          >
-            {getRiskLabel(overallLevel)}
-          </p>
-          <span
-            className="inline-flex items-center gap-1.5 text-xs font-bold font-data px-3 py-1.5 rounded border tracking-wide uppercase"
-            style={{
-              color: rec.color,
-              borderColor: `${rec.color}40`,
-              background: `${rec.color}12`,
-            }}
-          >
-            <RecIcon className="h-3.5 w-3.5" />
-            {rec.label}
-          </span>
-          <p className="text-[10px] font-data text-ghost">
-            Title 40% · Disaster 35% · Market 25%
-          </p>
-        </div>
-
-        <div className="hidden sm:block w-px self-stretch bg-line" />
+        {/* Divider */}
+        <div className="w-full h-px bg-line" />
 
         {/* Three sub-scores */}
-        <div className="flex-1 grid grid-cols-3 gap-3">
+        <div className="w-full grid grid-cols-3 gap-3">
           {subScores.map(({ label, score, level, tag }) => {
             const c = getRiskColor(level);
             return (

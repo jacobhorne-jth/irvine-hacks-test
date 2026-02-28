@@ -43,10 +43,10 @@ export function RiskScoreCard({ title, icon: Icon, score, level, breakdown, extr
       </div>
 
       <div className="p-4 space-y-4">
-        {/* Gauge + level badge */}
-        <div className="flex items-center gap-4">
-          <RiskGauge score={score} level={level} size={100} />
-          <div className="space-y-2">
+        {/* Gauge — centered, bigger */}
+        <div className="flex flex-col items-center gap-3">
+          <RiskGauge score={score} level={level} size={180} />
+          <div className="flex flex-col items-center gap-2 -mt-1">
             <span
               className="inline-block text-xs font-bold font-data px-2.5 py-1 rounded border tracking-wide uppercase"
               style={{ color: levelColor, borderColor: `${levelColor}40`, background: `${levelColor}12` }}
@@ -54,7 +54,7 @@ export function RiskScoreCard({ title, icon: Icon, score, level, breakdown, extr
               {getRiskLabel(level)}
             </span>
             {extraInfo && (
-              <div className="text-[11px] font-data text-[#3B4A65] space-y-0.5 leading-relaxed">
+              <div className="text-[11px] font-data text-[#3B4A65] space-y-0.5 leading-relaxed text-center">
                 {extraInfo}
               </div>
             )}

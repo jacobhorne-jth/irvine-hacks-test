@@ -27,7 +27,9 @@ export function PropertyOverviewCard({ property }: PropertyOverviewCardProps) {
           </div>
           <div className="text-right shrink-0">
             <p className="text-[10px] font-data text-[#3B4A65] tracking-[0.15em] uppercase mb-1">Est. Value</p>
-            <p className="text-2xl font-bold font-data text-white">{formatCurrency(zestimate)}</p>
+            <p className="text-2xl font-bold font-data text-white">
+              {zestimate > 0 ? formatCurrency(zestimate) : '—'}
+            </p>
           </div>
         </div>
       </div>
@@ -44,8 +46,13 @@ export function PropertyOverviewCard({ property }: PropertyOverviewCardProps) {
       <div className="px-6 py-3 flex items-center justify-between gap-2 border-t border-[#1A2035]">
         <div className="flex items-center gap-2 text-xs font-data text-[#64748B]">
           <TrendingUp className="h-3.5 w-3.5 text-[#22C55E]" />
-          Last sold {formatDate(lastSaleDate)} for{' '}
-          <span className="text-white font-semibold">{formatCurrency(lastSalePrice)}</span>
+          {lastSalePrice > 0 ? (
+            <>Last sold {formatDate(lastSaleDate)} for{' '}
+              <span className="text-white font-semibold">{formatCurrency(lastSalePrice)}</span>
+            </>
+          ) : (
+            <>Last sold {formatDate(lastSaleDate)} — <span className="text-white font-semibold">price undisclosed</span></>
+          )}
         </div>
         {property.redfinUrl && (
           <a
