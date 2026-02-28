@@ -29,13 +29,20 @@
     /* ── Custom tokens ── */
     --amber: #F5A11C;
     --ice: #60A5FA;
+    --violet: #A78BFA;
     --risk-low: #22C55E;
     --risk-medium: #F59E0B;
     --risk-high: #F97316;
     --risk-critical: #EF4444;
+    --surface-deep: #060810;
     --surface: #0B0E17;
     --surface-2: #0F1320;
     --line: #1A2035;
+    /* Text scale */
+    --text-primary: #E8ECF4;
+    --text-secondary: #9BA8BC;
+    --text-dim: #64748B;
+    --text-ghost: #3B4A65;
   }
 }
 
@@ -61,21 +68,19 @@
     font-family: var(--font-mono, 'JetBrains Mono', monospace);
   }
 
-  .text-amber {
-    color: var(--amber);
-  }
+  /* Color utilities */
+  .text-amber   { color: var(--amber); }
+  .text-ice     { color: var(--ice); }
+  .text-ghost   { color: var(--text-ghost); }
+  .text-dim     { color: var(--text-dim); }
 
-  .bg-surface {
-    background: var(--surface);
-  }
+  /* Surface utilities */
+  .bg-surface      { background: var(--surface); }
+  .bg-surface-2    { background: var(--surface-2); }
+  .bg-surface-deep { background: var(--surface-deep); }
 
-  .bg-surface-2 {
-    background: var(--surface-2);
-  }
-
-  .border-line {
-    border-color: var(--line);
-  }
+  /* Border utilities */
+  .border-line { border-color: var(--line); }
 
   /* Dot grid pattern for hero */
   .dot-grid {

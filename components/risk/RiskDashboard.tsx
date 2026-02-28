@@ -8,6 +8,7 @@ import type { PropertyRiskReport, RiskLevel } from '@/lib/types';
 
 interface RiskDashboardProps {
   report: PropertyRiskReport;
+  hideOverall?: boolean;
 }
 
 const RISK_COLORS: Record<RiskLevel, string> = {
@@ -17,15 +18,15 @@ const RISK_COLORS: Record<RiskLevel, string> = {
   critical: '#EF4444',
 };
 
-export function RiskDashboard({ report }: RiskDashboardProps) {
+export function RiskDashboard({ report, hideOverall = false }: RiskDashboardProps) {
   const { titleRisk, disasterRisk, marketRisk, overallScore } = report;
   const overallLevel = scoreToLevel(overallScore);
   const levelColor = RISK_COLORS[overallLevel];
 
   return (
     <div className="space-y-4">
-      {/* Overall score banner */}
-      <div className="border border-[#1A2035] bg-[#0B0F1C] rounded-lg p-6 reveal">
+      {/* Overall score banner — hidden when page-level RiskVerdictBanner is shown */}
+      {!hideOverall && <div className="border border-[#1A2035] bg-[#0B0F1C] rounded-lg p-6 reveal">
         <div className="flex items-center gap-6">
           <RiskGauge score={overallScore} level={overallLevel} size={110} />
           <div className="space-y-2">
@@ -43,7 +44,7 @@ export function RiskDashboard({ report }: RiskDashboardProps) {
             </p>
           </div>
         </div>
-      </div>
+      </div>}
 
       {/* Individual risk cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
