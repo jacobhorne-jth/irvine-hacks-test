@@ -89,12 +89,14 @@ function NodeLabel({
   above,
   selected,
   hovered,
+  align,
 }: {
   event: OwnershipEvent;
   color: string;
   above: boolean;
   selected: boolean;
   hovered: boolean;
+  align: 'left' | 'center' | 'right';
 }) {
   const name = event.ownerName ? abbrevName(event.ownerName) : null;
   const year = new Date(event.date).getFullYear();
@@ -140,15 +142,21 @@ function NodeLabel({
     />
   );
 
+  const anchorStyle =
+    align === 'left'
+      ? { left: 0, transform: 'none' }
+      : align === 'right'
+      ? { right: 0, left: 'auto' as const, transform: 'none' }
+      : { left: '50%', transform: 'translateX(-50%)' };
+
   return (
     <div
       className="absolute pointer-events-none"
       style={{
-        left: '50%',
-        transform: 'translateX(-50%)',
+        ...anchorStyle,
         display: 'flex',
         flexDirection: above ? 'column-reverse' : 'column',
-        alignItems: 'center',
+        alignItems: align === 'left' ? 'flex-start' : align === 'right' ? 'flex-end' : 'center',
         gap: 2,
         ...(above
           ? { bottom: 'calc(50% + 10px)' }
@@ -593,13 +601,14 @@ export function OwnershipTimeline({ history }: { history: OwnershipHistory }) {
                     />
                   </div>
 
-                  {/* Alternating label */}
+                  {/* Alternating label — pinned left/right near edges to avoid clipping */}
                   <NodeLabel
                     event={event}
                     color={color}
                     above={labelAbove}
                     selected={selected}
                     hovered={hovered}
+                    align={pct < 12 ? 'left' : pct > 88 ? 'right' : 'center'}
                   />
                 </div>
               );
