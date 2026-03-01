@@ -449,6 +449,14 @@ export function OwnershipTimeline({ history, avmValue }: { history: OwnershipHis
     .filter(e => !isNaN(new Date(e.date).getTime()))
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
+  if (events.length === 0) {
+    return (
+      <div className="px-6 py-10 text-center text-sm font-data text-ghost">
+        No ownership history available for this property.
+      </div>
+    );
+  }
+
   const timeMin = new Date(events[0].date).getTime();
   const timeMax = Date.now();
   const timeSpan = timeMax - timeMin || 1;
