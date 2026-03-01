@@ -22,7 +22,7 @@ async function fetchPropertyData(address: string): Promise<PropertyApiResponse |
       { cache: 'no-store' }
     );
     // Always parse JSON — error responses carry a message we want to show
-    return res.json();
+    return await res.json();
   } catch {
     return null;
   }
@@ -47,7 +47,7 @@ async function fetchRiskAnalysis(
       cache: 'no-store',
     });
     if (!res.ok) return null;
-    return res.json();
+    return await res.json();
   } catch {
     return null;
   }
