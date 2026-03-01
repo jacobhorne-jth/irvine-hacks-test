@@ -184,14 +184,10 @@ export function generateRiskReport(
   const disasterRisk = calculateDisasterRisk(property, locationRisk);
   const marketRisk = calculateMarketRisk(priceHistory, property, locationRisk);
 
-  // Weighted average: title 40%, disaster 35%, market 25%
-  // Title carries the most weight because chain-of-title defects are the primary
-  // concern for title insurance underwriting. Disaster is second because it
-  // directly affects insurability and long-term property value.
+  // Weighted average: title 50%, disaster 50% (market excluded from overall score)
   const overallScore = Math.round(
-    titleRisk.score * 0.4 +
-    disasterRisk.score * 0.35 +
-    marketRisk.score * 0.25
+    titleRisk.score * 0.5 +
+    disasterRisk.score * 0.5
   );
 
   return {

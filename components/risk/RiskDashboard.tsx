@@ -40,7 +40,7 @@ export function RiskDashboard({ report, hideOverall = false }: RiskDashboardProp
               {getRiskLabel(overallLevel)}
             </span>
             <p className="text-xs font-data text-[#AABFCF]">
-              Title 40% · Disaster 35% · Market 25%
+              Title 50% · Disaster 50%
             </p>
           </div>
         </div>
@@ -76,20 +76,23 @@ export function RiskDashboard({ report, hideOverall = false }: RiskDashboardProp
             </>
           }
         />
-        <RiskScoreCard
-          title="Market Risk"
-          icon={BarChart2}
-          score={marketRisk.score}
-          level={marketRisk.level}
-          breakdown={marketRisk.breakdown}
-          extraInfo={
-            <>
-              <p>Volatility: {marketRisk.priceVolatility.toFixed(1)}% σ</p>
-              <p>Avg DOM: {marketRisk.daysOnMarket} days</p>
-              <p>Price cuts: {marketRisk.priceReductionRate}%</p>
-            </>
-          }
-        />
+        <div className="opacity-40">
+          <RiskScoreCard
+            title="Market Risk"
+            icon={BarChart2}
+            score={marketRisk.score}
+            level={marketRisk.level}
+            breakdown={marketRisk.breakdown}
+            extraInfo={
+              <>
+                <p>Volatility: {marketRisk.priceVolatility.toFixed(1)}% σ</p>
+                <p>Avg DOM: {marketRisk.daysOnMarket} days</p>
+                <p>Price cuts: {marketRisk.priceReductionRate}%</p>
+                <p className="mt-1 text-[#6B7FA8]">Not included in overall score</p>
+              </>
+            }
+          />
+        </div>
       </div>
     </div>
   );

@@ -290,7 +290,9 @@ function buildRiskPrompt(
   history: OwnershipHistory,
   report: PropertyRiskReport
 ): string {
-  return `Analyze this property for insurance risk:
+  return `Analyze this property for insurance risk.
+
+IMPORTANT: Use the risk level labels exactly as provided below. Do NOT re-interpret the numeric scores — the labels are authoritative. For example, a score of 42/100 labeled "Moderate Risk" must be described as moderate, not low.
 
 PROPERTY: ${property.address.fullAddress}
 Type: ${property.propertyType}, ${property.beds}bd/${property.baths}ba, ${property.sqft.toLocaleString()} sqft
@@ -301,10 +303,9 @@ OWNERSHIP HISTORY:
 - ${history.flipCount} flip(s) (sold within 24 months)
 - ${history.foreclosureCount} foreclosure(s) in chain of title
 
-RISK SCORES (0-100):
-- Title Risk: ${report.titleRisk.score}/100 (${getRiskLabel(report.titleRisk.level)})
-- Disaster Risk: ${report.disasterRisk.score}/100 (${getRiskLabel(report.disasterRisk.level)}) — Flood Zone ${report.disasterRisk.floodZone}, Fire: ${report.disasterRisk.fireHazardZone}
-- Market Risk: ${report.marketRisk.score}/100 (${getRiskLabel(report.marketRisk.level)})
+RISK SCORES (0-100) — use these labels verbatim in your summary:
+- Title Risk: ${report.titleRisk.score}/100 — ${getRiskLabel(report.titleRisk.level)}
+- Disaster Risk: ${report.disasterRisk.score}/100 — ${getRiskLabel(report.disasterRisk.level)}
 - Overall: ${report.overallScore}/100
 
 Respond with JSON:

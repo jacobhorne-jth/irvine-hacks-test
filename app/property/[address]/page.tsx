@@ -29,7 +29,8 @@ async function fetchPropertyData(address: string): Promise<PropertyApiResponse |
 }
 
 async function fetchRiskAnalysis(
-  propertyData: PropertyApiResponse
+  propertyData: PropertyApiResponse,
+  nriDisasterScore?: number
 ): Promise<RiskAnalysisApiResponse | null> {
   const port = process.env.PORT ?? '3000';
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? `http://localhost:${port}`;
@@ -41,6 +42,7 @@ async function fetchRiskAnalysis(
         property: propertyData.property,
         history: propertyData.history,
         priceHistory: propertyData.priceHistory,
+        nriDisasterScore,
       }),
       cache: 'no-store',
     });
@@ -60,11 +62,11 @@ export default async function PropertyPage({ params }: PageProps) {
     return <PropertyNotFound address={addressQuery} message={propertyData?.error} />;
   }
 
-  const riskData = await fetchRiskAnalysis(propertyData);
-
   const { property, history, priceHistory } = propertyData;
   const nriRiskRaw = (propertyData as unknown as { nriRisk?: CountyDisasterScore & { hazardExplanations?: Record<string, string> } }).nriRisk;
   const nriRisk = nriRiskRaw ?? null;
+
+  const riskData = await fetchRiskAnalysis(propertyData, nriRisk?.overall_score);
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8 space-y-4">

@@ -110,29 +110,31 @@ export function PropertyDetailTabs({
                 No hazard data available for this location.
               </div>
             )}
-            {/* Disaster breakdown bullets */}
-            <section className="space-y-2">
-              <p className="text-xs font-data text-[#AABFCF] tracking-[0.2em] uppercase">
-                Hazard Risk Factors
-              </p>
-              <div className="border border-[#1A2035] rounded-lg divide-y divide-[#1A2035]">
-                {riskReport.disasterRisk.breakdown.map((factor) => (
-                  <div key={factor.label} className="flex items-center justify-between px-4 py-3 gap-4">
-                    <p className="text-xs font-data text-[#C8D6E2] leading-snug">{factor.description}</p>
-                    <span
-                      className="shrink-0 text-xs font-bold font-data px-2 py-0.5 rounded border tabular-nums"
-                      style={{
-                        color: factor.points > 10 ? '#F97316' : '#F5A11C',
-                        borderColor: factor.points > 10 ? '#F9731640' : '#F5A11C40',
-                        background: factor.points > 10 ? '#F9731612' : '#F5A11C12',
-                      }}
-                    >
-                      {factor.points} pts
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </section>
+            {/* Disaster breakdown bullets — only shown when NRI data is unavailable */}
+            {!nriRisk && (
+              <section className="space-y-2">
+                <p className="text-xs font-data text-[#AABFCF] tracking-[0.2em] uppercase">
+                  Hazard Risk Factors
+                </p>
+                <div className="border border-[#1A2035] rounded-lg divide-y divide-[#1A2035]">
+                  {riskReport.disasterRisk.breakdown.map((factor) => (
+                    <div key={factor.label} className="flex items-center justify-between px-4 py-3 gap-4">
+                      <p className="text-xs font-data text-[#C8D6E2] leading-snug">{factor.description}</p>
+                      <span
+                        className="shrink-0 text-xs font-bold font-data px-2 py-0.5 rounded border tabular-nums"
+                        style={{
+                          color: factor.points > 10 ? '#F97316' : '#F5A11C',
+                          borderColor: factor.points > 10 ? '#F9731640' : '#F5A11C40',
+                          background: factor.points > 10 ? '#F9731612' : '#F5A11C12',
+                        }}
+                      >
+                        {factor.points} pts
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
           </>
         )}
       </div>
