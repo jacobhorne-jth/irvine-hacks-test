@@ -23,7 +23,7 @@ export default function PropertyMapInner({ latitude, longitude, address }: Prope
   }, []);
 
   return (
-    <div className="h-64 rounded-xl overflow-hidden border">
+    <div className="h-full min-h-[220px] rounded-xl overflow-hidden border">
       <MapContainer
         center={[latitude, longitude]}
         zoom={15}
