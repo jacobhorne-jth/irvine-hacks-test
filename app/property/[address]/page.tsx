@@ -67,7 +67,9 @@ export default async function PropertyPage({ params }: PageProps) {
   const riskData = await fetchRiskAnalysis(propertyData);
 
   const { property, history, priceHistory } = propertyData;
-  const nriRisk = (propertyData as unknown as { nriRisk?: CountyDisasterScore }).nriRisk;
+  const nriRiskRaw = (propertyData as unknown as { nriRisk?: CountyDisasterScore & { hazardExplanations?: Record<string, string> } }).nriRisk;
+  const nriRisk = nriRiskRaw;
+  const hazardExplanations = nriRiskRaw?.hazardExplanations;
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8 space-y-4">
@@ -129,7 +131,7 @@ export default async function PropertyPage({ params }: PageProps) {
       {nriRisk && (
         <section className="space-y-3">
           <p className="text-[10px] font-data text-ghost tracking-[0.2em] uppercase">Natural Disaster Risk</p>
-          <DisasterScoreCard score={nriRisk} zestimate={property.zestimate} />
+          <DisasterScoreCard score={nriRisk} zestimate={property.zestimate} hazardExplanations={hazardExplanations} />
         </section>
       )}
 
@@ -273,7 +275,7 @@ function PropertyNotFound({ address, message }: { address: string; message?: str
       >
         <p className="text-[#475569] font-semibold mb-2">Tips for a better match:</p>
         <p>· Include full street number, name, city, state and zip</p>
-        <p>· Example: <span className="text-[#64748B]">2201 W Ball Rd, Anaheim, CA 92804</span></p>
+        <p>· Example: <span className="text-[#64748B]">1642 Peacock Ave, Sunnyvale, CA 94087</span></p>
         <p>· Avoid abbreviations — use <span className="text-[#64748B]">Street</span> not <span className="text-[#64748B]">St</span></p>
       </div>
 

@@ -177,6 +177,53 @@ function getFallbackLocationRisk(property: PropertyDetails): GPTLocationRisk {
   };
 }
 
+/**
+ * Generate location-specific AI explanations for each FEMA hazard.
+ * Uses county name, state, and actual EAL/contribution data from NRI.
+ */
+export async function generateHazardExplanations(
+  county: string,
+  stateAbbr: string,
+  breakdown: Record<string, { eal_building_M: number; contribution: number }>
+): Promise<Record<string, string>> {
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey || apiKey === 'placeholder_add_your_key') return {};
+
+  const lines = (Object.entries(breakdown) as [string, { eal_building_M: number; contribution: number }][])
+    .sort((a, b) => b[1].contribution - a[1].contribution)
+    .map(([key, v]) =>
+      `${key}: contribution=${v.contribution.toFixed(2)} pts, EAL=$${(v.eal_building_M * 1_000_000).toLocaleString(undefined, { maximumFractionDigits: 0 })}/yr`
+    )
+    .join('\n');
+
+  const prompt =
+    `You are a property risk analyst. For ${county} County, ${stateAbbr}, write ONE concise sentence per hazard ` +
+    `explaining WHY the risk is at this level — reference real local geography, faults, climate patterns, or infrastructure specific to this county.\n\n` +
+    `Hazard data (FEMA NRI):\n${lines}\n\n` +
+    `Return JSON only with keys matching the hazard names exactly:\n` +
+    `{"Earthquake":"...","Wildfire":"...","Inland_Flood":"...","Hurricane":"...","Tornado":"...","Hail":"...","Strong_Wind":"...","Coastal_Flood":"..."}`;
+
+  try {
+    const res = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${apiKey}` },
+      body: JSON.stringify({
+        model: 'gpt-4o-mini',
+        messages: [{ role: 'user', content: prompt }],
+        response_format: { type: 'json_object' },
+        max_tokens: 500,
+        temperature: 0.2,
+      }),
+      signal: AbortSignal.timeout(10_000),
+    });
+    if (!res.ok) return {};
+    const data = await res.json();
+    return JSON.parse(data.choices?.[0]?.message?.content ?? '{}');
+  } catch {
+    return {};
+  }
+}
+
 export async function generateAISummary(
   property: PropertyDetails,
   history: OwnershipHistory,

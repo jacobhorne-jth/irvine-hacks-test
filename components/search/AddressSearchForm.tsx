@@ -5,8 +5,8 @@ import { useRouter } from 'next/navigation';
 import { Search, Loader2, MapPin } from 'lucide-react';
 
 const SAMPLE_ADDRESSES = [
-  '14 Clearview, Irvine, CA 92612',
-  '2201 W Ball Rd, Anaheim, CA 92804',
+  '1441 Lemos Ln, Fremont, CA 94539',
+  '1642 Peacock Ave, Sunnyvale, CA 94087',
   '891 Iris Ave, Newport Beach, CA 92625',
 ];
 

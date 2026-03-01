@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { findMockProperty } from '@/data/mock-properties';
 import { fetchAttomPropertyData } from '@/lib/attom';
 import { fetchRedfinData } from '@/lib/apify';
-import { extractCountyFromAddress } from '@/lib/openai';
+import { extractCountyFromAddress, generateHazardExplanations } from '@/lib/openai';
 import { searchCounties, getCountyByLatLng } from '@/lib/nri';
 import type { PropertyApiResponse } from '@/lib/types';
 
@@ -118,7 +118,8 @@ async function resolveNriRisk(address: string, lat: number, lng: number) {
     const fccResult = await getCountyByLatLng(lat, lng);
     if (fccResult) {
       console.log(`[NRI] FCC resolved lat=${lat},lng=${lng} → ${fccResult.county}, ${fccResult.stateAbbr} (FIPS ${fccResult.fips})`);
-      return fccResult;
+      const hazardExplanations = await generateHazardExplanations(fccResult.county, fccResult.stateAbbr, fccResult.breakdown);
+      return { ...fccResult, hazardExplanations };
     }
 
     // Fallback: GPT extracts county name from address string (requires OPENAI_API_KEY)
@@ -127,7 +128,8 @@ async function resolveNriRisk(address: string, lat: number, lng: number) {
       const results = searchCounties(gptCounty.county, gptCounty.stateAbbr);
       if (results.length > 0) {
         console.log(`[NRI] GPT resolved "${address}" → ${gptCounty.county}, ${gptCounty.stateAbbr} (FIPS ${results[0].fips})`);
-        return results[0];
+        const hazardExplanations = await generateHazardExplanations(results[0].county, results[0].stateAbbr, results[0].breakdown);
+        return { ...results[0], hazardExplanations };
       }
     }
 

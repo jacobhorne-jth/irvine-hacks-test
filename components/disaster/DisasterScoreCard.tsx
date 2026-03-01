@@ -38,9 +38,10 @@ const HAZARD_COLORS: Record<HazardKey, string> = {
 interface Props {
   score: CountyDisasterScore;
   zestimate?: number;
+  hazardExplanations?: Record<string, string>;
 }
 
-export function DisasterScoreCard({ score, zestimate }: Props) {
+export function DisasterScoreCard({ score, zestimate, hazardExplanations }: Props) {
   const DomIcon = HAZARD_ICONS[score.dominant_hazard] ?? AlertTriangle;
 
   // Whether we can compute per-property estimates
@@ -148,7 +149,7 @@ export function DisasterScoreCard({ score, zestimate }: Props) {
           </p>
         </div>
         <div className="p-6">
-          <HazardBreakdownChart breakdown={score.breakdown} dominantHazard={score.dominant_hazard} />
+          <HazardBreakdownChart breakdown={score.breakdown} dominantHazard={score.dominant_hazard} hazardExplanations={hazardExplanations} />
           <p className="text-[10px] font-data text-[#3B4A65] mt-3 text-center">
             Highlighted bar = dominant hazard · Scores weighted by actuarial model
           </p>

@@ -73,11 +73,12 @@ const HAZARD_COLORS: Record<HazardKey, string> = {
 interface Props {
   breakdown: Record<HazardKey, HazardBreakdown>;
   dominantHazard: HazardKey;
+  hazardExplanations?: Record<string, string>;
 }
 
 interface TooltipPayload {
   value: number;
-  payload: { hazard: HazardKey; contribution: number; eal: number };
+  payload: { hazard: HazardKey; contribution: number; eal: number; explanations?: Record<string, string> };
 }
 
 function CustomTooltip({
@@ -90,8 +91,10 @@ function CustomTooltip({
   if (!active || !payload?.length) return null;
   const d = payload[0].payload;
   const color = HAZARD_COLORS[d.hazard];
-  const explain = HAZARD_EXPLAIN[d.hazard];
-  const blurb = explain ? (d.contribution >= 5 ? explain.high : explain.low) : null;
+  // Prefer live AI explanation, fall back to static blurbs
+  const aiBlurb = d.explanations?.[d.hazard];
+  const staticExplain = HAZARD_EXPLAIN[d.hazard];
+  const blurb = aiBlurb ?? (staticExplain ? (d.contribution >= 5 ? staticExplain.high : staticExplain.low) : null);
   return (
     <div
       className="rounded-lg p-3 font-data shadow-xl max-w-[260px]"
@@ -117,13 +120,14 @@ function CustomTooltip({
   );
 }
 
-export function HazardBreakdownChart({ breakdown, dominantHazard }: Props) {
+export function HazardBreakdownChart({ breakdown, dominantHazard, hazardExplanations }: Props) {
   const data = (Object.entries(breakdown) as [HazardKey, HazardBreakdown][])
     .map(([hazard, vals]) => ({
       hazard,
       label: HAZARD_LABELS[hazard],
       contribution: vals.contribution,
       eal: vals.eal_building_M,
+      explanations: hazardExplanations,
     }))
     .sort((a, b) => b.contribution - a.contribution);
 
