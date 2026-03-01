@@ -116,7 +116,7 @@ export default function PortfolioPage() {
           className="flex items-center gap-1.5 text-xs font-bold font-data px-3 py-2 rounded border border-[#F5A11C]/60 bg-[#F5A11C]/10 text-[#F5A11C] hover:bg-[#F5A11C]/20 hover:border-[#F5A11C] transition-all"
         >
           <Plus className="h-3.5 w-3.5" />
-          Add Property
+          Search Property
         </Link>
       </div>
 
