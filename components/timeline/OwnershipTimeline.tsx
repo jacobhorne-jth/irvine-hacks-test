@@ -114,7 +114,7 @@ function NodeLabel({
           className="font-data"
           style={{
             fontSize: 10,
-            color: selected ? '#CBD5E1' : hovered ? '#B0C0D0' : '#B0C0D0',
+            color: selected ? '#CBD5E1' : hovered ? '#C8D6E2' : '#C8D6E2',
           }}
         >
           {name}
@@ -304,12 +304,12 @@ function DetailDrawer({ event, color }: { event: OwnershipEvent; color: string }
         {/* Stats row */}
         <div className="flex flex-wrap gap-x-5 gap-y-1 text-[11px] font-data">
           <span>
-            <span className="text-[#8EA5BE]">Purchased  </span>
-            <span className="text-[#B0C0D0]">{formatDate(event.date)}</span>
+            <span className="text-[#AABFCF]">Purchased  </span>
+            <span className="text-[#C8D6E2]">{formatDate(event.date)}</span>
           </span>
           {event.price != null && !isNaN(event.price) && (
             <span>
-              <span className="text-[#8EA5BE]">Price  </span>
+              <span className="text-[#AABFCF]">Price  </span>
               <span className="font-bold" style={{ color }}>
                 {formatCurrency(event.price)}
               </span>
@@ -317,8 +317,8 @@ function DetailDrawer({ event, color }: { event: OwnershipEvent; color: string }
           )}
           {event.tenureMonths != null && !isNaN(event.tenureMonths) && (
             <span>
-              <span className="text-[#8EA5BE]">Tenure  </span>
-              <span className="text-[#B0C0D0]">{tenureLabel(event.tenureMonths)}</span>
+              <span className="text-[#AABFCF]">Tenure  </span>
+              <span className="text-[#C8D6E2]">{tenureLabel(event.tenureMonths)}</span>
             </span>
           )}
         </div>
@@ -400,7 +400,7 @@ function Header({ history }: { history: OwnershipHistory }) {
               Ownership Timeline
             </span>
           </div>
-          <p className="text-[11px] font-data text-[#8EA5BE]">
+          <p className="text-[11px] font-data text-[#AABFCF]">
             Records dating to {new Date(history.oldestRecord).getFullYear()}
           </p>
         </div>

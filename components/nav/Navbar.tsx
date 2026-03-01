@@ -37,7 +37,7 @@ export function Navbar() {
           <Link
             href="/"
             className={`relative flex items-center px-5 text-sm font-medium transition-colors ${
-              isSearch ? 'text-white' : 'text-[#8EA5BE] hover:text-white'
+              isSearch ? 'text-white' : 'text-[#AABFCF] hover:text-white'
             }`}
           >
             Search
@@ -48,7 +48,7 @@ export function Navbar() {
           <Link
             href="/portfolio"
             className={`relative flex items-center px-5 text-sm font-medium transition-colors ${
-              isPortfolio ? 'text-white' : 'text-[#8EA5BE] hover:text-white'
+              isPortfolio ? 'text-white' : 'text-[#AABFCF] hover:text-white'
             }`}
           >
             Portfolio
@@ -62,7 +62,7 @@ export function Navbar() {
         <div className="flex-1 flex justify-end">
           <a
             href="/#how-it-works"
-            className="text-sm font-medium text-[#8EA5BE] hover:text-white transition-colors"
+            className="text-sm font-medium text-[#AABFCF] hover:text-white transition-colors"
           >
             How it works
           </a>

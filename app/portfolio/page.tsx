@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { Plus, BarChart2 } from 'lucide-react';
 import { scoreToLevel, getRiskColor } from '@/lib/utils';
@@ -8,6 +8,8 @@ import type { PortfolioEntry } from '@/components/portfolio/SaveToPortfolioButto
 import { PORTFOLIO_KEY } from '@/components/portfolio/SaveToPortfolioButton';
 import { PortfolioStats } from '@/components/portfolio/PortfolioStats';
 import { PortfolioRow } from '@/components/portfolio/PortfolioRow';
+import { PortfolioMap } from '@/components/portfolio/PortfolioMap';
+import { PortfolioAnalytics } from '@/components/portfolio/PortfolioAnalytics';
 import type { RiskLevel } from '@/lib/types';
 
 const RISK_COLORS: Record<RiskLevel, string> = {
@@ -20,6 +22,8 @@ const RISK_COLORS: Record<RiskLevel, string> = {
 export default function PortfolioPage() {
   const [entries, setEntries] = useState<PortfolioEntry[]>([]);
   const [mounted, setMounted] = useState(false);
+  // Track which entry IDs we've already attempted to enrich (prevents duplicate fetches)
+  const enrichingRef = useRef(new Set<string>());
 
   useEffect(() => {
     setMounted(true);
@@ -28,6 +32,56 @@ export default function PortfolioPage() {
       if (raw) setEntries(JSON.parse(raw));
     } catch {}
   }, []);
+
+  // Auto-enrich entries missing hazard breakdown data via lightweight NRI lookup
+  useEffect(() => {
+    if (!mounted) return;
+    const missing = entries.filter(
+      (e) => e.hazardBreakdown == null && !enrichingRef.current.has(e.id)
+    );
+    if (missing.length === 0) return;
+
+    for (const e of missing) enrichingRef.current.add(e.id);
+
+    void Promise.all(
+      missing.map(async (entry) => {
+        const params = new URLSearchParams();
+        if (entry.latitude != null && entry.longitude != null) {
+          params.set('lat', String(entry.latitude));
+          params.set('lng', String(entry.longitude));
+        } else {
+          params.set('address', entry.address);
+        }
+        try {
+          const res = await fetch(`/api/nri-lookup?${params}`);
+          if (!res.ok) return null;
+          const nri = await res.json();
+          if (!nri.breakdown) return null;
+          return {
+            id:              entry.id,
+            hazardBreakdown: nri.breakdown,
+            dominantHazard:  nri.dominant_hazard,
+            // Persist resolved coords so the map can pin this property
+            ...(nri.latitude  != null && { latitude:  nri.latitude  }),
+            ...(nri.longitude != null && { longitude: nri.longitude }),
+          };
+        } catch {
+          return null;
+        }
+      })
+    ).then((results) => {
+      const updates = results.filter(Boolean);
+      if (!updates.length) return;
+      setEntries((prev) => {
+        const next = prev.map((e) => {
+          const u = updates.find((r) => r?.id === e.id);
+          return u ? { ...e, ...u } : e;
+        });
+        localStorage.setItem(PORTFOLIO_KEY, JSON.stringify(next));
+        return next;
+      });
+    });
+  }, [mounted, entries.length]); // re-run when new properties are added
 
   function remove(id: string) {
     const next = entries.filter((e) => e.id !== id);
@@ -43,7 +97,7 @@ export default function PortfolioPage() {
       {/* ── Header ── */}
       <div className="flex items-end justify-between gap-4">
         <div>
-          <p className="text-[10px] font-data text-ghost tracking-[0.2em] uppercase mb-2">
+          <p className="text-xs font-data text-ghost tracking-[0.2em] uppercase mb-2">
             Portfolio
           </p>
           <h1
@@ -73,9 +127,24 @@ export default function PortfolioPage() {
 
           {entries.length > 1 && <RiskDistributionBar entries={entries} />}
 
+          {/* ── Portfolio Map ── */}
+          {entries.some((e) => e.latitude != null && e.longitude != null) && (
+            <div>
+              <p className="text-xs font-data text-ghost tracking-[0.2em] uppercase mb-3">
+                Property Locations
+              </p>
+              <div className="h-72">
+                <PortfolioMap entries={entries} />
+              </div>
+            </div>
+          )}
+
+          {/* ── Analytics Dashboard ── */}
+          <PortfolioAnalytics entries={entries} />
+
           {/* ── Property list ── */}
           <div>
-            <p className="text-[10px] font-data text-ghost tracking-[0.2em] uppercase mb-3">
+            <p className="text-xs font-data text-ghost tracking-[0.2em] uppercase mb-3">
               Tracked Properties
             </p>
             <div className="border border-line bg-surface rounded-lg overflow-hidden">
@@ -117,7 +186,7 @@ function RiskDistributionBar({ entries }: { entries: PortfolioEntry[] }) {
 
   return (
     <div className="border border-line bg-surface rounded-lg p-5 reveal">
-      <p className="text-[9px] font-data text-ghost tracking-[0.2em] uppercase mb-4">
+      <p className="text-[11px] font-data text-ghost tracking-[0.2em] uppercase mb-4">
         Portfolio Risk Distribution
       </p>
       <div className="flex h-2 rounded-full overflow-hidden gap-0.5">
@@ -146,7 +215,7 @@ function RiskDistributionBar({ entries }: { entries: PortfolioEntry[] }) {
           return (
             <div key={level} className="flex items-center gap-1.5">
               <div className="w-2 h-2 rounded-full" style={{ background: RISK_COLORS[level] }} />
-              <span className="text-[10px] font-data text-dim capitalize">
+              <span className="text-xs font-data text-dim capitalize">
                 {level}: {count}
               </span>
             </div>

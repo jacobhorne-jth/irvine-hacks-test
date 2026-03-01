@@ -30,7 +30,7 @@ export function RiskDashboard({ report, hideOverall = false }: RiskDashboardProp
         <div className="flex items-center gap-6">
           <RiskGauge score={overallScore} level={overallLevel} size={110} />
           <div className="space-y-2">
-            <p className="text-[10px] font-data text-[#8EA5BE] tracking-[0.2em] uppercase">
+            <p className="text-[10px] font-data text-[#AABFCF] tracking-[0.2em] uppercase">
               Overall Insurance Risk Score
             </p>
             <span
@@ -39,7 +39,7 @@ export function RiskDashboard({ report, hideOverall = false }: RiskDashboardProp
             >
               {getRiskLabel(overallLevel)}
             </span>
-            <p className="text-[10px] font-data text-[#8EA5BE]">
+            <p className="text-[10px] font-data text-[#AABFCF]">
               Title 40% · Disaster 35% · Market 25%
             </p>
           </div>

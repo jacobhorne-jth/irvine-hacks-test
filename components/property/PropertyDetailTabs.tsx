@@ -46,7 +46,7 @@ export function PropertyDetailTabs({
             className={`relative px-5 py-3.5 text-sm font-medium transition-colors ${
               active === tab.id
                 ? 'text-white'
-                : 'text-[#8EA5BE] hover:text-[#9BA8BC]'
+                : 'text-[#AABFCF] hover:text-[#BAC6D4]'
             }`}
           >
             {tab.label}
@@ -63,14 +63,14 @@ export function PropertyDetailTabs({
           <>
             <RiskVerdictBanner report={riskReport} summary={summary} />
             <section className="space-y-3">
-              <p className="text-[10px] font-data text-[#8EA5BE] tracking-[0.2em] uppercase">
+              <p className="text-[10px] font-data text-[#AABFCF] tracking-[0.2em] uppercase">
                 Chain of Title
               </p>
               <OwnershipTimeline history={history} />
             </section>
             {priceHistory.length > 1 && (
               <section className="space-y-3">
-                <p className="text-[10px] font-data text-[#8EA5BE] tracking-[0.2em] uppercase">
+                <p className="text-[10px] font-data text-[#AABFCF] tracking-[0.2em] uppercase">
                   Price History
                 </p>
                 <PriceHistoryChart data={priceHistory} />
@@ -78,13 +78,13 @@ export function PropertyDetailTabs({
             )}
             {/* Title risk breakdown bullets */}
             <section className="space-y-2">
-              <p className="text-[10px] font-data text-[#8EA5BE] tracking-[0.2em] uppercase">
+              <p className="text-[10px] font-data text-[#AABFCF] tracking-[0.2em] uppercase">
                 Title Risk Factors
               </p>
               <div className="border border-[#1A2035] rounded-lg divide-y divide-[#1A2035]">
                 {riskReport.titleRisk.breakdown.map((factor) => (
                   <div key={factor.label} className="flex items-center justify-between px-4 py-3 gap-4">
-                    <p className="text-xs font-data text-[#B0C0D0] leading-snug">{factor.description}</p>
+                    <p className="text-xs font-data text-[#C8D6E2] leading-snug">{factor.description}</p>
                     <span
                       className="shrink-0 text-[10px] font-bold font-data px-2 py-0.5 rounded border tabular-nums"
                       style={{
@@ -109,19 +109,19 @@ export function PropertyDetailTabs({
                 hazardExplanations={nriRisk.hazardExplanations}
               />
             ) : (
-              <div className="py-12 text-center text-sm font-data text-[#8EA5BE]">
+              <div className="py-12 text-center text-sm font-data text-[#AABFCF]">
                 No hazard data available for this location.
               </div>
             )}
             {/* Disaster breakdown bullets */}
             <section className="space-y-2">
-              <p className="text-[10px] font-data text-[#8EA5BE] tracking-[0.2em] uppercase">
+              <p className="text-[10px] font-data text-[#AABFCF] tracking-[0.2em] uppercase">
                 Hazard Risk Factors
               </p>
               <div className="border border-[#1A2035] rounded-lg divide-y divide-[#1A2035]">
                 {riskReport.disasterRisk.breakdown.map((factor) => (
                   <div key={factor.label} className="flex items-center justify-between px-4 py-3 gap-4">
-                    <p className="text-xs font-data text-[#B0C0D0] leading-snug">{factor.description}</p>
+                    <p className="text-xs font-data text-[#C8D6E2] leading-snug">{factor.description}</p>
                     <span
                       className="shrink-0 text-[10px] font-bold font-data px-2 py-0.5 rounded border tabular-nums"
                       style={{

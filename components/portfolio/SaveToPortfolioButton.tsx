@@ -13,6 +13,17 @@ export interface PortfolioEntry {
   zestimate: number;
   beds: number;
   baths: number;
+  // Location (for portfolio map)
+  latitude?: number;
+  longitude?: number;
+  // Risk component scores (for analytics)
+  titleScore?: number;
+  disasterScore?: number;
+  marketScore?: number;
+  // Detailed breakdowns (for aggregated portfolio charts)
+  hazardBreakdown?: Record<string, { contribution: number; eal_building_M: number }>;
+  dominantHazard?: string;
+  titleBreakdown?: Array<{ label: string; points: number }>;
 }
 
 export const PORTFOLIO_KEY = 'prop_intel_portfolio';
@@ -57,7 +68,7 @@ export function SaveToPortfolioButton({ entry }: SaveToPortfolioButtonProps) {
       className={`flex items-center gap-1.5 text-xs font-data px-3 py-1.5 rounded border transition-all ${
         saved
           ? 'border-[#F5A11C]/40 bg-[#F5A11C]/10 text-[#F5A11C]'
-          : 'border-[#1A2035] bg-[#0B0F1C] text-[#8EA5BE] hover:border-[#F5A11C]/30 hover:text-[#F5A11C]'
+          : 'border-[#1A2035] bg-[#0B0F1C] text-[#AABFCF] hover:border-[#F5A11C]/30 hover:text-[#F5A11C]'
       }`}
     >
       {saved ? (

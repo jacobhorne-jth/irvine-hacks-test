@@ -14,9 +14,9 @@
     --primary: 38 95% 55%;
     --primary-foreground: 222 45% 4%;
     --secondary: 222 30% 12%;
-    --secondary-foreground: 214 20% 75%;
+    --secondary-foreground: 214 20% 82%;
     --muted: 222 30% 10%;
-    --muted-foreground: 220 12% 72%;
+    --muted-foreground: 220 15% 80%;
     --accent: 222 30% 12%;
     --accent-foreground: 214 20% 88%;
     --destructive: 0 72% 51%;
@@ -39,10 +39,10 @@
     --surface-2: #0F1320;
     --line: #1A2035;
     /* Text scale */
-    --text-primary: #E8ECF4;
-    --text-secondary: #9BA8BC;
-    --text-dim: #B0C0D0;
-    --text-ghost: #8EA5BE;
+    --text-primary: #EDF0F7;
+    --text-secondary: #BAC6D4;
+    --text-dim: #C8D6E2;
+    --text-ghost: #AABFCF;
   }
 }
 

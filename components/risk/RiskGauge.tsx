@@ -69,7 +69,7 @@ export function RiskGauge({ score, level, size = 120 }: RiskGaugeProps) {
           x="50"
           y="55"
           textAnchor="middle"
-          fill="#8EA5BE"
+          fill="#AABFCF"
           fontSize={subFontSize}
           fontFamily="var(--font-mono, monospace)"
         >

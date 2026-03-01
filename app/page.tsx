@@ -1,4 +1,4 @@
-import { Shield, GitBranch, Bot, Brain, ArrowRight, FileText, Flame, Sparkles, BarChart3 } from 'lucide-react';
+import { Shield, GitBranch, Bot, Brain, FileText, Flame, Sparkles, BarChart3 } from 'lucide-react';
 import { AddressSearchForm } from '@/components/search/AddressSearchForm';
 
 export default function HomePage() {
@@ -29,7 +29,7 @@ export default function HomePage() {
             <span className="text-[#F5A11C]">Intelligence.</span>
           </h1>
 
-          <p className="text-lg text-[#B0C0D0] max-w-2xl mb-12 leading-relaxed">
+          <p className="text-lg text-[#C8D6E2] max-w-2xl mb-12 leading-relaxed">
             Ownership history, title risk, AI-assessed disaster exposure, and insurance
             recommendations — for any US address, in seconds.
           </p>
@@ -47,7 +47,7 @@ export default function HomePage() {
               { icon: Sparkles, label: 'AI Summary' },
               { icon: BarChart3, label: 'Portfolio Tracker' },
             ].map(({ icon: Icon, label }) => (
-              <div key={label} className="flex items-center gap-2 text-[#8EA5BE]">
+              <div key={label} className="flex items-center gap-2 text-[#AABFCF]">
                 <Icon className="h-4 w-4" />
                 <span className="text-sm font-data tracking-wide">{label}</span>
               </div>
@@ -59,7 +59,7 @@ export default function HomePage() {
       {/* ── Features ── */}
       <section className="py-20 px-6 bg-[#060810] border-t border-[#1A2035]">
         <div className="max-w-6xl mx-auto">
-          <p className="text-[11px] font-data text-[#8EA5BE] tracking-[0.2em] uppercase mb-4 text-center">
+          <p className="text-[11px] font-data text-[#AABFCF] tracking-[0.2em] uppercase mb-4 text-center">
             Capabilities
           </p>
           <h2 className="text-3xl font-bold text-white mb-12 text-center">What you get</h2>
@@ -96,7 +96,7 @@ export default function HomePage() {
       {/* ── How it works ── */}
       <section id="how-it-works" className="py-20 px-6 bg-[#080B14]">
         <div className="max-w-4xl mx-auto">
-          <p className="text-[11px] font-data text-[#8EA5BE] tracking-[0.2em] uppercase mb-4 text-center">
+          <p className="text-[11px] font-data text-[#AABFCF] tracking-[0.2em] uppercase mb-4 text-center">
             Process
           </p>
           <h2 className="text-3xl font-bold text-white mb-12 text-center">How it works</h2>
@@ -130,9 +130,8 @@ export default function HomePage() {
                 </span>
                 <div>
                   <p className="font-semibold text-white mb-1">{title}</p>
-                  <p className="text-sm text-[#B0C0D0] leading-relaxed">{desc}</p>
+                  <p className="text-sm text-[#C8D6E2] leading-relaxed">{desc}</p>
                 </div>
-                <ArrowRight className="h-4 w-4 text-[#1A2035] shrink-0 mt-1 ml-auto group-hover:text-[#F5A11C] transition-colors" />
               </div>
             ))}
           </div>
@@ -163,7 +162,7 @@ function Feature({
       </div>
       <div>
         <h3 className="font-semibold text-white text-sm mb-2">{title}</h3>
-        <p className="text-xs text-[#B0C0D0] leading-relaxed">{description}</p>
+        <p className="text-xs text-[#C8D6E2] leading-relaxed">{description}</p>
       </div>
     </div>
   );

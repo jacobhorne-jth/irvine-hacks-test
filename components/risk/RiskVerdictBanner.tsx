@@ -36,7 +36,7 @@ export function RiskVerdictBanner({
       <div className="px-6 py-6 flex items-center gap-6">
         {/* Title risk score */}
         <div className="border border-line rounded-lg px-8 py-5 text-center bg-surface-deep shrink-0">
-          <p className="text-[10px] font-data text-ghost tracking-[0.15em] uppercase mb-3">
+          <p className="text-xs font-data text-ghost tracking-[0.15em] uppercase mb-3">
             Title Risk
           </p>
           <p
@@ -64,7 +64,7 @@ export function RiskVerdictBanner({
               >
                 {factor.points} pts
               </span>
-              <p className="text-xs font-data text-[#B0C0D0] leading-snug">
+              <p className="text-xs font-data text-[#C8D6E2] leading-snug">
                 {factor.description}
               </p>
             </div>
@@ -73,7 +73,7 @@ export function RiskVerdictBanner({
 
         {/* Recommendation badge */}
         <div className="flex flex-col items-end gap-2 shrink-0">
-          <p className="text-[10px] font-data text-ghost tracking-[0.2em] uppercase">
+          <p className="text-xs font-data text-ghost tracking-[0.2em] uppercase">
             Risk Assessment
           </p>
           <span

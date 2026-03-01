@@ -32,10 +32,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Footer */}
         <footer className="border-t border-[#1A2035] py-8 mt-8">
           <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-            <span className="text-xs font-data text-[#8EA5BE] tracking-wider">
+            <span className="text-xs font-data text-[#AABFCF] tracking-wider">
               PROP.INTEL — FOR INFORMATIONAL USE ONLY. NOT LEGAL OR FINANCIAL ADVICE.
             </span>
-            <span className="text-xs font-data text-[#8EA5BE] tracking-wider">
+            <span className="text-xs font-data text-[#AABFCF] tracking-wider">
               ATTOM DATA · OPENSTREETMAP
             </span>
           </div>

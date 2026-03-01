@@ -52,7 +52,7 @@ function FactorTooltip({
           background: '#050A14',
           borderColor: `${color}40`,
           boxShadow: `0 8px 24px #00000080, 0 0 0 1px ${color}20`,
-          color: '#B0C0D0',
+          color: '#C8D6E2',
           maxWidth: 260,
         }}
       >
@@ -80,10 +80,10 @@ export function RiskHeatmapGrid({ report }: RiskHeatmapGridProps) {
         {/* Header */}
         <div className="px-6 py-4 border-b border-[#1A2035] flex items-center justify-between">
           <div>
-            <p className="text-[10px] font-data text-[#8EA5BE] tracking-[0.2em] uppercase">
+            <p className="text-[10px] font-data text-[#AABFCF] tracking-[0.2em] uppercase">
               Risk Factor Matrix
             </p>
-            <p className="text-[11px] font-data text-[#B0C0D0] mt-0.5">
+            <p className="text-[11px] font-data text-[#C8D6E2] mt-0.5">
               Hover a bar for explanation
             </p>
           </div>
@@ -92,7 +92,7 @@ export function RiskHeatmapGrid({ report }: RiskHeatmapGridProps) {
             {LEVELS.map((l) => (
               <div key={l.label} className="flex items-center gap-1">
                 <div className="w-2.5 h-2.5 rounded-sm" style={{ background: l.color }} />
-                <span className="text-[9px] font-data text-[#8EA5BE] tracking-wider">{l.label}</span>
+                <span className="text-[11px] font-data text-[#AABFCF] tracking-wider">{l.label}</span>
               </div>
             ))}
           </div>
