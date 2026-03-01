@@ -16,6 +16,7 @@ import { TrendingUp } from 'lucide-react';
 
 interface PriceHistoryChartProps {
   data: PriceHistoryPoint[];
+  avmValue?: number;
 }
 
 function CustomTooltip({ active, payload }: {
@@ -29,17 +30,28 @@ function CustomTooltip({ active, payload }: {
     <div className="bg-[#0D1120] border border-[#1A2035] rounded p-3 font-data shadow-lg">
       <p className="text-sm font-bold text-white">{formatCurrency(payload[0].value)}</p>
       <p className="text-[11px] text-[#C8D6E2] mt-0.5">{formatDateShort(point.date)}</p>
-      <p className="text-[10px] text-[#AABFCF] capitalize mt-0.5">{point.event}</p>
+      <p className="text-[10px] text-[#AABFCF] capitalize mt-0.5">
+        {point.event === 'estimate' && point.date === new Date().toISOString().split('T')[0]
+          ? 'AVM Estimate'
+          : point.event}
+      </p>
     </div>
   );
 }
 
-export function PriceHistoryChart({ data }: PriceHistoryChartProps) {
-  const sorted = [...data].sort(
+export function PriceHistoryChart({ data, avmValue }: PriceHistoryChartProps) {
+  const today = new Date().toISOString().split('T')[0];
+
+  const withAvm: PriceHistoryPoint[] = avmValue && avmValue > 0
+    ? [...data, { date: today, price: avmValue, event: 'estimate' as const }]
+    : data;
+
+  const sorted = [...withAvm].sort(
     (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
   );
 
   const sales = sorted.filter((p) => p.event === 'sale');
+  const avmPoint = avmValue && avmValue > 0 ? sorted.find((p) => p.date === today && p.event === 'estimate') : null;
 
   const formatted = sorted.map((p) => ({
     ...p,
@@ -100,11 +112,21 @@ export function PriceHistoryChart({ data }: PriceHistoryChartProps) {
                   strokeWidth={2}
                 />
               ))}
+              {avmPoint && (
+                <ReferenceDot
+                  x={formatDateShort(avmPoint.date)}
+                  y={avmPoint.price}
+                  r={6}
+                  fill="#F5A11C"
+                  stroke="#0B0F1C"
+                  strokeWidth={2}
+                />
+              )}
             </AreaChart>
           </ResponsiveContainer>
         </div>
         <p className="text-[10px] font-data text-[#AABFCF] mt-3 text-center">
-          Red dots = actual sale prices · Amber line = estimated values
+          Red dots = actual sale prices · <span style={{ color: '#F5A11C' }}>●</span> Orange dot = AVM estimate today
         </p>
       </div>
     </div>

@@ -456,10 +456,13 @@ function Tag({ value, label, color }: { value: number; label: string; color?: st
 
 // ── Main export ───────────────────────────────────────────────────────────
 
-export function OwnershipTimeline({ history }: { history: OwnershipHistory }) {
+export function OwnershipTimeline({ history, avmValue }: { history: OwnershipHistory; avmValue?: number }) {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [tooltipPos, setTooltipPos] = useState<{ x: number; y: number } | null>(null);
+  const [avmHovered, setAvmHovered] = useState(false);
+  const [avmSelected, setAvmSelected] = useState(false);
+  const [avmTooltipPos, setAvmTooltipPos] = useState<{ x: number; y: number } | null>(null);
 
   // Sort oldest → newest; drop events with unparseable dates
   const events = [...history.events]
@@ -533,7 +536,7 @@ export function OwnershipTimeline({ history }: { history: OwnershipHistory }) {
               }}
             />
 
-            {/* Dashed tail: last event → NOW (current owner ongoing tenure) */}
+            {/* Dashed tail: last event → NOW / AVM node */}
             <div
               className="absolute"
               style={{
@@ -546,7 +549,77 @@ export function OwnershipTimeline({ history }: { history: OwnershipHistory }) {
               }}
             />
 
-            <NowMarker />
+            {/* AVM node at NOW position — replaces plain NowMarker when value available */}
+            {avmValue && avmValue > 0 ? (
+              <div
+                className="absolute flex flex-col items-center"
+                style={{ right: 0, top: 0, height: '100%', width: 24 }}
+              >
+                {/* Hit area */}
+                <div
+                  className="absolute cursor-pointer rounded-full"
+                  style={{
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    width: 34,
+                    height: 34,
+                  }}
+                  onMouseEnter={(e) => {
+                    const rect = e.currentTarget.getBoundingClientRect();
+                    setAvmTooltipPos({ x: rect.left + rect.width / 2, y: rect.top });
+                    setAvmHovered(true);
+                  }}
+                  onMouseLeave={() => { setAvmHovered(false); setAvmTooltipPos(null); }}
+                  onClick={() => {
+                    setSelectedId(null);
+                    setAvmSelected((prev) => !prev);
+                  }}
+                />
+                {/* Diamond shape */}
+                <div
+                  className="absolute pointer-events-none"
+                  style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: 18, height: 18 }}
+                >
+                  <div
+                    className="absolute inset-0 transition-all duration-150"
+                    style={{
+                      borderRadius: 3,
+                      transform: 'rotate(45deg)',
+                      background: `#F5A11C${(avmHovered || avmSelected) ? '2E' : '18'}`,
+                      border: `1.5px solid #F5A11C${(avmHovered || avmSelected) ? 'CC' : '70'}`,
+                      boxShadow: (avmHovered || avmSelected)
+                        ? '0 0 0 3px #F5A11C22, 0 0 18px #F5A11C55'
+                        : '0 0 6px #F5A11C30',
+                    }}
+                  />
+                </div>
+                {/* Label above node */}
+                <div
+                  className="absolute pointer-events-none"
+                  style={{
+                    right: 0,
+                    bottom: 'calc(50% + 10px)',
+                    display: 'flex',
+                    flexDirection: 'column-reverse',
+                    alignItems: 'flex-end',
+                    gap: 2,
+                  }}
+                >
+                  <div className="flex flex-col items-end" style={{ gap: 2, whiteSpace: 'nowrap' }}>
+                    <span className="font-data tracking-wider" style={{ fontSize: 9, color: '#F5A11CBB' }}>
+                      today
+                    </span>
+                    <span className="font-data font-bold" style={{ fontSize: 10, color: '#C8D6E2' }}>
+                      {formatCurrency(avmValue)}
+                    </span>
+                  </div>
+                  <div style={{ width: 1, height: 14, background: 'linear-gradient(to bottom, #F5A11C00, #F5A11C35)', flexShrink: 0 }} />
+                </div>
+              </div>
+            ) : (
+              <NowMarker />
+            )}
 
             {/* Commit nodes */}
             {events.map((event, index) => {
@@ -592,9 +665,10 @@ export function OwnershipTimeline({ history }: { history: OwnershipHistory }) {
                       setHoveredId(null);
                       setTooltipPos(null);
                     }}
-                    onClick={() =>
-                      setSelectedId((prev) => (prev === event.id ? null : event.id))
-                    }
+                    onClick={() => {
+                      setAvmSelected(false);
+                      setSelectedId((prev) => (prev === event.id ? null : event.id));
+                    }}
                   />
 
                   {/* Visual node */}
@@ -643,11 +717,59 @@ export function OwnershipTimeline({ history }: { history: OwnershipHistory }) {
             <DetailDrawer event={selectedEvent} color={nodeColor(selectedEvent)} />
           )}
         </div>
+
+        {/* AVM detail drawer */}
+        {avmSelected && avmValue && avmValue > 0 && (
+          <div className="mx-6 mb-5 rounded-lg border overflow-hidden" style={{ borderColor: '#F5A11C25', background: '#F5A11C08', borderLeftWidth: 3, borderLeftColor: '#F5A11C' }}>
+            <div className="px-4 py-3">
+              <div className="flex flex-wrap items-center gap-2 mb-2">
+                <div className="w-2 h-2 rounded-full shrink-0" style={{ background: '#F5A11C', boxShadow: '0 0 6px #F5A11C60' }} />
+                <span className="text-[13px] font-semibold font-data text-white leading-tight">Current Market Value</span>
+                <span className="text-[9px] font-data px-1.5 py-0.5 rounded border" style={{ color: '#F5A11C', borderColor: '#F5A11C40', background: '#F5A11C15' }}>
+                  AVM Estimate
+                </span>
+              </div>
+              <div className="flex flex-wrap gap-x-5 gap-y-1 text-[11px] font-data">
+                <span>
+                  <span className="text-[#AABFCF]">Estimated Value  </span>
+                  <span className="font-bold" style={{ color: '#F5A11C' }}>{formatCurrency(avmValue)}</span>
+                </span>
+                <span>
+                  <span className="text-[#AABFCF]">As of  </span>
+                  <span className="text-[#C8D6E2]">Today</span>
+                </span>
+              </div>
+              <p className="mt-1.5 text-[11px] font-data text-[#475569]">
+                Automated Valuation Model estimate from ATTOM Data Solutions.
+              </p>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Tooltip rendered as sibling — escapes card's overflow context */}
       {hoveredEvent && tooltipPos && (
         <TooltipFixed event={hoveredEvent} pos={tooltipPos} />
+      )}
+
+      {/* AVM tooltip */}
+      {avmHovered && avmTooltipPos && avmValue && avmValue > 0 && (
+        <div
+          className="fixed pointer-events-none z-[9999]"
+          style={{ left: avmTooltipPos.x, top: avmTooltipPos.y - 10, transform: 'translate(-50%, -100%)' }}
+        >
+          <div
+            className="relative rounded-lg px-3 py-2.5 border"
+            style={{ background: '#050A14', borderColor: '#F5A11C40', boxShadow: '0 8px 32px #00000080, 0 0 0 1px #F5A11C20', minWidth: 156 }}
+          >
+            <div className="absolute left-1/2 -translate-x-1/2 w-2.5 h-2.5 rotate-45 border-r border-b" style={{ bottom: -6, background: '#050A14', borderColor: '#F5A11C40' }} />
+            <p className="text-[12px] font-semibold font-data text-white mb-1 leading-tight">Current Market Value</p>
+            <div className="flex flex-col gap-0.5">
+              <span className="text-[10px] font-data text-[#4A5568]">AVM Estimate · Today</span>
+              <span className="text-[11px] font-bold font-data" style={{ color: '#F5A11C' }}>{formatCurrency(avmValue)}</span>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );

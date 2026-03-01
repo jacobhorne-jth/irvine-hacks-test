@@ -74,11 +74,20 @@ interface Props {
   breakdown: Record<HazardKey, HazardBreakdown>;
   dominantHazard: HazardKey;
   hazardExplanations?: Record<string, string>;
+  buildValue?: number;    // total county building value ($) — for per-property scaling
+  propertyValue?: number; // AVM estimate ($) — for per-property scaling
 }
 
 interface TooltipPayload {
   value: number;
-  payload: { hazard: HazardKey; contribution: number; eal: number; explanations?: Record<string, string> };
+  payload: {
+    hazard: HazardKey;
+    contribution: number;
+    eal: number;
+    explanations?: Record<string, string>;
+    buildValue?: number;
+    propertyValue?: number;
+  };
 }
 
 function CustomTooltip({
@@ -91,10 +100,23 @@ function CustomTooltip({
   if (!active || !payload?.length) return null;
   const d = payload[0].payload;
   const color = HAZARD_COLORS[d.hazard];
-  // Prefer live AI explanation, fall back to static blurbs
   const aiBlurb = d.explanations?.[d.hazard];
   const staticExplain = HAZARD_EXPLAIN[d.hazard];
   const blurb = aiBlurb ?? (staticExplain ? (d.contribution >= 5 ? staticExplain.high : staticExplain.low) : null);
+
+  // Per-property loss: scale county EAL by property's share of county building stock
+  const hasPropertyLoss = !!(d.buildValue && d.buildValue > 0 && d.propertyValue && d.propertyValue > 0);
+  const propLoss = hasPropertyLoss
+    ? (d.eal * 1_000_000 / d.buildValue!) * d.propertyValue!
+    : null;
+  const lossLabel = propLoss != null
+    ? propLoss >= 1_000
+      ? `~$${(propLoss / 1_000).toFixed(1)}K/yr`
+      : propLoss >= 1
+      ? `~$${propLoss.toFixed(0)}/yr`
+      : '<$1/yr'
+    : null;
+
   return (
     <div
       className="rounded-lg p-3 font-data shadow-xl max-w-[260px]"
@@ -108,9 +130,11 @@ function CustomTooltip({
       <p className="text-[11px] text-[#C8D6E2]">
         Score contribution: <span className="text-white font-semibold">{d.contribution.toFixed(2)}</span>
       </p>
-      <p className="text-[11px] text-[#C8D6E2] mt-0.5">
-        Avg. annual loss: <span className="text-[#C8D6E2]">${(d.eal * 1_000_000).toLocaleString(undefined, { maximumFractionDigits: 0 })}</span>
-      </p>
+      {lossLabel && (
+        <p className="text-[11px] text-[#C8D6E2] mt-0.5">
+          Est. annual loss (this property): <span className="font-semibold" style={{ color }}>{lossLabel}</span>
+        </p>
+      )}
       {blurb && (
         <p className="text-[10px] text-[#C8D6E2] mt-2 leading-relaxed border-t border-[#1A2035] pt-2">
           {blurb}
@@ -120,7 +144,7 @@ function CustomTooltip({
   );
 }
 
-export function HazardBreakdownChart({ breakdown, dominantHazard, hazardExplanations }: Props) {
+export function HazardBreakdownChart({ breakdown, dominantHazard, hazardExplanations, buildValue, propertyValue }: Props) {
   const data = (Object.entries(breakdown) as [HazardKey, HazardBreakdown][])
     .map(([hazard, vals]) => ({
       hazard,
@@ -128,6 +152,8 @@ export function HazardBreakdownChart({ breakdown, dominantHazard, hazardExplanat
       contribution: vals.contribution,
       eal: vals.eal_building_M,
       explanations: hazardExplanations,
+      buildValue,
+      propertyValue,
     }))
     .sort((a, b) => b.contribution - a.contribution);
 

@@ -91,6 +91,18 @@ interface AttomEventEntry {
   eventDescription?: string;
 }
 
+interface AttomAvmAmount {
+  scr?: number;    // confidence score 0–100
+  value?: number;  // estimated market value
+  high?: number;
+  low?: number;
+}
+
+interface AttomAvm {
+  eventDate?: string;
+  amount?: AttomAvmAmount;
+}
+
 interface AttomProperty {
   identifier?: { attomId?: number; fips?: string; apn?: string };
   address?: AttomAddress;
@@ -100,6 +112,7 @@ interface AttomProperty {
   owner?: AttomOwner;
   salehistory?: AttomSaleHistoryEntry[];
   allevents?: { eventHistory?: AttomEventEntry[] };
+  avm?: AttomAvm;
 }
 
 interface AttomApiResponse {
@@ -179,9 +192,9 @@ export async function fetchAttomPropertyData(
 
   console.log('[ATTOM] Querying:', { address1, address2 });
 
-  // 3 parallel calls: property detail, full sale history (basichistory = all transfers), current owner
+  // 4 parallel calls: property detail, full sale history (basichistory = all transfers), current owner, AVM
   // NOTE: /saleshistory/detail only returns 1 record on free tier; basichistory returns all
-  const [detailRes, historyRes, ownerRes] = await Promise.all([
+  const [detailRes, historyRes, ownerRes, avmRes] = await Promise.all([
     attomGet('/property/detail', params).catch((e) => {
       console.error('[ATTOM] property/detail failed:', e.message);
       return null;
@@ -194,11 +207,17 @@ export async function fetchAttomPropertyData(
       console.warn('[ATTOM] detailowner failed (may need upgrade):', e.message);
       return null;
     }),
+    attomGet('/avm/detail', params).catch((e) => {
+      console.warn('[ATTOM] avm/detail failed:', e.message);
+      return null;
+    }),
   ]);
 
   const propDetail = detailRes?.property?.[0];
   const propHistory = historyRes?.property?.[0];
   const propOwner = ownerRes?.property?.[0];
+  const avmValue = avmRes?.property?.[0]?.avm?.amount?.value ?? 0;
+  console.log('[ATTOM] AVM value:', avmValue);
 
   console.log('[ATTOM] propDetail.building:', JSON.stringify(propDetail?.building, null, 2));
   console.log('[ATTOM] propDetail.summary:', JSON.stringify(propDetail?.summary, null, 2));
@@ -253,7 +272,7 @@ export async function fetchAttomPropertyData(
     lotSqft: building.size?.lotsize2 ?? 0,   // lotsize2 = sq ft, lotsize1 = acres
     yearBuilt: summary.yearbuilt ?? 0,         // yearbuilt is under summary, not building
     propertyType,
-    zestimate: mostRecentSaleWithAmt?.amount?.saleAmt ?? 0,
+    zestimate: avmValue || (mostRecentSaleWithAmt?.amount?.saleAmt ?? 0),
     lastSalePrice: mostRecentSaleWithAmt?.amount?.saleAmt ?? 0,
     lastSaleDate: mostRecentSale?.saleTransDate ?? new Date().toISOString().split('T')[0],
     latitude,   // lat/lng is under location, not address

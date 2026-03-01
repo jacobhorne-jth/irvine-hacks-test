@@ -23,6 +23,7 @@ export interface PortfolioEntry {
   // Detailed breakdowns (for aggregated portfolio charts)
   hazardBreakdown?: Record<string, { contribution: number; eal_building_M: number }>;
   dominantHazard?: string;
+  buildValue?: number;   // county total building value — needed for per-property loss scaling
   titleBreakdown?: Array<{ label: string; points: number }>;
 }
 

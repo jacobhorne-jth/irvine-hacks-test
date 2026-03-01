@@ -142,7 +142,13 @@ export function DisasterScoreCard({ score, zestimate, hazardExplanations }: Prop
           </p>
         </div>
         <div className="p-6">
-          <HazardBreakdownChart breakdown={score.breakdown} dominantHazard={score.dominant_hazard} hazardExplanations={hazardExplanations} />
+          <HazardBreakdownChart
+            breakdown={score.breakdown}
+            dominantHazard={score.dominant_hazard}
+            hazardExplanations={hazardExplanations}
+            buildValue={score.buildValue}
+            propertyValue={zestimate}
+          />
           <p className="text-[10px] font-data text-[#AABFCF] mt-3 text-center">
             Highlighted bar = dominant hazard · Scores weighted by actuarial model
           </p>

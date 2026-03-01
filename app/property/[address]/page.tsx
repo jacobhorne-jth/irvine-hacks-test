@@ -96,6 +96,7 @@ export default async function PropertyPage({ params }: PageProps) {
               marketScore: riskData.riskReport.marketRisk.score,
               hazardBreakdown: nriRisk?.breakdown,
               dominantHazard: nriRisk?.dominant_hazard,
+              buildValue: nriRisk?.buildValue,
               titleBreakdown: riskData.riskReport.titleRisk.breakdown.map((b) => ({
                 label: b.label,
                 points: b.points,

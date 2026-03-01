@@ -66,14 +66,14 @@ export function PropertyDetailTabs({
               <p className="text-[10px] font-data text-[#AABFCF] tracking-[0.2em] uppercase">
                 Chain of Title
               </p>
-              <OwnershipTimeline history={history} />
+              <OwnershipTimeline history={history} avmValue={zestimate} />
             </section>
             {priceHistory.length > 1 && (
               <section className="space-y-3">
                 <p className="text-[10px] font-data text-[#AABFCF] tracking-[0.2em] uppercase">
                   Price History
                 </p>
-                <PriceHistoryChart data={priceHistory} />
+                <PriceHistoryChart data={priceHistory} avmValue={zestimate} />
               </section>
             )}
             {/* Title risk breakdown bullets */}

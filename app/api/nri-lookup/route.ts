@@ -27,6 +27,7 @@ export async function GET(request: NextRequest) {
         return NextResponse.json({
           breakdown:       result.breakdown,
           dominant_hazard: result.dominant_hazard,
+          buildValue:      result.buildValue,
         });
       }
     }
@@ -40,6 +41,7 @@ export async function GET(request: NextRequest) {
         return NextResponse.json({
           breakdown:       result.breakdown,
           dominant_hazard: result.dominant_hazard,
+          buildValue:      result.buildValue,
           latitude:        parsedLat,
           longitude:       parsedLng,
         });
@@ -65,6 +67,7 @@ export async function GET(request: NextRequest) {
             return NextResponse.json({
               breakdown:       result.breakdown,
               dominant_hazard: result.dominant_hazard,
+              buildValue:      result.buildValue,
               latitude:        gLat,
               longitude:       gLon,
             });
@@ -82,6 +85,7 @@ export async function GET(request: NextRequest) {
           return NextResponse.json({
             breakdown:       candidates[0].breakdown,
             dominant_hazard: candidates[0].dominant_hazard,
+            buildValue:      candidates[0].buildValue,
             // No coords available in this path
           });
         }

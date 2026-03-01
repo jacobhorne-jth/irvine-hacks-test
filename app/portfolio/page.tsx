@@ -37,7 +37,7 @@ export default function PortfolioPage() {
   useEffect(() => {
     if (!mounted) return;
     const missing = entries.filter(
-      (e) => e.hazardBreakdown == null && !enrichingRef.current.has(e.id)
+      (e) => (e.hazardBreakdown == null || e.buildValue == null) && !enrichingRef.current.has(e.id)
     );
     if (missing.length === 0) return;
 
@@ -61,6 +61,7 @@ export default function PortfolioPage() {
             id:              entry.id,
             hazardBreakdown: nri.breakdown,
             dominantHazard:  nri.dominant_hazard,
+            buildValue:      nri.buildValue,
             // Persist resolved coords so the map can pin this property
             ...(nri.latitude  != null && { latitude:  nri.latitude  }),
             ...(nri.longitude != null && { longitude: nri.longitude }),

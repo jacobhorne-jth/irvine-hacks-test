@@ -26,7 +26,7 @@ export function PropertyOverviewCard({ property }: PropertyOverviewCardProps) {
             </p>
           </div>
           <div className="text-right shrink-0">
-            <p className="text-[10px] font-data text-[#AABFCF] tracking-[0.15em] uppercase mb-1">Est. Value</p>
+            <p className="text-[10px] font-data text-[#AABFCF] tracking-[0.15em] uppercase mb-1">AVM Estimate</p>
             <p className="text-2xl font-bold font-data text-white">
               {zestimate > 0 ? formatCurrency(zestimate) : '—'}
             </p>
