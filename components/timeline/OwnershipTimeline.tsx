@@ -114,18 +114,10 @@ function NodeLabel({
           className="font-data"
           style={{
             fontSize: 10,
-            color: selected ? '#94A3B8' : hovered ? '#64748B' : '#374151',
+            color: selected ? '#CBD5E1' : hovered ? '#94A3B8' : '#64748B',
           }}
         >
           {name}
-        </span>
-      )}
-      {event.price != null && !isNaN(event.price) && (
-        <span
-          className="font-data font-bold"
-          style={{ fontSize: 9, color: `${color}80` }}
-        >
-          {formatCurrency(event.price)}
         </span>
       )}
     </div>
