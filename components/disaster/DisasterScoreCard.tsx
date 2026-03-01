@@ -59,26 +59,19 @@ export function DisasterScoreCard({ score, zestimate, hazardExplanations }: Prop
 
         <div className="p-6 flex flex-col sm:flex-row items-start sm:items-center gap-6">
           {/* Big score */}
-          <div className="flex flex-col items-center gap-1 shrink-0">
-            <p className="text-[10px] font-data text-[#8EA5BE] tracking-[0.2em] uppercase">
-              Risk Score
+          <div className="border border-[#1A2035] rounded-lg px-8 py-5 text-center bg-[#060810] shrink-0">
+            <p className="text-[10px] font-data text-[#8EA5BE] tracking-[0.15em] uppercase mb-3">
+              Hazard Risk
             </p>
             <p
-              className="text-6xl font-extrabold font-data tabular-nums leading-none"
+              className="text-5xl font-extrabold font-data tabular-nums leading-none"
               style={{ color: score.color }}
             >
               {score.overall_score}
             </p>
-            <span
-              className="text-xs font-data font-bold px-2.5 py-1 rounded-full border tracking-wide uppercase mt-1"
-              style={{
-                color: score.color,
-                borderColor: `${score.color}40`,
-                background: `${score.color}15`,
-              }}
-            >
+            <p className="text-xs font-data mt-2" style={{ color: score.color }}>
               {score.tier}
-            </span>
+            </p>
           </div>
 
           {/* Divider */}
