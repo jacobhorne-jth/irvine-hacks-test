@@ -240,8 +240,11 @@ export async function fetchAttomPropertyData(
 
   const saleHistory = propHistory?.salehistory ?? propDetail?.salehistory ?? [];
   const mostRecentSale = saleHistory[0];
-  // First transfer with a disclosed sale amount (saleHistory is newest-first from ATTOM)
-  const mostRecentSaleWithAmt = saleHistory.find((s) => s.amount?.saleAmt && s.amount.saleAmt > 0);
+  // First actual sale (excluding financing/refinance events) with a disclosed amount — matches the timeline filter
+  const mostRecentSaleWithAmt = saleHistory.find((s) => {
+    const t = (s.amount?.saleTransType ?? '').toUpperCase();
+    return !t.includes('STAND ALONE FINANCE') && !t.includes('REFINANCE') && !!(s.amount?.saleAmt && s.amount.saleAmt > 0);
+  });
 
   const propTypeRaw = (summary.proptype ?? '').toUpperCase();
   const propertyType = propTypeRaw.includes('CONDO')
@@ -274,7 +277,7 @@ export async function fetchAttomPropertyData(
     propertyType,
     zestimate: avmValue || (mostRecentSaleWithAmt?.amount?.saleAmt ?? 0),
     lastSalePrice: mostRecentSaleWithAmt?.amount?.saleAmt ?? 0,
-    lastSaleDate: mostRecentSale?.saleTransDate ?? new Date().toISOString().split('T')[0],
+    lastSaleDate: mostRecentSaleWithAmt?.saleTransDate ?? mostRecentSale?.saleTransDate ?? new Date().toISOString().split('T')[0],
     latitude,   // lat/lng is under location, not address
     longitude,
     redfinUrl: undefined,
