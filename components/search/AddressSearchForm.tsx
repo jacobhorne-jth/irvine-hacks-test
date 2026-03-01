@@ -5,9 +5,9 @@ import { useRouter } from 'next/navigation';
 import { Search, Loader2, MapPin } from 'lucide-react';
 
 const SAMPLE_ADDRESSES = [
-  '1441 Lemos Ln, Fremont, CA 94539',
+  '2744 Middle St, Orlando, FL 32807',
   '1642 Peacock Ave, Sunnyvale, CA 94087',
-  '891 Iris Ave, Newport Beach, CA 92625',
+  '30 Shade Tree, Irvine, CA',
 ];
 
 export function AddressSearchForm({ centered = false }: { centered?: boolean }) {

@@ -45,7 +45,7 @@ export function PortfolioRow({ entry, onRemove, index }: PortfolioRowProps) {
         </p>
         <p
           className="text-[9px] font-data tracking-wider uppercase mt-0.5"
-          style={{ color: scoreColor, opacity: 0.6 }}
+          style={{ color: scoreColor, opacity: 0.85 }}
         >
           {level}
         </p>

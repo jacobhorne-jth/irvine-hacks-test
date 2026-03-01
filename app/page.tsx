@@ -17,7 +17,7 @@ export default function HomePage() {
             <div className="flex items-center gap-2 border border-[#F5A11C]/30 bg-[#F5A11C]/8 rounded-full px-3 py-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-[#F5A11C] animate-pulse" />
               <span className="text-[11px] font-data text-[#F5A11C] tracking-[0.15em] uppercase">
-                ML-Powered · Any US Address
+                AI-Powered · Any US Address
               </span>
             </div>
           </div>
@@ -30,8 +30,8 @@ export default function HomePage() {
           </h1>
 
           <p className="text-lg text-[#C8D6E2] max-w-2xl mb-12 leading-relaxed">
-            Ownership history, title risk, AI-assessed disaster exposure, and insurance
-            recommendations — for any US address, in seconds.
+            Ownership history, title risk, AI-assessed disaster and hazard risk, and portfolio
+            management/analytics — for any US address, in seconds.
           </p>
 
           {/* Search */}

@@ -72,7 +72,7 @@ function AggregatedHazardChart({ entries }: { entries: PortfolioEntry[] }) {
           </p>
         </div>
         <p className="text-xs font-data text-ghost text-center mt-3">
-          Highlighted bar = dominant hazard · Scores weighted by actuarial model
+          Highlighted bar = dominant hazard · Scores via ridge regression on FEMA county EAL
         </p>
       </div>
     );
@@ -162,8 +162,8 @@ function AggregatedHazardChart({ entries }: { entries: PortfolioEntry[] }) {
           </BarChart>
         </ResponsiveContainer>
       </div>
-      <p className="text-xs font-data text-ghost text-center mt-1">
-        Highlighted bar = dominant hazard · Scores weighted by actuarial model
+      <p className="text-[11px] font-data text-dim text-center mt-1">
+        Highlighted bar = dominant hazard · Scores via ridge regression on FEMA county EAL
       </p>
     </div>
   );
@@ -172,7 +172,11 @@ function AggregatedHazardChart({ entries }: { entries: PortfolioEntry[] }) {
 // ── Per-hazard loss table (portfolio aggregate) ────────────────────────────
 
 function HazardLossTable({ entries }: { entries: PortfolioEntry[] }) {
-  // Only entries with full data for scaling
+  // Only include entries that have all three values needed for the loss formula:
+  //   hazardBreakdown  — per-hazard EAL from NRI lookup
+  //   buildValue       — total county building stock value (for scaling the county EAL)
+  //   zestimate        — property AVM value (the numerator of the scaled loss)
+  // Entries saved before buildValue was added are backfilled automatically on page load.
   const scalable = entries.filter(
     (e) => e.hazardBreakdown && e.buildValue && e.buildValue > 0 && e.zestimate > 0
   );
@@ -188,6 +192,7 @@ function HazardLossTable({ entries }: { entries: PortfolioEntry[] }) {
     for (const e of scalable) {
       const h = e.hazardBreakdown![hazard];
       if (!h) continue;
+      // Per-property loss: (hazard_EAL_$ / county_building_stock_$) × property_AVM_$
       const propLoss = (h.eal_building_M * 1_000_000 / e.buildValue!) * e.zestimate;
       totalLoss += propLoss;
       totalContrib += h.contribution;
@@ -207,14 +212,33 @@ function HazardLossTable({ entries }: { entries: PortfolioEntry[] }) {
 
   return (
     <div className="border border-line bg-surface rounded-lg overflow-hidden reveal">
-      <div className="px-6 py-4 border-b border-line flex items-baseline justify-between gap-4">
-        <p className="font-bold text-white" style={{ fontFamily: 'var(--font-syne)' }}>
-          Per-Hazard Detail
-        </p>
-        <p className="text-[10px] font-data text-ghost shrink-0">
-          avg. annual loss across portfolio
+      {/* Card header */}
+      <div className="px-6 py-4 border-b border-line">
+        <div className="flex items-baseline justify-between gap-4 mb-1">
+          <p className="font-bold text-white" style={{ fontFamily: 'var(--font-syne)' }}>
+            Per-Hazard Detail
+          </p>
+          <span className="text-[9px] font-data tracking-[0.15em] uppercase px-2 py-0.5 rounded border border-[#F5A11C30] bg-[#F5A11C08] text-[#F5A11C99] shrink-0">
+            Ridge Regression · FEMA NRI 2023
+          </span>
+        </div>
+        <p className="text-[11px] font-data text-dim">
+          EAL estimated via ridge regression on county exposure · Property loss = (EAL ÷ county stock) × AVM
         </p>
       </div>
+
+      {/* Column headers */}
+      <div className="px-6 py-2 flex items-center gap-4 bg-[#080C15] border-b border-line">
+        <div className="w-7 shrink-0" />
+        <div className="flex-1 min-w-0 flex items-center justify-between gap-2">
+          <p className="text-[9px] font-data text-ghost tracking-[0.15em] uppercase">Hazard</p>
+          <p className="text-[9px] font-data text-ghost tracking-[0.15em] uppercase">Model Score</p>
+        </div>
+        <div className="shrink-0 text-right min-w-[100px]">
+          <p className="text-[9px] font-data text-ghost tracking-[0.15em] uppercase">Est. Annual Loss</p>
+        </div>
+      </div>
+
       <div className="divide-y divide-line">
         {rows.map(({ hazard, avgLoss, avgContrib }) => {
           const color = HAZARD_COLORS[hazard] ?? '#AABFCF';
@@ -263,7 +287,7 @@ function HazardLossTable({ entries }: { entries: PortfolioEntry[] }) {
       </div>
       <div className="px-6 py-3 border-t border-line">
         <p className="text-[10px] font-data text-ghost">
-          Source: FEMA National Risk Index (2023) · Per-property loss estimated from county risk rate × AVM value · Averaged across {scalable.length} propert{scalable.length === 1 ? 'y' : 'ies'}
+          Source: FEMA NRI (2023) · Score: min-max normalized county EAL × hazard weight, summed to 0–100 · Loss: county hazard rate × property AVM · Averaged across {scalable.length} propert{scalable.length === 1 ? 'y' : 'ies'}
         </p>
       </div>
     </div>

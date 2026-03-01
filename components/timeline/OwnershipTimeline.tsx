@@ -219,7 +219,7 @@ function TooltipFixed({
         )}
 
         <div className="flex flex-col gap-0.5">
-          <span className="text-[10px] font-data text-[#4A5568]">
+          <span className="text-[10px] font-data text-[#7B8DA0]">
             {formatDate(event.date)}
             {isCurrent
               ? ' · Current owner'
@@ -345,7 +345,7 @@ function DetailDrawer({ event, color }: { event: OwnershipEvent; color: string }
 
         {/* General notes */}
         {event.notes && !event.foreclosureDetails && !event.lienDetails && (
-          <p className="mt-1.5 text-[11px] font-data text-[#475569]">{event.notes}</p>
+          <p className="mt-1.5 text-[11px] font-data text-[#7B8DA0]">{event.notes}</p>
         )}
       </div>
     </div>
@@ -739,7 +739,7 @@ export function OwnershipTimeline({ history, avmValue }: { history: OwnershipHis
                   <span className="text-[#C8D6E2]">Today</span>
                 </span>
               </div>
-              <p className="mt-1.5 text-[11px] font-data text-[#475569]">
+              <p className="mt-1.5 text-[11px] font-data text-[#7B8DA0]">
                 Automated Valuation Model estimate from ATTOM Data Solutions.
               </p>
             </div>
@@ -765,7 +765,7 @@ export function OwnershipTimeline({ history, avmValue }: { history: OwnershipHis
             <div className="absolute left-1/2 -translate-x-1/2 w-2.5 h-2.5 rotate-45 border-r border-b" style={{ bottom: -6, background: '#050A14', borderColor: '#F5A11C40' }} />
             <p className="text-[12px] font-semibold font-data text-white mb-1 leading-tight">Current Market Value</p>
             <div className="flex flex-col gap-0.5">
-              <span className="text-[10px] font-data text-[#4A5568]">AVM Estimate · Today</span>
+              <span className="text-[10px] font-data text-[#7B8DA0]">AVM Estimate · Today</span>
               <span className="text-[11px] font-bold font-data" style={{ color: '#F5A11C' }}>{formatCurrency(avmValue)}</span>
             </div>
           </div>

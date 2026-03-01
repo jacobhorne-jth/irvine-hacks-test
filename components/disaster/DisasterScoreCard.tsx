@@ -1,4 +1,4 @@
-import { AlertTriangle, Wind, Flame, Waves, CloudLightning, Mountain, Tornado, Droplets, CloudRain } from 'lucide-react';
+import { AlertTriangle, Wind, Flame, Waves, CloudLightning, Mountain, Tornado, Droplets } from 'lucide-react';
 import { HazardBreakdownChart } from './HazardBreakdownChart';
 import type { CountyDisasterScore, HazardKey } from '@/lib/nri';
 
@@ -150,23 +150,43 @@ export function DisasterScoreCard({ score, zestimate, hazardExplanations }: Prop
             propertyValue={zestimate}
           />
           <p className="text-[10px] font-data text-[#AABFCF] mt-3 text-center">
-            Highlighted bar = dominant hazard · Scores weighted by actuarial model
+            Highlighted bar = dominant hazard · Scores via ridge regression on FEMA county EAL
           </p>
         </div>
       </div>
 
       {/* ── Hazard table ── */}
       <div className="border border-[#1A2035] bg-[#0B0F1C] rounded-lg overflow-hidden">
-        <div className="px-6 py-4 border-b border-[#1A2035] flex items-baseline justify-between gap-4">
-          <p className="font-bold text-white" style={{ fontFamily: 'var(--font-syne)' }}>
-            Per-Hazard Detail
-          </p>
-          {hasPropertyLoss && (
-            <p className="text-[10px] font-data text-[#AABFCF] shrink-0">
-              est. annual loss for this property
+        {/* Card header */}
+        <div className="px-6 py-4 border-b border-[#1A2035]">
+          <div className="flex items-baseline justify-between gap-4 mb-1">
+            <p className="font-bold text-white" style={{ fontFamily: 'var(--font-syne)' }}>
+              Per-Hazard Detail
             </p>
-          )}
+            <span className="text-[9px] font-data tracking-[0.15em] uppercase px-2 py-0.5 rounded border border-[#F5A11C30] bg-[#F5A11C08] text-[#F5A11C99] shrink-0">
+              Ridge Regression · FEMA NRI 2023
+            </span>
+          </div>
+          <p className="text-[11px] font-data text-[#C8D6E2]">
+            EAL estimated via ridge regression on county exposure · score = normalized output × hazard weight
+            {hasPropertyLoss && ' · Property loss = (EAL ÷ county stock) × AVM'}
+          </p>
         </div>
+
+        {/* Column headers */}
+        <div className="px-6 py-2 flex items-center gap-4 bg-[#080C15] border-b border-[#1A2035]">
+          <div className="w-7 shrink-0" />
+          <div className="flex-1 min-w-0 flex items-center justify-between gap-2">
+            <p className="text-[9px] font-data text-[#AABFCF] tracking-[0.15em] uppercase">Hazard</p>
+            <p className="text-[9px] font-data text-[#AABFCF] tracking-[0.15em] uppercase">Model Score</p>
+          </div>
+          <div className="shrink-0 text-right min-w-[90px]">
+            <p className="text-[9px] font-data text-[#AABFCF] tracking-[0.15em] uppercase">
+              {hasPropertyLoss ? 'Est. Annual Loss' : '—'}
+            </p>
+          </div>
+        </div>
+
         <div className="divide-y divide-[#1A2035]">
           {sortedHazards.map(([hazard, vals]) => {
             const Icon = HAZARD_ICONS[hazard] ?? AlertTriangle;
@@ -241,10 +261,10 @@ export function DisasterScoreCard({ score, zestimate, hazardExplanations }: Prop
         </div>
         <div className="px-6 py-3 border-t border-[#1A2035]">
           <p className="text-[10px] font-data text-[#AABFCF]">
-            Source: FEMA National Risk Index (2023) ·{' '}
+            Source: FEMA NRI (2023) · Score: min-max normalized county EAL × hazard weight, summed to 0–100 ·{' '}
             {hasPropertyLoss
-              ? 'Per-property loss estimated from county risk rate × property value — county averages may not reflect individual parcel exposure'
-              : 'Expected annual building loss for structures in the county'}
+              ? 'Loss: county hazard rate × property AVM — county averages may not reflect individual parcel exposure'
+              : 'Expected annual building loss for all structures in the county'}
           </p>
         </div>
       </div>

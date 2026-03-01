@@ -17,6 +17,7 @@ export async function GET(request: NextRequest) {
     );
   }
 
+  // Defaults to mock mode — set USE_MOCK_DATA=false in .env.local to use live ATTOM data
   const useMock = process.env.USE_MOCK_DATA !== 'false';
 
   if (useMock) {

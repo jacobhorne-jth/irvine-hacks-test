@@ -37,7 +37,7 @@ export function PortfolioStats({ entries }: PortfolioStatsProps) {
     { label: 'Properties',     value: String(count),               color: 'var(--text-primary)' },
     { label: 'Avg Risk Score', value: String(avgScore),             color: avgColor },
     { label: 'High / Critical', value: String(highRiskCount),       color: highRiskCount > 0 ? 'var(--risk-high)' : 'var(--risk-low)' },
-    { label: 'Avg Zestimate',  value: formatCurrency(avgZestimate), color: 'var(--text-primary)' },
+    { label: 'Avg AVM Est.',   value: formatCurrency(avgZestimate), color: 'var(--text-primary)' },
   ];
 
   const row2 = [

@@ -104,7 +104,10 @@ function CustomTooltip({
   const staticExplain = HAZARD_EXPLAIN[d.hazard];
   const blurb = aiBlurb ?? (staticExplain ? (d.contribution >= 5 ? staticExplain.high : staticExplain.low) : null);
 
-  // Per-property loss: scale county EAL by property's share of county building stock
+  // Per-property loss: scale county EAL by property's share of county building stock.
+  // Formula: (hazard_EAL_$ / total_county_building_$) × property_AVM_value
+  // This gives the fraction of total county losses attributable to this property's
+  // relative size, applied to the actual property value for a dollar estimate.
   const hasPropertyLoss = !!(d.buildValue && d.buildValue > 0 && d.propertyValue && d.propertyValue > 0);
   const propLoss = hasPropertyLoss
     ? (d.eal * 1_000_000 / d.buildValue!) * d.propertyValue!

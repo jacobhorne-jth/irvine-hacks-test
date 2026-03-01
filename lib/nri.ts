@@ -148,9 +148,13 @@ function scoreRow(row: NriRow): CountyDisasterScore {
   const breakdown = {} as Record<HazardKey, HazardBreakdown>;
 
   for (const hazard of Object.keys(WEIGHTS) as HazardKey[]) {
+    // Convert raw EAL dollars → millions for readability
     const valM = row.eal[hazard] / 1_000_000;
     const { min, max } = SCALERS[hazard];
+    // norm: 0–1 representing where this county sits within the national range for this hazard
     const norm = Math.max(0, Math.min(1, (valM - min) / (max - min + 1e-8)));
+    // contribution: hazard's share of the 0–100 overall score, weighted by its national importance
+    // Formula: norm × weight × 100  (rounded to 2 decimal places)
     const contribution = Math.round(norm * WEIGHTS[hazard] * 100 * 100) / 100;
     breakdown[hazard] = {
       eal_building_M: Math.round(valM * 10_000) / 10_000,

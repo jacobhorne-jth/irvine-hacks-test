@@ -54,6 +54,9 @@ export function calculateTitleRisk(history: OwnershipHistory): TitleRiskScore {
   }
 
   // Rapid transfers (< 6 months) — extra risk indicator
+  // Note: flipCount (< 24 months) is tracked for display purposes but only
+  // transfers under 6 months are scored here, as they represent a stronger
+  // anomaly signal (wholesaling, fraud patterns, distressed resales).
   const rapidTransfers = history.events.filter(
     (e) => e.tenureMonths != null && e.tenureMonths < 6 && e.tenureMonths > 0
   );
@@ -194,6 +197,9 @@ export function generateRiskReport(
   const marketRisk = calculateMarketRisk(priceHistory, property, locationRisk);
 
   // Weighted average: title 40%, disaster 35%, market 25%
+  // Title carries the most weight because chain-of-title defects are the primary
+  // concern for title insurance underwriting. Disaster is second because it
+  // directly affects insurability and long-term property value.
   const overallScore = Math.round(
     titleRisk.score * 0.4 +
     disasterRisk.score * 0.35 +
