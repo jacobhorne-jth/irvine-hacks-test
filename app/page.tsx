@@ -1,4 +1,4 @@
-import { Shield, GitBranch, Bot, Brain, FileText, Flame, Sparkles, BarChart3 } from 'lucide-react';
+import { Shield, GitBranch, Bot, Brain, FileText, Flame, Sparkles, BarChart3, Briefcase } from 'lucide-react';
 import { AddressSearchForm } from '@/components/search/AddressSearchForm';
 
 export default function HomePage() {
@@ -30,8 +30,8 @@ export default function HomePage() {
           </h1>
 
           <p className="text-lg text-[#C8D6E2] max-w-2xl mb-12 leading-relaxed">
-            Ownership history, title risk, AI-assessed disaster and hazard risk, and portfolio
-            management/analytics — for any US address, in seconds.
+            Ownership history, title risk, AI-assessed disaster risk, and portfolio
+            management, for any US address, in seconds.
           </p>
 
           {/* Search */}
@@ -43,9 +43,9 @@ export default function HomePage() {
           <div className="mt-14 pt-10 border-t border-[#1A2035] flex flex-wrap gap-6 justify-center w-full">
             {[
               { icon: FileText, label: 'Title Risk' },
-              { icon: Flame,    label: 'Hazard Risk' },
-              { icon: Sparkles, label: 'AI Summary' },
-              { icon: BarChart3, label: 'Portfolio Tracker' },
+              { icon: Flame,    label: 'ML-Driven Hazard Risk' },
+              { icon: Sparkles, label: 'AI Insights' },
+              { icon: BarChart3, label: 'Portfolio'  },
             ].map(({ icon: Icon, label }) => (
               <div key={label} className="flex items-center gap-2 text-[#AABFCF]">
                 <Icon className="h-4 w-4" />
@@ -60,83 +60,45 @@ export default function HomePage() {
       <section className="py-20 px-6 bg-[#060810] border-t border-[#1A2035]">
         <div className="max-w-6xl mx-auto">
           <p className="text-[11px] font-data text-[#AABFCF] tracking-[0.2em] uppercase mb-4 text-center">
-            Capabilities
+            Features
           </p>
           <h2 className="text-3xl font-bold text-white mb-12 text-center">What you get</h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-[#1A2035]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-px bg-[#1A2035]">
             <Feature
               icon={<GitBranch className="h-5 w-5 text-[#60A5FA]" />}
               title="Ownership Timeline"
-              description="Every owner, purchase price, tenure, lien, and foreclosure in a complete chain of title"
+              description="Every owner, purchase price, tenure, and foreclosure in a complete chain of title"
               accent="#60A5FA"
             />
             <Feature
               icon={<Shield className="h-5 w-5 text-[#A78BFA]" />}
               title="Title Risk Score"
-              description="0–100 quantified risk from flips, foreclosures, rapid transfers, and lien complexity"
+              description="0–100 quantified title risk calculations from flips and rapid transfers"
               accent="#A78BFA"
             />
             <Feature
               icon={<Brain className="h-5 w-5 text-[#F5A11C]" />}
-              title="ML Disaster Risk"
-              description="AI reads exact coordinates — FEMA flood zone, wildfire hazard, seismic proximity"
+              title="ML-Powered Disaster Risk"
+              description="Ridge regression on custom model for disaster risk calculations"
               accent="#F5A11C"
             />
             <Feature
+              icon={<Briefcase className="h-5 w-5 text-[#38BDF8]" />}
+              title="Portfolio Analytics"
+              description="Aggregate hazard exposure and annual loss estimates across multiple properties"
+              accent="#38BDF8"
+            />
+            <Feature
               icon={<Bot className="h-5 w-5 text-[#22C55E]" />}
-              title="AI Report"
-              description="AI synthesizes all signals into a clear Proceed / Avoid underwriting recommendation"
+              title="AI Insights Report"
+              description="GPT-4o synthesizes all signals into a clear Proceed / Caution / Avoid recommendation"
               accent="#22C55E"
             />
           </div>
         </div>
       </section>
 
-      {/* ── How it works ── */}
-      <section id="how-it-works" className="py-20 px-6 bg-[#080B14]">
-        <div className="max-w-4xl mx-auto">
-          <p className="text-[11px] font-data text-[#AABFCF] tracking-[0.2em] uppercase mb-4 text-center">
-            Process
-          </p>
-          <h2 className="text-3xl font-bold text-white mb-12 text-center">How it works</h2>
-
-          <div className="space-y-0 border border-[#1A2035] divide-y divide-[#1A2035]">
-            {[
-              {
-                n: '01',
-                title: 'Enter any US address',
-                desc: 'Residential or multi-family. Works nationwide — not just one county.',
-              },
-              {
-                n: '02',
-                title: 'ATTOM pulls public records',
-                desc: 'Ownership history, sales, liens, foreclosures from county assessor data.',
-              },
-              {
-                n: '03',
-                title: 'AI scores disaster risk',
-                desc: 'Flood, wildfire, and seismic risk assessed from exact lat/lng coordinates — not city-level lookup tables.',
-              },
-              {
-                n: '04',
-                title: 'AI generates the brief',
-                desc: 'All signals synthesized into a structured risk narrative with a clear underwriting recommendation.',
-              },
-            ].map(({ n, title, desc }) => (
-              <div key={n} className="flex gap-6 p-6 group hover:bg-[#0D1120] transition-colors">
-                <span className="font-data text-[#F5A11C] text-sm font-bold shrink-0 mt-0.5 opacity-60 group-hover:opacity-100 transition-opacity">
-                  {n}
-                </span>
-                <div>
-                  <p className="font-semibold text-white mb-1">{title}</p>
-                  <p className="text-sm text-[#C8D6E2] leading-relaxed">{desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
     </div>
   );
 }

@@ -6,8 +6,9 @@ import { usePathname } from 'next/navigation';
 export function Navbar() {
   const pathname = usePathname();
 
-  const isSearch    = pathname === '/' || pathname.startsWith('/property');
-  const isPortfolio = pathname === '/portfolio';
+  const isSearch      = pathname === '/' || pathname.startsWith('/property');
+  const isPortfolio   = pathname === '/portfolio';
+  const isHowItWorks  = pathname === '/how-it-works';
 
   return (
     <nav className="sticky top-0 z-50 border-b border-[#1A2035] bg-[#080B14]/90 backdrop-blur-md">
@@ -60,12 +61,17 @@ export function Navbar() {
 
         {/* Right — how it works */}
         <div className="flex-1 flex justify-end">
-          <a
-            href="/#how-it-works"
-            className="text-sm font-medium text-[#AABFCF] hover:text-white transition-colors"
+          <Link
+            href="/how-it-works"
+            className={`relative flex items-center px-5 h-16 text-sm font-medium transition-colors ${
+              isHowItWorks ? 'text-white' : 'text-[#AABFCF] hover:text-white'
+            }`}
           >
             How it works
-          </a>
+            {isHowItWorks && (
+              <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#F5A11C] rounded-full" />
+            )}
+          </Link>
         </div>
 
       </div>
