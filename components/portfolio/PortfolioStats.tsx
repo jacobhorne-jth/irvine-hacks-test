@@ -6,50 +6,37 @@ interface PortfolioStatsProps {
 }
 
 export function PortfolioStats({ entries }: PortfolioStatsProps) {
-  const count = entries.length;
-
-  const avgScore = count
-    ? Math.round(entries.reduce((s, e) => s + e.overallScore, 0) / count)
-    : 0;
-
-  const highRiskCount = entries.filter((e) => e.overallScore > 50).length;
-
-  const avgZestimate = count
-    ? Math.round(entries.reduce((s, e) => s + e.zestimate, 0) / count)
-    : 0;
-
   const totalValue = entries.reduce((s, e) => s + e.zestimate, 0);
 
-  const bestScore  = count ? Math.min(...entries.map((e) => e.overallScore)) : 0;
-  const worstScore = count ? Math.max(...entries.map((e) => e.overallScore)) : 0;
+  // Expected Annual Loss — same formula as DisasterScoreCard per-hazard detail
+  const totalEAL = entries.reduce((sum, e) => {
+    if (!e.hazardBreakdown || !e.buildValue || e.buildValue === 0 || e.zestimate === 0) return sum;
+    const propLoss = Object.values(e.hazardBreakdown).reduce((h, v) => {
+      return h + (v.eal_building_M * 1_000_000 / e.buildValue!) * e.zestimate;
+    }, 0);
+    return sum + propLoss;
+  }, 0);
 
-  // Avg disaster score — only for entries that have it
+  const lossRate = totalValue > 0 ? (totalEAL / totalValue) * 100 : 0;
+  const hasEAL = entries.some(
+    (e) => e.hazardBreakdown && e.buildValue && e.buildValue > 0
+  );
+
+  // Avg title risk
+  const titleEntries = entries.filter((e) => e.titleScore !== undefined);
+  const avgTitleScore = titleEntries.length
+    ? Math.round(titleEntries.reduce((s, e) => s + e.titleScore!, 0) / titleEntries.length)
+    : null;
+  const titleLevel = avgTitleScore !== null ? scoreToLevel(avgTitleScore) : null;
+  const titleColor = titleLevel ? getRiskColor(titleLevel) : 'var(--text-ghost)';
+
+  // Avg disaster risk
   const disasterEntries = entries.filter((e) => e.disasterScore !== undefined);
-  const avgDisaster = disasterEntries.length
+  const avgDisasterScore = disasterEntries.length
     ? Math.round(disasterEntries.reduce((s, e) => s + e.disasterScore!, 0) / disasterEntries.length)
     : null;
-
-  const avgColor   = getRiskColor(scoreToLevel(avgScore));
-  const bestColor  = getRiskColor(scoreToLevel(bestScore));
-  const worstColor = getRiskColor(scoreToLevel(worstScore));
-
-  const row1 = [
-    { label: 'Properties',     value: String(count),               color: 'var(--text-primary)' },
-    { label: 'Avg Risk Score', value: String(avgScore),             color: avgColor },
-    { label: 'High / Critical', value: String(highRiskCount),       color: highRiskCount > 0 ? 'var(--risk-high)' : 'var(--risk-low)' },
-    { label: 'Avg AVM Est.',   value: formatCurrency(avgZestimate), color: 'var(--text-primary)' },
-  ];
-
-  const row2 = [
-    { label: 'Total Value',     value: formatCurrency(totalValue),              color: 'var(--text-primary)' },
-    { label: 'Best Score',      value: count ? String(bestScore) : '—',         color: bestColor },
-    { label: 'Worst Score',     value: count ? String(worstScore) : '—',        color: worstColor },
-    {
-      label: 'Avg Disaster',
-      value: avgDisaster !== null ? String(avgDisaster) : '—',
-      color: avgDisaster !== null ? getRiskColor(scoreToLevel(avgDisaster)) : 'var(--text-ghost)',
-    },
-  ];
+  const disasterLevel = avgDisasterScore !== null ? scoreToLevel(avgDisasterScore) : null;
+  const disasterColor = disasterLevel ? getRiskColor(disasterLevel) : 'var(--text-ghost)';
 
   return (
     <div className="border border-line bg-surface rounded-lg overflow-hidden reveal">
@@ -59,24 +46,69 @@ export function PortfolioStats({ entries }: PortfolioStatsProps) {
         </p>
       </div>
 
-      {/* Row 1 */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-line border-b border-line">
-        {row1.map(({ label, value, color }) => (
-          <div key={label} className="px-6 py-5">
-            <p className="text-2xl font-bold font-data" style={{ color }}>{value}</p>
-            <p className="text-xs font-data text-ghost tracking-wider uppercase mt-1">{label}</p>
-          </div>
-        ))}
-      </div>
+      {/* Main stats row */}
+      <div className="grid grid-cols-2 divide-x divide-line border-b border-line">
 
-      {/* Row 2 */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-line">
-        {row2.map(({ label, value, color }) => (
-          <div key={label} className="px-6 py-4">
-            <p className="text-xl font-bold font-data" style={{ color }}>{value}</p>
-            <p className="text-xs font-data text-ghost tracking-wider uppercase mt-1">{label}</p>
+        {/* Left — portfolio value + EAL */}
+        <div className="px-6 py-6">
+          <p className="text-[9px] font-data text-ghost tracking-[0.2em] uppercase mb-1">
+            Gross Value
+          </p>
+          <p className="text-3xl font-extrabold font-data text-white">
+            {formatCurrency(totalValue)}
+          </p>
+          {hasEAL && (
+            <div
+              className="inline-flex items-center gap-2 mt-3 px-3 py-1.5 rounded border"
+              style={{ borderColor: '#EF444440', background: '#EF444412' }}
+            >
+              <span className="text-sm font-bold font-data tabular-nums" style={{ color: '#EF4444' }}>
+                ▼ {formatCurrency(Math.round(totalEAL))}/yr
+              </span>
+              <span className="text-xs font-data" style={{ color: '#EF4444', opacity: 0.7 }}>
+                -{lossRate.toFixed(2)}%/yr expected loss
+              </span>
+            </div>
+          )}
+        </div>
+
+        {/* Right — avg title risk + avg disaster risk */}
+        <div className="divide-y divide-line">
+          <div className="px-6 py-5">
+            <p className="text-[9px] font-data text-ghost tracking-[0.2em] uppercase mb-1">
+              Avg Title Risk
+            </p>
+            {avgTitleScore !== null ? (
+              <>
+                <p className="text-2xl font-extrabold font-data" style={{ color: titleColor }}>
+                  {avgTitleScore}
+                </p>
+                <p className="text-xs font-data mt-0.5 capitalize" style={{ color: titleColor, opacity: 0.75 }}>
+                  {titleLevel}
+                </p>
+              </>
+            ) : (
+              <p className="text-2xl font-extrabold font-data text-ghost">—</p>
+            )}
           </div>
-        ))}
+          <div className="px-6 py-5">
+            <p className="text-[9px] font-data text-ghost tracking-[0.2em] uppercase mb-1">
+              Avg Disaster Risk
+            </p>
+            {avgDisasterScore !== null ? (
+              <>
+                <p className="text-2xl font-extrabold font-data" style={{ color: disasterColor }}>
+                  {avgDisasterScore}
+                </p>
+                <p className="text-xs font-data mt-0.5 capitalize" style={{ color: disasterColor, opacity: 0.75 }}>
+                  {disasterLevel}
+                </p>
+              </>
+            ) : (
+              <p className="text-2xl font-extrabold font-data text-ghost">—</p>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

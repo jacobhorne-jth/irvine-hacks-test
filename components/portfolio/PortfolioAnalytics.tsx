@@ -198,9 +198,8 @@ function HazardLossTable({ entries }: { entries: PortfolioEntry[] }) {
       totalContrib += h.contribution;
       count++;
     }
-    const avgLoss = count > 0 ? totalLoss / count : 0;
     const avgContrib = count > 0 ? totalContrib / count : 0;
-    return { hazard, avgLoss, avgContrib };
+    return { hazard, totalLoss, avgContrib };
   }).sort((a, b) => b.avgContrib - a.avgContrib);
 
   const maxContrib = rows[0]?.avgContrib ?? 1;
@@ -240,17 +239,13 @@ function HazardLossTable({ entries }: { entries: PortfolioEntry[] }) {
       </div>
 
       <div className="divide-y divide-line">
-        {rows.map(({ hazard, avgLoss, avgContrib }) => {
+        {rows.map(({ hazard, totalLoss, avgContrib }) => {
           const color = HAZARD_COLORS[hazard] ?? '#AABFCF';
           const label = HAZARD_LABELS[hazard] ?? hazard;
           const icon  = HAZARD_ICONS[hazard] ?? '•';
           const pct   = maxContrib > 0 ? (avgContrib / maxContrib) * 100 : 0;
-          const propLossPct = scalable.length > 0
-            ? scalable.reduce((s, e) => {
-                const h = e.hazardBreakdown![hazard];
-                return s + (h ? (h.eal_building_M * 1_000_000 / e.buildValue!) * 100 : 0);
-              }, 0) / scalable.length
-            : 0;
+          const totalPortfolioValue = scalable.reduce((s, e) => s + e.zestimate, 0);
+          const propLossPct = totalPortfolioValue > 0 ? (totalLoss / totalPortfolioValue) * 100 : 0;
 
           return (
             <div key={hazard} className="px-6 py-3 flex items-center gap-4">
@@ -273,7 +268,7 @@ function HazardLossTable({ entries }: { entries: PortfolioEntry[] }) {
               </div>
               <div className="shrink-0 text-right min-w-[100px]">
                 <p className="text-[11px] font-data tabular-nums" style={{ color }}>
-                  {lossLabel(avgLoss)}
+                  {lossLabel(totalLoss)}
                 </p>
                 {propLossPct > 0 && (
                   <p className="text-[10px] font-data text-ghost tabular-nums">
@@ -287,7 +282,7 @@ function HazardLossTable({ entries }: { entries: PortfolioEntry[] }) {
       </div>
       <div className="px-6 py-3 border-t border-line">
         <p className="text-[10px] font-data text-ghost">
-          Source: FEMA NRI (2023) · Score: min-max normalized county EAL × hazard weight, summed to 0–100 · Loss: county hazard rate × property AVM · Averaged across {scalable.length} propert{scalable.length === 1 ? 'y' : 'ies'}
+          Source: FEMA NRI (2023) · Score: min-max normalized county EAL × hazard weight, summed to 0–100 · Loss: county hazard rate × property AVM · Totalled across {scalable.length} propert{scalable.length === 1 ? 'y' : 'ies'}
         </p>
       </div>
     </div>
@@ -299,10 +294,5 @@ function HazardLossTable({ entries }: { entries: PortfolioEntry[] }) {
 export function PortfolioAnalytics({ entries }: { entries: PortfolioEntry[] }) {
   if (entries.length === 0) return null;
 
-  return (
-    <div className="space-y-4">
-      <AggregatedHazardChart entries={entries} />
-      <HazardLossTable entries={entries} />
-    </div>
-  );
+  return <HazardLossTable entries={entries} />;
 }

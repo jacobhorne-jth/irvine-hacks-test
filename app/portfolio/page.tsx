@@ -128,32 +128,33 @@ export default function PortfolioPage() {
 
           {entries.length > 1 && <RiskDistributionBar entries={entries} />}
 
-          {/* ── Portfolio Map ── */}
-          {entries.some((e) => e.latitude != null && e.longitude != null) && (
-            <div>
+          {/* ── Map + Tracked Properties side by side ── */}
+          <div className={entries.some((e) => e.latitude != null && e.longitude != null) ? 'grid grid-cols-5 gap-4 items-start' : ''}>
+            {entries.some((e) => e.latitude != null && e.longitude != null) && (
+              <div className="col-span-3">
+                <p className="text-xs font-data text-ghost tracking-[0.2em] uppercase mb-3">
+                  Property Locations
+                </p>
+                <div className="h-80">
+                  <PortfolioMap entries={entries} />
+                </div>
+              </div>
+            )}
+
+            <div className={entries.some((e) => e.latitude != null && e.longitude != null) ? 'col-span-2' : ''}>
               <p className="text-xs font-data text-ghost tracking-[0.2em] uppercase mb-3">
-                Property Locations
+                Tracked Properties
               </p>
-              <div className="h-72">
-                <PortfolioMap entries={entries} />
+              <div className="border border-line bg-surface rounded-lg overflow-hidden h-80 overflow-y-auto">
+                {entries.map((entry, i) => (
+                  <PortfolioRow key={entry.id} entry={entry} onRemove={remove} index={i} />
+                ))}
               </div>
             </div>
-          )}
+          </div>
 
           {/* ── Analytics Dashboard ── */}
           <PortfolioAnalytics entries={entries} />
-
-          {/* ── Property list ── */}
-          <div>
-            <p className="text-xs font-data text-ghost tracking-[0.2em] uppercase mb-3">
-              Tracked Properties
-            </p>
-            <div className="border border-line bg-surface rounded-lg overflow-hidden">
-              {entries.map((entry, i) => (
-                <PortfolioRow key={entry.id} entry={entry} onRemove={remove} index={i} />
-              ))}
-            </div>
-          </div>
         </>
       )}
     </div>
