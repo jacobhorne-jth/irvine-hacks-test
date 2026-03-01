@@ -25,7 +25,7 @@ const TOOLS: OpenAI.ChatCompletionTool[] = [
     function: {
       name: 'flag_property',
       description:
-        'Add a colored risk flag to an existing portfolio property. Use urgent for critical risks (liens, foreclosures), watch for moderate concerns (flood zone, high volatility), opportunity for low-risk good deals, negotiate for properties where risks justify price reduction.',
+        'Add a colored risk flag to an existing portfolio property. Use urgent for critical risks (foreclosures), watch for moderate concerns (flood zone, high volatility), opportunity for low-risk good deals, negotiate for properties where risks justify price reduction.',
       parameters: {
         type: 'object',
         properties: {
@@ -120,7 +120,6 @@ async function fetchRiskDetails(address: string, baseUrl: string) {
       totalTransfers: propData.history?.totalTransfers,
       flipCount: propData.history?.flipCount,
       foreclosureCount: propData.history?.foreclosureCount,
-      lienCount: propData.history?.lienCount,
     },
   };
 }

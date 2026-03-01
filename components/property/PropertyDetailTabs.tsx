@@ -38,21 +38,18 @@ export function PropertyDetailTabs({
     <div className="border border-[#1A2035] bg-[#0B0F1C] rounded-lg overflow-hidden">
 
       {/* ── Tab bar ── */}
-      <div className="flex border-b border-[#1A2035] px-2">
+      <div className="flex items-center gap-2 border-b border-[#1A2035] px-4 py-3 bg-[#060810]">
         {TABS.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActive(tab.id)}
-            className={`relative px-5 py-3.5 text-sm font-medium transition-colors ${
+            className={`px-5 py-2 text-sm font-bold font-data rounded transition-all tracking-wide ${
               active === tab.id
-                ? 'text-white'
-                : 'text-[#AABFCF] hover:text-[#BAC6D4]'
+                ? 'bg-[#F5A11C] text-[#080B14] shadow-[0_0_12px_#F5A11C60]'
+                : 'text-[#6B7FA8] border border-[#1A2035] bg-[#0B0F1C] hover:border-[#F5A11C]/50 hover:text-[#F5A11C] hover:bg-[#F5A11C]/8'
             }`}
           >
             {tab.label}
-            {active === tab.id && (
-              <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#F5A11C] rounded-full" />
-            )}
           </button>
         ))}
       </div>
@@ -63,14 +60,14 @@ export function PropertyDetailTabs({
           <>
             <RiskVerdictBanner report={riskReport} summary={summary} />
             <section className="space-y-3">
-              <p className="text-[10px] font-data text-[#AABFCF] tracking-[0.2em] uppercase">
+              <p className="text-xs font-data text-[#AABFCF] tracking-[0.2em] uppercase">
                 Chain of Title
               </p>
               <OwnershipTimeline history={history} avmValue={zestimate} />
             </section>
             {priceHistory.length > 1 && (
               <section className="space-y-3">
-                <p className="text-[10px] font-data text-[#AABFCF] tracking-[0.2em] uppercase">
+                <p className="text-xs font-data text-[#AABFCF] tracking-[0.2em] uppercase">
                   Price History
                 </p>
                 <PriceHistoryChart data={priceHistory} avmValue={zestimate} />
@@ -78,7 +75,7 @@ export function PropertyDetailTabs({
             )}
             {/* Title risk breakdown bullets */}
             <section className="space-y-2">
-              <p className="text-[10px] font-data text-[#AABFCF] tracking-[0.2em] uppercase">
+              <p className="text-xs font-data text-[#AABFCF] tracking-[0.2em] uppercase">
                 Title Risk Factors
               </p>
               <div className="border border-[#1A2035] rounded-lg divide-y divide-[#1A2035]">
@@ -86,7 +83,7 @@ export function PropertyDetailTabs({
                   <div key={factor.label} className="flex items-center justify-between px-4 py-3 gap-4">
                     <p className="text-xs font-data text-[#C8D6E2] leading-snug">{factor.description}</p>
                     <span
-                      className="shrink-0 text-[10px] font-bold font-data px-2 py-0.5 rounded border tabular-nums"
+                      className="shrink-0 text-xs font-bold font-data px-2 py-0.5 rounded border tabular-nums"
                       style={{
                         color: factor.points > 0 ? '#F97316' : '#22C55E',
                         borderColor: factor.points > 0 ? '#F9731640' : '#22C55E40',
@@ -115,7 +112,7 @@ export function PropertyDetailTabs({
             )}
             {/* Disaster breakdown bullets */}
             <section className="space-y-2">
-              <p className="text-[10px] font-data text-[#AABFCF] tracking-[0.2em] uppercase">
+              <p className="text-xs font-data text-[#AABFCF] tracking-[0.2em] uppercase">
                 Hazard Risk Factors
               </p>
               <div className="border border-[#1A2035] rounded-lg divide-y divide-[#1A2035]">
@@ -123,7 +120,7 @@ export function PropertyDetailTabs({
                   <div key={factor.label} className="flex items-center justify-between px-4 py-3 gap-4">
                     <p className="text-xs font-data text-[#C8D6E2] leading-snug">{factor.description}</p>
                     <span
-                      className="shrink-0 text-[10px] font-bold font-data px-2 py-0.5 rounded border tabular-nums"
+                      className="shrink-0 text-xs font-bold font-data px-2 py-0.5 rounded border tabular-nums"
                       style={{
                         color: factor.points > 10 ? '#F97316' : '#F5A11C',
                         borderColor: factor.points > 10 ? '#F9731640' : '#F5A11C40',

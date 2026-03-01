@@ -13,7 +13,7 @@ import { scoreToLevel } from './utils';
 
 // ============================================================
 // TITLE RISK
-// Based on ownership chain complexity, flips, liens, foreclosures
+// Based on ownership chain complexity, flips, foreclosures
 // ============================================================
 
 export function calculateTitleRisk(history: OwnershipHistory): TitleRiskScore {
@@ -42,17 +42,6 @@ export function calculateTitleRisk(history: OwnershipHistory): TitleRiskScore {
     });
   }
 
-  // Liens
-  const lienPoints = history.lienCount * 20;
-  score += lienPoints;
-  if (lienPoints > 0) {
-    breakdown.push({
-      label: 'Lien history',
-      points: lienPoints,
-      description: `${history.lienCount} lien${history.lienCount === 1 ? '' : 's'} recorded — mechanic's liens, HOA liens, or tax liens may not have been fully resolved`,
-    });
-  }
-
   // Rapid transfers (< 6 months) — extra risk indicator
   // Note: flipCount (< 24 months) is tracked for display purposes but only
   // transfers under 6 months are scored here, as they represent a stronger
@@ -78,7 +67,6 @@ export function calculateTitleRisk(history: OwnershipHistory): TitleRiskScore {
     factors: {
       flipCount: history.flipCount,
       foreclosureCount: history.foreclosureCount,
-      lienCount: history.lienCount,
       totalTransfers: history.totalTransfers,
       rapidTransferCount: rapidTransfers.length,
     },

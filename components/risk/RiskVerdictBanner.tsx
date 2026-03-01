@@ -55,7 +55,7 @@ export function RiskVerdictBanner({
           {topFactors.map((factor) => (
             <div key={factor.label} className="flex items-start gap-2.5">
               <span
-                className="mt-0.5 shrink-0 text-[9px] font-bold font-data px-1.5 py-0.5 rounded border tabular-nums"
+                className="mt-0.5 shrink-0 text-[11px] font-bold font-data px-1.5 py-0.5 rounded border tabular-nums"
                 style={{
                   color: accentColor,
                   borderColor: `${accentColor}40`,

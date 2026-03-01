@@ -22,7 +22,7 @@ export default function HowItWorksPage() {
             {
               n: '03',
               title: 'Toggle between title and disaster risk',
-              desc: 'temp',
+              desc: 'Switch between title risk (ownership gaps, foreclosures) and per-hazard disaster exposure.',
             },
             {
               n: '04',

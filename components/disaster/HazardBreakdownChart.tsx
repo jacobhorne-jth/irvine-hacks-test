@@ -139,7 +139,7 @@ function CustomTooltip({
         </p>
       )}
       {blurb && (
-        <p className="text-[10px] text-[#C8D6E2] mt-2 leading-relaxed border-t border-[#1A2035] pt-2">
+        <p className="text-xs text-[#C8D6E2] mt-2 leading-relaxed border-t border-[#1A2035] pt-2">
           {blurb}
         </p>
       )}

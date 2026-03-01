@@ -169,7 +169,7 @@ export function AddressSearchForm({ centered = false }: { centered?: boolean }) 
 
       {/* Sample address chips */}
       <div className={`flex flex-col gap-2${centered ? ' items-center' : ''}`}>
-        <p className="text-[10px] font-data text-[#AABFCF] tracking-[0.15em] uppercase">
+        <p className="text-xs font-data text-[#AABFCF] tracking-[0.15em] uppercase">
           Sample addresses:
         </p>
         <div className={`flex flex-wrap gap-2${centered ? ' justify-center' : ''}`}>

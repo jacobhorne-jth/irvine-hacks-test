@@ -76,10 +76,6 @@ export function AISummaryCard({ summary }: AISummaryCardProps) {
           </div>
         )}
 
-        <p className="text-[10px] font-data text-[#AABFCF] border-t border-[#1A2035] pt-3">
-          Generated {new Date(summary.generatedAt).toLocaleString()}
-          {summary.model === 'mock-analysis' && ' · Add OPENAI_API_KEY for live AI analysis'}
-        </p>
       </div>
     </div>
   );

@@ -32,27 +32,24 @@ export function PortfolioRow({ entry, onRemove, index }: PortfolioRowProps) {
 
   return (
     <div
-      className="flex items-center gap-5 px-5 py-4 border-b border-line last:border-b-0 hover:bg-surface-2 transition-colors group reveal"
+      className="flex items-center gap-3 px-4 py-4 border-b border-line last:border-b-0 hover:bg-surface-2 transition-colors group reveal"
       style={{ animationDelay: `${index * 0.04}s` }}
     >
-      {/* Score — the dominant signal */}
-      <div className="shrink-0 w-14 text-center">
+      {/* Score */}
+      <div className="shrink-0 w-11 text-center">
         <p
-          className="text-3xl font-bold font-data leading-none tabular-nums"
+          className="text-2xl font-bold font-data leading-none tabular-nums"
           style={{ color: scoreColor }}
         >
           {entry.overallScore}
         </p>
         <p
-          className="text-[9px] font-data tracking-wider uppercase mt-0.5"
+          className="text-[10px] font-data tracking-wider uppercase mt-0.5"
           style={{ color: scoreColor, opacity: 0.85 }}
         >
           {level}
         </p>
       </div>
-
-      {/* Vertical rule */}
-      <div className="w-px h-10 bg-line shrink-0" />
 
       {/* Address + details */}
       <div className="flex-1 min-w-0">
@@ -62,21 +59,19 @@ export function PortfolioRow({ entry, onRemove, index }: PortfolioRowProps) {
         >
           {entry.address}
         </p>
-        <p className="text-[11px] font-data text-dim mt-0.5">
+        <p className="text-[11px] font-data text-ghost mt-0.5">
           <span className="capitalize">{entry.propertyType.replace(/-/g, ' ')}</span>
-          {entry.beds > 0 && (
-            <span className="text-ghost ml-2">{entry.beds}bd · {entry.baths}ba</span>
-          )}
-          <span className="ml-2">{formatCurrency(entry.zestimate)}</span>
-          <span className="text-ghost ml-2">
-            · Saved {new Date(entry.savedAt).toLocaleDateString()}
-          </span>
+          {entry.beds > 0 && <span>   {entry.beds}bd  {entry.baths}ba</span>}
+          <span className="text-white tabular-nums">   {formatCurrency(entry.zestimate)}</span>
+        </p>
+        <p className="text-[10px] font-data text-ghost/40 mt-0.5">
+          Saved {new Date(entry.savedAt).toLocaleDateString()}
         </p>
       </div>
 
       {/* Recommendation badge */}
       <span
-        className="shrink-0 hidden sm:inline-block text-[10px] font-bold font-data px-2.5 py-1.5 rounded border tracking-wide uppercase"
+        className="shrink-0 hidden sm:inline-block text-xs font-bold font-data px-2.5 py-1.5 rounded border tracking-wide uppercase"
         style={{
           color: recColor,
           borderColor: `${recColor}40`,

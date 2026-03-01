@@ -37,7 +37,6 @@ export const mockHistory_Irvine: OwnershipHistory = {
   totalTransfers: 2,
   flipCount: 0,
   foreclosureCount: 0,
-  lienCount: 0,
   oldestRecord: '1998-09-01',
   events: [
     {
@@ -49,7 +48,6 @@ export const mockHistory_Irvine: OwnershipHistory = {
       tenureMonths: 249,
       isFlip: false,
       hasForeclosure: false,
-      hasLien: false,
       notes: 'Original purchase from builder',
     },
     {
@@ -61,7 +59,6 @@ export const mockHistory_Irvine: OwnershipHistory = {
       tenureMonths: null,
       isFlip: false,
       hasForeclosure: false,
-      hasLien: false,
     },
   ],
 };
@@ -110,7 +107,6 @@ export const mockHistory_Anaheim: OwnershipHistory = {
   totalTransfers: 5,
   flipCount: 3,
   foreclosureCount: 1,
-  lienCount: 2,
   oldestRecord: '2010-01-15',
   events: [
     {
@@ -122,7 +118,6 @@ export const mockHistory_Anaheim: OwnershipHistory = {
       tenureMonths: 38,
       isFlip: false,
       hasForeclosure: false,
-      hasLien: false,
     },
     {
       id: 'evt-102',
@@ -133,7 +128,6 @@ export const mockHistory_Anaheim: OwnershipHistory = {
       tenureMonths: 8,
       isFlip: true,
       hasForeclosure: true,
-      hasLien: false,
       foreclosureDetails: 'NOD filed 2012-11-01. Trustee Sale 2013-03-22.',
     },
     {
@@ -145,8 +139,6 @@ export const mockHistory_Anaheim: OwnershipHistory = {
       tenureMonths: 14,
       isFlip: true,
       hasForeclosure: false,
-      hasLien: true,
-      lienDetails: "Mechanic's Lien — $22,000 (Sunrise Contractors)",
     },
     {
       id: 'evt-104',
@@ -157,8 +149,6 @@ export const mockHistory_Anaheim: OwnershipHistory = {
       tenureMonths: 98,
       isFlip: false,
       hasForeclosure: false,
-      hasLien: true,
-      lienDetails: 'HOA Lien — $4,800 (resolved 2016-04-10)',
     },
     {
       id: 'evt-105',
@@ -169,7 +159,6 @@ export const mockHistory_Anaheim: OwnershipHistory = {
       tenureMonths: null,
       isFlip: false,
       hasForeclosure: false,
-      hasLien: false,
     },
   ],
 };
@@ -186,7 +175,7 @@ export const mockPriceHistory_Anaheim: PriceHistoryPoint[] = [
 ];
 
 // ============================================================
-// PROPERTY 3: MEDIUM RISK — Newport Beach condo with one lien
+// PROPERTY 3: MEDIUM RISK — Newport Beach condo
 // Address: 891 Iris Ave, Newport Beach, CA 92625
 // ============================================================
 
@@ -218,7 +207,6 @@ export const mockHistory_Newport: OwnershipHistory = {
   totalTransfers: 3,
   flipCount: 1,
   foreclosureCount: 0,
-  lienCount: 1,
   oldestRecord: '2004-08-12',
   events: [
     {
@@ -230,7 +218,6 @@ export const mockHistory_Newport: OwnershipHistory = {
       tenureMonths: 130,
       isFlip: false,
       hasForeclosure: false,
-      hasLien: false,
       notes: 'New construction purchase',
     },
     {
@@ -242,8 +229,6 @@ export const mockHistory_Newport: OwnershipHistory = {
       tenureMonths: 19,
       isFlip: true,
       hasForeclosure: false,
-      hasLien: true,
-      lienDetails: 'IRS Tax Lien — $31,500 (resolved at closing)',
     },
     {
       id: 'evt-203',
@@ -254,7 +239,6 @@ export const mockHistory_Newport: OwnershipHistory = {
       tenureMonths: null,
       isFlip: false,
       hasForeclosure: false,
-      hasLien: false,
     },
   ],
 };

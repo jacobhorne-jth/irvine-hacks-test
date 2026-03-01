@@ -80,7 +80,7 @@ export function RiskHeatmapGrid({ report }: RiskHeatmapGridProps) {
         {/* Header */}
         <div className="px-6 py-4 border-b border-[#1A2035] flex items-center justify-between">
           <div>
-            <p className="text-[10px] font-data text-[#AABFCF] tracking-[0.2em] uppercase">
+            <p className="text-xs font-data text-[#AABFCF] tracking-[0.2em] uppercase">
               Risk Factor Matrix
             </p>
             <p className="text-[11px] font-data text-[#C8D6E2] mt-0.5">
@@ -107,7 +107,7 @@ export function RiskHeatmapGrid({ report }: RiskHeatmapGridProps) {
                 {/* Column header */}
                 <div className="flex items-center justify-between">
                   <span
-                    className="text-[10px] font-bold font-data tracking-[0.15em] uppercase"
+                    className="text-xs font-bold font-data tracking-[0.15em] uppercase"
                     style={{ color: accent }}
                   >
                     {label}
@@ -127,7 +127,7 @@ export function RiskHeatmapGrid({ report }: RiskHeatmapGridProps) {
                             {item.label}
                           </span>
                           <span
-                            className="shrink-0 text-[9px] font-bold font-data px-1.5 py-0.5 rounded border"
+                            className="shrink-0 text-[11px] font-bold font-data px-1.5 py-0.5 rounded border"
                             style={{
                               color: lv.color,
                               borderColor: `${lv.color}40`,

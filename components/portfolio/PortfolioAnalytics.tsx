@@ -217,7 +217,7 @@ function HazardLossTable({ entries }: { entries: PortfolioEntry[] }) {
           <p className="font-bold text-white" style={{ fontFamily: 'var(--font-syne)' }}>
             Per-Hazard Detail
           </p>
-          <span className="text-[9px] font-data tracking-[0.15em] uppercase px-2 py-0.5 rounded border border-[#F5A11C30] bg-[#F5A11C08] text-[#F5A11C99] shrink-0">
+          <span className="text-[11px] font-data tracking-[0.15em] uppercase px-2 py-0.5 rounded border border-[#F5A11C30] bg-[#F5A11C08] text-[#F5A11C99] shrink-0">
             Ridge Regression · FEMA NRI 2023
           </span>
         </div>
@@ -230,11 +230,11 @@ function HazardLossTable({ entries }: { entries: PortfolioEntry[] }) {
       <div className="px-6 py-2 flex items-center gap-4 bg-[#080C15] border-b border-line">
         <div className="w-7 shrink-0" />
         <div className="flex-1 min-w-0 flex items-center justify-between gap-2">
-          <p className="text-[9px] font-data text-ghost tracking-[0.15em] uppercase">Hazard</p>
-          <p className="text-[9px] font-data text-ghost tracking-[0.15em] uppercase">Model Score</p>
+          <p className="text-[11px] font-data text-ghost tracking-[0.15em] uppercase">Hazard</p>
+          <p className="text-[11px] font-data text-ghost tracking-[0.15em] uppercase">Model Score</p>
         </div>
         <div className="shrink-0 text-right min-w-[100px]">
-          <p className="text-[9px] font-data text-ghost tracking-[0.15em] uppercase">Est. Annual Loss</p>
+          <p className="text-[11px] font-data text-ghost tracking-[0.15em] uppercase">Est. Annual Loss</p>
         </div>
       </div>
 
@@ -271,7 +271,7 @@ function HazardLossTable({ entries }: { entries: PortfolioEntry[] }) {
                   {lossLabel(totalLoss)}
                 </p>
                 {propLossPct > 0 && (
-                  <p className="text-[10px] font-data text-ghost tabular-nums">
+                  <p className="text-xs font-data text-ghost tabular-nums">
                     {propLossPct < 0.01 ? '<0.01' : propLossPct.toFixed(3)}%/yr of value
                   </p>
                 )}
@@ -281,7 +281,7 @@ function HazardLossTable({ entries }: { entries: PortfolioEntry[] }) {
         })}
       </div>
       <div className="px-6 py-3 border-t border-line">
-        <p className="text-[10px] font-data text-ghost">
+        <p className="text-xs font-data text-ghost">
           Source: FEMA NRI (2023) · Score: min-max normalized county EAL × hazard weight, summed to 0–100 · Loss: county hazard rate × property AVM · Totalled across {scalable.length} propert{scalable.length === 1 ? 'y' : 'ies'}
         </p>
       </div>

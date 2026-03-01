@@ -342,7 +342,6 @@ export async function fetchAttomPropertyData(
       tenureMonths: i === 0 ? null : tenureMonths,
       isFlip,
       hasForeclosure: isForeclosure,
-      hasLien: false,
       foreclosureDetails: isForeclosure
         ? `${sale.amount?.saleTransType} — recorded ${sale.amount?.saleRecDate ?? ''}`
         : undefined,
@@ -352,45 +351,12 @@ export async function fetchAttomPropertyData(
     });
   }
 
-  // ── Optional: lien events ──
-  let lienCount = 0;
-  try {
-    const eventsRes = await attomGet('/allevents/detail', params);
-    const allEvents: AttomEventEntry[] = eventsRes?.property?.[0]?.allevents?.eventHistory ?? [];
-    const lienEvents = allEvents.filter((e) => {
-      const t = (e.eventType ?? '').toUpperCase();
-      return t.includes('LIEN') || t.includes('NOD') || t.includes('NTS');
-    });
-
-    lienCount = lienEvents.length;
-
-    for (const lienEvt of lienEvents) {
-      if (!lienEvt.eventDate) continue;
-      const lienDate = new Date(lienEvt.eventDate).getTime();
-      let bestIdx = 0;
-      let bestDelta = Infinity;
-      for (let i = 0; i < events.length; i++) {
-        const delta = Math.abs(lienDate - new Date(events[i].date).getTime());
-        if (delta < bestDelta) { bestDelta = delta; bestIdx = i; }
-      }
-      const amt = lienEvt.amount?.eventAmt ? ` — $${lienEvt.amount.eventAmt.toLocaleString()}` : '';
-      events[bestIdx].hasLien = true;
-      events[bestIdx].lienDetails = [
-        events[bestIdx].lienDetails,
-        `${lienEvt.eventType}${amt}`,
-      ].filter(Boolean).join('; ');
-    }
-  } catch {
-    console.warn('[ATTOM] allevents/detail not on this plan — lien data skipped');
-  }
-
   const history: OwnershipHistory = {
     propertyId: slug,
     events,
     totalTransfers: events.length,
     flipCount,
     foreclosureCount,
-    lienCount,
     oldestRecord: events[events.length - 1]?.date ?? new Date().toISOString().split('T')[0],
   };
 

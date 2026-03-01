@@ -1,4 +1,4 @@
-import { AlertTriangle, Home, FileWarning, Clock, DollarSign } from 'lucide-react';
+import { AlertTriangle, Home, Clock, DollarSign } from 'lucide-react';
 import { formatCurrency, formatDate, tenureLabel } from '@/lib/utils';
 import type { OwnershipEvent } from '@/lib/types';
 
@@ -11,19 +11,16 @@ interface TimelineEventProps {
 export function TimelineEvent({ event }: TimelineEventProps) {
   const isForeclosure = event.hasForeclosure || event.type === 'foreclosure';
   const isFlip = event.isFlip;
-  const hasLien = event.hasLien;
 
   const dotColor = isForeclosure
     ? '#F97316'
     : isFlip
     ? '#EF4444'
-    : hasLien
-    ? '#F59E0B'
     : event.tenureMonths == null
     ? '#60A5FA'
     : '#22C55E';
 
-  const DotIcon = isForeclosure ? AlertTriangle : hasLien ? FileWarning : Home;
+  const DotIcon = isForeclosure ? AlertTriangle : Home;
 
   return (
     <div className="relative flex gap-4 pb-5 pl-10 last:pb-0">
@@ -52,7 +49,6 @@ export function TimelineEvent({ event }: TimelineEventProps) {
               )}
               {isFlip && <EventBadge color="#EF4444">⚡ Flip</EventBadge>}
               {isForeclosure && <EventBadge color="#F97316">⚠ Foreclosure</EventBadge>}
-              {hasLien && <EventBadge color="#F59E0B">Lien</EventBadge>}
             </div>
 
             <div className="flex flex-wrap gap-x-4 gap-y-0.5 text-[11px] font-data text-[#C8D6E2]">
@@ -74,7 +70,7 @@ export function TimelineEvent({ event }: TimelineEventProps) {
           {event.price != null && (
             <div className="text-right shrink-0">
               <p className="font-bold text-sm font-data text-white">{formatCurrency(event.price)}</p>
-              <p className="text-[10px] font-data text-[#AABFCF]">purchase price</p>
+              <p className="text-xs font-data text-[#AABFCF]">purchase price</p>
             </div>
           )}
         </div>
@@ -84,12 +80,7 @@ export function TimelineEvent({ event }: TimelineEventProps) {
             {event.foreclosureDetails}
           </div>
         )}
-        {event.lienDetails && (
-          <div className="mt-2 text-[11px] font-data text-[#F59E0B] bg-[#F59E0B]/8 rounded px-2 py-1 border border-[#F59E0B]/20">
-            {event.lienDetails}
-          </div>
-        )}
-        {event.notes && !event.foreclosureDetails && !event.lienDetails && (
+        {event.notes && !event.foreclosureDetails && (
           <div className="mt-2 text-[11px] font-data text-[#C8D6E2]">{event.notes}</div>
         )}
       </div>
@@ -100,7 +91,7 @@ export function TimelineEvent({ event }: TimelineEventProps) {
 function EventBadge({ color, children }: { color: string; children: React.ReactNode }) {
   return (
     <span
-      className="text-[10px] font-data px-1.5 py-0.5 rounded border leading-none"
+      className="text-xs font-data px-1.5 py-0.5 rounded border leading-none"
       style={{ color, borderColor: `${color}40`, background: `${color}12` }}
     >
       {children}

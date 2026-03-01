@@ -30,7 +30,7 @@ function CustomTooltip({ active, payload }: {
     <div className="bg-[#0D1120] border border-[#1A2035] rounded p-3 font-data shadow-lg">
       <p className="text-sm font-bold text-white">{formatCurrency(payload[0].value)}</p>
       <p className="text-[11px] text-[#C8D6E2] mt-0.5">{formatDateShort(point.date)}</p>
-      <p className="text-[10px] text-[#AABFCF] capitalize mt-0.5">
+      <p className="text-xs text-[#AABFCF] capitalize mt-0.5">
         {point.event === 'estimate' && point.date === new Date().toISOString().split('T')[0]
           ? 'AVM Estimate'
           : point.event}
@@ -125,7 +125,7 @@ export function PriceHistoryChart({ data, avmValue }: PriceHistoryChartProps) {
             </AreaChart>
           </ResponsiveContainer>
         </div>
-        <p className="text-[10px] font-data text-[#AABFCF] mt-3 text-center">
+        <p className="text-xs font-data text-[#AABFCF] mt-3 text-center">
           Red dots = actual sale prices · <span style={{ color: '#F5A11C' }}>●</span> Orange dot = AVM estimate today
         </p>
       </div>

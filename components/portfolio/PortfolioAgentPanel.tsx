@@ -218,7 +218,7 @@ export function PortfolioAgentPanel({
               <span className="text-xs font-data text-ghost tracking-widest uppercase">
                 Reviewing property {progress.current} of {progress.total}
               </span>
-              <span className="text-[10px] font-data text-amber tabular-nums">{pct}%</span>
+              <span className="text-xs font-data text-amber tabular-nums">{pct}%</span>
             </div>
 
             {/* Progress bar */}

@@ -51,7 +51,7 @@ export function PortfolioStats({ entries }: PortfolioStatsProps) {
 
         {/* Left — portfolio value + EAL */}
         <div className="px-6 py-6">
-          <p className="text-[9px] font-data text-ghost tracking-[0.2em] uppercase mb-1">
+          <p className="text-[11px] font-data text-ghost tracking-[0.2em] uppercase mb-1">
             Gross Value
           </p>
           <p className="text-3xl font-extrabold font-data text-white">
@@ -75,7 +75,7 @@ export function PortfolioStats({ entries }: PortfolioStatsProps) {
         {/* Right — avg title risk + avg disaster risk */}
         <div className="divide-y divide-line">
           <div className="px-6 py-5">
-            <p className="text-[9px] font-data text-ghost tracking-[0.2em] uppercase mb-1">
+            <p className="text-[11px] font-data text-ghost tracking-[0.2em] uppercase mb-1">
               Avg Title Risk
             </p>
             {avgTitleScore !== null ? (
@@ -92,7 +92,7 @@ export function PortfolioStats({ entries }: PortfolioStatsProps) {
             )}
           </div>
           <div className="px-6 py-5">
-            <p className="text-[9px] font-data text-ghost tracking-[0.2em] uppercase mb-1">
+            <p className="text-[11px] font-data text-ghost tracking-[0.2em] uppercase mb-1">
               Avg Disaster Risk
             </p>
             {avgDisasterScore !== null ? (

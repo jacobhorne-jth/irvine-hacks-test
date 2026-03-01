@@ -15,7 +15,7 @@ export function PropertyOverviewCard({ property }: PropertyOverviewCardProps) {
       <div className="px-6 pt-6 pb-5 border-b border-[#1A2035]">
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0">
-            <span className="text-[10px] font-data text-[#F5A11C] tracking-[0.2em] uppercase block mb-2">
+            <span className="text-xs font-data text-[#F5A11C] tracking-[0.2em] uppercase block mb-2">
               {propertyType.replace('-', ' ')}
             </span>
             <h1 className="text-2xl sm:text-3xl font-bold text-white leading-tight truncate">
@@ -26,7 +26,7 @@ export function PropertyOverviewCard({ property }: PropertyOverviewCardProps) {
             </p>
           </div>
           <div className="text-right shrink-0">
-            <p className="text-[10px] font-data text-[#AABFCF] tracking-[0.15em] uppercase mb-1">AVM Estimate</p>
+            <p className="text-xs font-data text-[#AABFCF] tracking-[0.15em] uppercase mb-1">AVM Estimate</p>
             <p className="text-2xl font-bold font-data text-white">
               {zestimate > 0 ? formatCurrency(zestimate) : '—'}
             </p>
@@ -74,7 +74,7 @@ function Stat({ icon, label, value }: { icon: React.ReactNode; label: string; va
     <div className="flex flex-col items-center gap-1 py-4 px-2">
       <div className="text-[#AABFCF] mb-0.5">{icon}</div>
       <p className="text-lg font-bold font-data text-white leading-none">{value}</p>
-      <p className="text-[10px] font-data text-[#AABFCF] tracking-wider uppercase">{label}</p>
+      <p className="text-xs font-data text-[#AABFCF] tracking-wider uppercase">{label}</p>
     </div>
   );
 }

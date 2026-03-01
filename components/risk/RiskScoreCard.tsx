@@ -36,7 +36,7 @@ export function RiskScoreCard({ title, icon: Icon, score, level, breakdown, extr
           </span>
         </div>
         {badge && (
-          <span className="text-[10px] font-data px-2 py-0.5 rounded border border-[#60A5FA]/30 bg-[#60A5FA]/10 text-[#60A5FA]">
+          <span className="text-xs font-data px-2 py-0.5 rounded border border-[#60A5FA]/30 bg-[#60A5FA]/10 text-[#60A5FA]">
             {badge}
           </span>
         )}
@@ -72,7 +72,7 @@ export function RiskScoreCard({ title, icon: Icon, score, level, breakdown, extr
                   <p className="text-[11px] font-data text-[#C8D6E2] leading-tight mt-0.5">{item.description}</p>
                 </div>
                 <span
-                  className={`shrink-0 text-[10px] font-bold font-data px-1.5 py-0.5 rounded border ${
+                  className={`shrink-0 text-xs font-bold font-data px-1.5 py-0.5 rounded border ${
                     item.points >= 20
                       ? 'bg-[#EF4444]/10 text-[#EF4444] border-[#EF4444]/30'
                       : item.points >= 10

@@ -10,13 +10,12 @@ import type { OwnershipHistory, OwnershipEvent } from '@/lib/types';
 function nodeColor(e: OwnershipEvent): string {
   if (e.hasForeclosure || e.type === 'foreclosure') return '#F97316';
   if (e.isFlip) return '#EF4444';
-  if (e.hasLien) return '#F59E0B';
   if (e.tenureMonths == null) return '#60A5FA';
   return '#22C55E';
 }
 
 function isFlagged(e: OwnershipEvent): boolean {
-  return e.hasForeclosure || e.type === 'foreclosure' || e.isFlip || e.hasLien;
+  return e.hasForeclosure || e.type === 'foreclosure' || e.isFlip;
 }
 
 function getFlags(e: OwnershipEvent): { label: string; color: string }[] {
@@ -24,7 +23,6 @@ function getFlags(e: OwnershipEvent): { label: string; color: string }[] {
   if (e.hasForeclosure || e.type === 'foreclosure')
     out.push({ label: '⚠ Foreclosure', color: '#F97316' });
   if (e.isFlip) out.push({ label: '⚡ Flip', color: '#EF4444' });
-  if (e.hasLien) out.push({ label: '🔒 Lien', color: '#F59E0B' });
   return out;
 }
 
@@ -219,7 +217,7 @@ function TooltipFixed({
         )}
 
         <div className="flex flex-col gap-0.5">
-          <span className="text-[10px] font-data text-[#7B8DA0]">
+          <span className="text-xs font-data text-[#7B8DA0]">
             {formatDate(event.date)}
             {isCurrent
               ? ' · Current owner'
@@ -239,7 +237,7 @@ function TooltipFixed({
             {flags.map((f) => (
               <span
                 key={f.label}
-                className="text-[9px] font-data px-1.5 py-0.5 rounded border leading-none"
+                className="text-[11px] font-data px-1.5 py-0.5 rounded border leading-none"
                 style={{
                   color: f.color,
                   borderColor: `${f.color}40`,
@@ -279,12 +277,12 @@ function DetailDrawer({ event, color }: { event: OwnershipEvent; color: string }
             className="w-2 h-2 rounded-full shrink-0"
             style={{ background: color, boxShadow: `0 0 6px ${color}60` }}
           />
-          <span className="text-[13px] font-semibold font-data text-white leading-tight">
+          <span className="text-xs font-semibold font-data text-white leading-tight">
             {event.ownerName ?? 'Unknown owner'}
           </span>
           {isCurrent && (
             <span
-              className="text-[9px] font-data px-1.5 py-0.5 rounded border"
+              className="text-[11px] font-data px-1.5 py-0.5 rounded border"
               style={{ color: '#60A5FA', borderColor: '#60A5FA40', background: '#60A5FA15' }}
             >
               Current owner
@@ -293,7 +291,7 @@ function DetailDrawer({ event, color }: { event: OwnershipEvent; color: string }
           {flags.map((f) => (
             <span
               key={f.label}
-              className="text-[9px] font-data px-1.5 py-0.5 rounded border"
+              className="text-[11px] font-data px-1.5 py-0.5 rounded border"
               style={{ color: f.color, borderColor: `${f.color}40`, background: `${f.color}15` }}
             >
               {f.label}
@@ -333,18 +331,8 @@ function DetailDrawer({ event, color }: { event: OwnershipEvent; color: string }
           </div>
         )}
 
-        {/* Lien detail */}
-        {event.lienDetails && (
-          <div
-            className="mt-2 text-[11px] font-data rounded px-2.5 py-1.5 border"
-            style={{ color: '#F59E0B', background: '#F59E0B10', borderColor: '#F59E0B30' }}
-          >
-            {event.lienDetails}
-          </div>
-        )}
-
         {/* General notes */}
-        {event.notes && !event.foreclosureDetails && !event.lienDetails && (
+        {event.notes && !event.foreclosureDetails && (
           <p className="mt-1.5 text-[11px] font-data text-[#7B8DA0]">{event.notes}</p>
         )}
       </div>
@@ -421,16 +409,8 @@ function Header({ history }: { history: OwnershipHistory }) {
               color="#F97316"
             />
           )}
-          {history.lienCount > 0 && (
-            <Tag
-              value={history.lienCount}
-              label={`lien${history.lienCount > 1 ? 's' : ''}`}
-              color="#F59E0B"
-            />
-          )}
           {history.flipCount === 0 &&
-            history.foreclosureCount === 0 &&
-            history.lienCount === 0 && (
+            history.foreclosureCount === 0 && (
               <span className="flex items-center gap-1 text-[11px] font-data px-2.5 py-1 rounded border border-[#22C55E]/30 bg-[#22C55E]/10 text-[#22C55E]">
                 <TrendingUp className="h-3 w-3" />
                 Clean title
@@ -724,8 +704,8 @@ export function OwnershipTimeline({ history, avmValue }: { history: OwnershipHis
             <div className="px-4 py-3">
               <div className="flex flex-wrap items-center gap-2 mb-2">
                 <div className="w-2 h-2 rounded-full shrink-0" style={{ background: '#F5A11C', boxShadow: '0 0 6px #F5A11C60' }} />
-                <span className="text-[13px] font-semibold font-data text-white leading-tight">Current Market Value</span>
-                <span className="text-[9px] font-data px-1.5 py-0.5 rounded border" style={{ color: '#F5A11C', borderColor: '#F5A11C40', background: '#F5A11C15' }}>
+                <span className="text-xs font-semibold font-data text-white leading-tight">Current Market Value</span>
+                <span className="text-[11px] font-data px-1.5 py-0.5 rounded border" style={{ color: '#F5A11C', borderColor: '#F5A11C40', background: '#F5A11C15' }}>
                   AVM Estimate
                 </span>
               </div>
@@ -765,7 +745,7 @@ export function OwnershipTimeline({ history, avmValue }: { history: OwnershipHis
             <div className="absolute left-1/2 -translate-x-1/2 w-2.5 h-2.5 rotate-45 border-r border-b" style={{ bottom: -6, background: '#050A14', borderColor: '#F5A11C40' }} />
             <p className="text-[12px] font-semibold font-data text-white mb-1 leading-tight">Current Market Value</p>
             <div className="flex flex-col gap-0.5">
-              <span className="text-[10px] font-data text-[#7B8DA0]">AVM Estimate · Today</span>
+              <span className="text-xs font-data text-[#7B8DA0]">AVM Estimate · Today</span>
               <span className="text-[11px] font-bold font-data" style={{ color: '#F5A11C' }}>{formatCurrency(avmValue)}</span>
             </div>
           </div>

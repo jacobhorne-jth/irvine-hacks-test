@@ -300,7 +300,6 @@ OWNERSHIP HISTORY:
 - ${history.totalTransfers} total transfers since ${history.oldestRecord.split('T')[0]}
 - ${history.flipCount} flip(s) (sold within 24 months)
 - ${history.foreclosureCount} foreclosure(s) in chain of title
-- ${history.lienCount} lien(s) on record
 
 RISK SCORES (0-100):
 - Title Risk: ${report.titleRisk.score}/100 (${getRiskLabel(report.titleRisk.level)})
@@ -329,20 +328,20 @@ function getMockAISummary(
   const keyRisks: string[] = [];
 
   if (overallScore <= 25) {
-    summary = `${property.address.fullAddress} presents minimal risk for title insurance. The property has a clean ownership history with ${history.totalTransfers} transfer(s), no foreclosures or liens, and sits in a low-hazard natural disaster zone. Standard title insurance coverage should be straightforward to obtain.`;
+    summary = `${property.address.fullAddress} presents minimal risk for title insurance. The property has a clean ownership history with ${history.totalTransfers} transfer(s), no foreclosures, and sits in a low-hazard natural disaster zone. Standard title insurance coverage should be straightforward to obtain.`;
     recommendation = 'proceed';
   } else if (overallScore <= 50) {
-    summary = `${property.address.fullAddress} carries moderate risk warranting careful review. The ownership history includes ${history.flipCount > 0 ? `${history.flipCount} short-term flip(s)` : 'several transfers'} and ${history.lienCount > 0 ? `${history.lienCount} lien(s)` : 'minor title concerns'}. Enhanced title insurance coverage is advisable.`;
+    summary = `${property.address.fullAddress} carries moderate risk warranting careful review. The ownership history includes ${history.flipCount > 0 ? `${history.flipCount} short-term flip(s)` : 'several transfers'} and minor title concerns. Enhanced title insurance coverage is advisable.`;
     recommendation = 'caution';
   } else if (overallScore <= 75) {
-    summary = `${property.address.fullAddress} presents elevated risk. With ${history.foreclosureCount > 0 ? `${history.foreclosureCount} foreclosure(s)` : 'complex ownership history'}, ${history.lienCount} lien(s), and ${history.flipCount} flip(s), a thorough title search and extended coverage policy are strongly recommended before proceeding.`;
+    summary = `${property.address.fullAddress} presents elevated risk. With ${history.foreclosureCount > 0 ? `${history.foreclosureCount} foreclosure(s)` : 'complex ownership history'} and ${history.flipCount} flip(s), a thorough title search and extended coverage policy are strongly recommended before proceeding.`;
     recommendation = 'high-risk';
   } else {
-    summary = `${property.address.fullAddress} carries critical risk factors. The chain of title shows ${history.foreclosureCount} foreclosure(s), ${history.lienCount} lien(s), and ${history.flipCount} rapid flip(s). A title attorney review is essential. Obtaining comprehensive title insurance may be difficult or costly.`;
+    summary = `${property.address.fullAddress} carries critical risk factors. The chain of title shows ${history.foreclosureCount} foreclosure(s) and ${history.flipCount} rapid flip(s). A title attorney review is essential. Obtaining comprehensive title insurance may be difficult or costly.`;
     recommendation = 'avoid';
   }
 
-  if (titleRisk.score > 40) keyRisks.push(`Title chain complexity: ${titleRisk.factors.flipCount} flips, ${titleRisk.factors.foreclosureCount} foreclosures, ${titleRisk.factors.lienCount} liens`);
+  if (titleRisk.score > 40) keyRisks.push(`Title chain complexity: ${titleRisk.factors.flipCount} flips, ${titleRisk.factors.foreclosureCount} foreclosures`);
   if (disasterRisk.floodZone !== 'X') keyRisks.push(`Located in FEMA Flood Zone ${disasterRisk.floodZone} — flood insurance likely required`);
   if (disasterRisk.fireHazardZone !== 'none') keyRisks.push(`${disasterRisk.fireHazardZone.charAt(0).toUpperCase() + disasterRisk.fireHazardZone.slice(1)} Fire Hazard Severity Zone`);
   if (marketRisk.score > 40) keyRisks.push(`Price volatility: ${marketRisk.priceVolatility.toFixed(1)}% standard deviation in historical prices`);

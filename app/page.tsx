@@ -80,7 +80,7 @@ export default function HomePage() {
             <Feature
               icon={<Brain className="h-5 w-5 text-[#F5A11C]" />}
               title="ML-Powered Disaster Risk"
-              description="Ridge regression on custom model for disaster risk calculations"
+              description="Custom ridge regression model for disaster risk calculations"
               accent="#F5A11C"
             />
             <Feature

@@ -36,8 +36,6 @@ export interface PropertyDetails {
 export type EventType =
   | 'purchase'
   | 'foreclosure'
-  | 'lien'
-  | 'lien-release'
   | 'listing'
   | 'price-reduction';
 
@@ -50,8 +48,6 @@ export interface OwnershipEvent {
   tenureMonths?: number | null;
   isFlip: boolean;
   hasForeclosure: boolean;
-  hasLien: boolean;
-  lienDetails?: string;
   foreclosureDetails?: string;
   notes?: string;
 }
@@ -62,7 +58,6 @@ export interface OwnershipHistory {
   totalTransfers: number;
   flipCount: number;
   foreclosureCount: number;
-  lienCount: number;
   oldestRecord: string;
 }
 
@@ -90,7 +85,6 @@ export interface TitleRiskScore {
   factors: {
     flipCount: number;
     foreclosureCount: number;
-    lienCount: number;
     totalTransfers: number;
     rapidTransferCount: number;
   };
