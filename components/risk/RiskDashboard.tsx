@@ -68,7 +68,7 @@ export function RiskDashboard({ report, hideOverall = false }: RiskDashboardProp
           score={disasterRisk.score}
           level={disasterRisk.level}
           breakdown={disasterRisk.breakdown}
-          badge="GPT-4o"
+
           extraInfo={
             <>
               <p>Flood Zone: {disasterRisk.floodZone}</p>

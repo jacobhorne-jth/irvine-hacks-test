@@ -53,7 +53,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </a>
               <span className="hidden sm:flex items-center gap-1.5 text-[11px] font-data text-[#3B4A65] tracking-wider uppercase">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#22C55E] animate-pulse" />
-                Live · ATTOM + GPT-4o
+                Live · ATTOM
               </span>
             </div>
           </div>
@@ -68,7 +68,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               PROP.INTEL — FOR INFORMATIONAL USE ONLY. NOT LEGAL OR FINANCIAL ADVICE.
             </span>
             <span className="text-xs font-data text-[#3B4A65] tracking-wider">
-              ATTOM DATA · GPT-4o · OPENSTREETMAP
+              ATTOM DATA · OPENSTREETMAP
             </span>
           </div>
         </footer>

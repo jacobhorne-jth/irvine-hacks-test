@@ -140,7 +140,7 @@ export default async function PropertyPage({ params }: PageProps) {
 
       {/* ── Disclaimer ── */}
       <p className="text-[10px] font-data text-ghost text-center pb-4 leading-relaxed">
-        Property data sourced from ATTOM Data Solutions. Disaster risk assessed by GPT-4o from property coordinates.
+        Property data sourced from ATTOM Data Solutions. Disaster risk assessed by AI from property coordinates.
         Risk scores are algorithmic estimates for informational use only — not a substitute for professional title search, legal review, or licensed insurance underwriting.
       </p>
     </div>

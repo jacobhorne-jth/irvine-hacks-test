@@ -47,9 +47,6 @@ export function AISummaryCard({ summary }: AISummaryCardProps) {
           <span className="font-bold text-white" style={{ fontFamily: 'var(--font-syne)' }}>
             AI Risk Analysis
           </span>
-          <span className="text-[10px] font-data px-2 py-0.5 rounded border border-[#60A5FA]/30 bg-[#60A5FA]/10 text-[#60A5FA]">
-            GPT-4o
-          </span>
         </div>
         <span
           className="inline-flex items-center gap-1.5 text-xs font-bold font-data px-3 py-1.5 rounded border tracking-wide uppercase"

@@ -30,7 +30,7 @@ export default function HomePage() {
           </h1>
 
           <p className="text-lg text-[#64748B] max-w-xl mb-12 leading-relaxed">
-            Ownership history, title risk, AI-assessed disaster exposure, and GPT-4o insurance
+            Ownership history, title risk, AI-assessed disaster exposure, and insurance
             recommendations — for any US address, in seconds.
           </p>
 
@@ -41,7 +41,7 @@ export default function HomePage() {
           <div className="mt-14 pt-10 border-t border-[#1A2035] grid grid-cols-3 gap-6 max-w-lg">
             {[
               { value: '3', label: 'Risk Dimensions' },
-              { value: 'GPT-4o', label: 'Disaster Model' },
+              { value: 'AI', label: 'Disaster Model' },
               { value: 'ATTOM', label: 'Data Source' },
             ].map(({ value, label }) => (
               <div key={label}>
@@ -77,13 +77,13 @@ export default function HomePage() {
             <Feature
               icon={<Brain className="h-5 w-5 text-[#F5A11C]" />}
               title="ML Disaster Risk"
-              description="GPT-4o reads exact coordinates — FEMA flood zone, wildfire hazard, seismic proximity"
+              description="AI reads exact coordinates — FEMA flood zone, wildfire hazard, seismic proximity"
               accent="#F5A11C"
             />
             <Feature
               icon={<Bot className="h-5 w-5 text-[#22C55E]" />}
               title="AI Report"
-              description="GPT-4o synthesizes all signals into a clear Proceed / Avoid underwriting recommendation"
+              description="AI synthesizes all signals into a clear Proceed / Avoid underwriting recommendation"
               accent="#22C55E"
             />
           </div>
@@ -112,7 +112,7 @@ export default function HomePage() {
               },
               {
                 n: '03',
-                title: 'GPT-4o scores disaster risk',
+                title: 'AI scores disaster risk',
                 desc: 'Flood, wildfire, and seismic risk assessed from exact lat/lng coordinates — not city-level lookup tables.',
               },
               {
