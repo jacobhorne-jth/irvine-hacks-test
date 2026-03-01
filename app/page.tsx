@@ -92,7 +92,7 @@ export default function HomePage() {
       </section>
 
       {/* ── How it works ── */}
-      <section className="py-20 px-4 bg-[#080B14]">
+      <section id="how-it-works" className="py-20 px-4 bg-[#080B14]">
         <div className="max-w-3xl mx-auto">
           <p className="text-[11px] font-data text-[#3B4A65] tracking-[0.2em] uppercase mb-4">
             Process
