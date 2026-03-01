@@ -1,4 +1,4 @@
-import { Shield, GitBranch, Bot, Brain, ArrowRight } from 'lucide-react';
+import { Shield, GitBranch, Bot, Brain, ArrowRight, FileText, Flame, Sparkles, BarChart3 } from 'lucide-react';
 import { AddressSearchForm } from '@/components/search/AddressSearchForm';
 
 export default function HomePage() {
@@ -37,16 +37,17 @@ export default function HomePage() {
           {/* Search */}
           <AddressSearchForm />
 
-          {/* Stats row */}
-          <div className="mt-14 pt-10 border-t border-[#1A2035] grid grid-cols-3 gap-6 max-w-lg">
+          {/* Feature pills */}
+          <div className="mt-14 pt-10 border-t border-[#1A2035] flex flex-wrap gap-5">
             {[
-              { value: '3', label: 'Risk Dimensions' },
-              { value: 'AI', label: 'Disaster Model' },
-              { value: 'ATTOM', label: 'Data Source' },
-            ].map(({ value, label }) => (
-              <div key={label}>
-                <p className="text-xl font-bold font-data text-white">{value}</p>
-                <p className="text-xs text-[#3B4A65] tracking-wider uppercase mt-0.5">{label}</p>
+              { icon: FileText, label: 'Title Risk' },
+              { icon: Flame,    label: 'Hazard Risk' },
+              { icon: Sparkles, label: 'AI Summary' },
+              { icon: BarChart3, label: 'Portfolio Tracker' },
+            ].map(({ icon: Icon, label }) => (
+              <div key={label} className="flex items-center gap-2 text-[#3B4A65]">
+                <Icon className="h-4 w-4" />
+                <span className="text-sm font-data tracking-wide">{label}</span>
               </div>
             ))}
           </div>

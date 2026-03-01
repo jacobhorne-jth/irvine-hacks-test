@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
-import { Syne, JetBrains_Mono } from 'next/font/google';
+import { Bricolage_Grotesque, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 
-const syne = Syne({
+const syne = Bricolage_Grotesque({
   subsets: ['latin'],
   variable: '--font-syne',
   weight: ['400', '500', '600', '700', '800'],

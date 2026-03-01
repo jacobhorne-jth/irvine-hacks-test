@@ -100,34 +100,35 @@ export function AddressSearchForm() {
   return (
     <div className="w-full max-w-2xl space-y-4" ref={containerRef}>
       <div className="relative">
-        <form onSubmit={handleSubmit}>
-          <div className="flex border border-[#1A2035] bg-[#0B0F1C] rounded-lg overflow-hidden focus-within:border-[#F5A11C]/50 transition-colors">
+        <form onSubmit={handleSubmit} className="flex items-center gap-3">
+          <div className="flex-1 flex items-center gap-3 border border-[#1E2640] bg-[#0B0F1C] rounded-2xl px-4 py-3.5 focus-within:border-[#F5A11C]/40 transition-colors">
+            <Search className="h-4 w-4 text-[#3B4A65] shrink-0" />
             <input
               type="text"
               value={address}
               onChange={(e) => handleChange(e.target.value)}
               onKeyDown={handleKeyDown}
               onFocus={() => suggestions.length > 0 && setShowDropdown(true)}
-              placeholder="123 Main St, Chicago, IL 60601"
-              className="flex-1 px-4 py-4 bg-transparent text-white placeholder:text-[#3B4A65] text-sm font-data focus:outline-none"
+              placeholder="Enter any US property address..."
+              className="flex-1 bg-transparent text-white placeholder:text-[#3B4A65] text-sm font-data focus:outline-none"
               disabled={loading}
               autoComplete="off"
             />
-            <button
-              type="submit"
-              disabled={loading || !address.trim()}
-              className="flex items-center gap-2 px-5 py-4 bg-[#F5A11C] text-[#080B14] text-sm font-bold tracking-wide hover:bg-[#F5A11C]/90 disabled:opacity-40 disabled:cursor-not-allowed transition-all shrink-0"
-              style={{ fontFamily: 'var(--font-syne)' }}
-            >
-              {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Search className="h-4 w-4" />}
-              {loading ? 'ANALYZING' : 'ANALYZE'}
-            </button>
           </div>
+          <button
+            type="submit"
+            disabled={loading || !address.trim()}
+            className="flex items-center gap-2 px-6 py-3.5 bg-[#F5A11C] text-[#080B14] text-sm font-bold rounded-2xl hover:bg-[#F5A11C]/90 disabled:opacity-40 disabled:cursor-not-allowed transition-all shrink-0 whitespace-nowrap"
+            style={{ fontFamily: 'var(--font-syne)' }}
+          >
+            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
+            {loading ? 'Analyzing...' : 'Analyze Risk →'}
+          </button>
         </form>
 
         {/* Autocomplete dropdown */}
         {showDropdown && (suggestions.length > 0 || noResults) && (
-          <div className="absolute top-full left-0 right-0 z-50 mt-1 border border-[#1A2035] bg-[#0B0F1C] rounded-lg overflow-hidden shadow-2xl shadow-black/60">
+          <div className="absolute top-full left-0 right-0 z-50 mt-1 border border-[#1A2035] bg-[#0B0F1C] rounded-2xl overflow-hidden shadow-2xl shadow-black/60">
             {noResults ? (
               <div className="flex items-center gap-3 px-4 py-3">
                 <MapPin className="h-3.5 w-3.5 shrink-0 text-[#3B4A65]" />
