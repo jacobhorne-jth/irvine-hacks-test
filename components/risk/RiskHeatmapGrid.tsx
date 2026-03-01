@@ -24,19 +24,6 @@ const CATEGORIES = [
     accent: '#A78BFA',
     breakdownKey: 'titleRisk' as const,
   },
-  {
-    key: 'disaster',
-    label: 'Disaster Risk',
-    accent: '#F5A11C',
-    breakdownKey: 'disasterRisk' as const,
-    badge: 'GPT-4o',
-  },
-  {
-    key: 'market',
-    label: 'Market Risk',
-    accent: '#60A5FA',
-    breakdownKey: 'marketRisk' as const,
-  },
 ];
 
 export function RiskHeatmapGrid({ report }: RiskHeatmapGridProps) {
@@ -64,7 +51,7 @@ export function RiskHeatmapGrid({ report }: RiskHeatmapGridProps) {
       </div>
 
       {/* Grid: 3 columns */}
-      <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-[#1A2035]">
+      <div className="grid grid-cols-1 divide-[#1A2035]">
         {CATEGORIES.map(({ label, accent, breakdownKey, badge }) => {
           const { breakdown, score } = report[breakdownKey];
           return (

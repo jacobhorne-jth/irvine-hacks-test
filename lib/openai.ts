@@ -15,6 +15,51 @@ import type {
 } from './types';
 import { formatCurrency, getRiskLabel } from './utils';
 
+/**
+ * Use GPT to extract the US county (name + state abbreviation) from any address string.
+ * Returns null if the OpenAI key is not configured — caller should fall back to the FCC API.
+ */
+export async function extractCountyFromAddress(
+  fullAddress: string
+): Promise<{ county: string; stateAbbr: string } | null> {
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey || apiKey === 'placeholder_add_your_key') return null;
+
+  try {
+    const res = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: 'gpt-4o-mini',
+        messages: [
+          {
+            role: 'user',
+            content:
+              `Which US county does this address belong to?\n` +
+              `Address: "${fullAddress}"\n` +
+              `Return JSON only — no markdown: {"county": "<county name, no word 'County'>", "stateAbbr": "<2-letter state>"}`,
+          },
+        ],
+        response_format: { type: 'json_object' },
+        max_tokens: 40,
+        temperature: 0,
+      }),
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    const parsed = JSON.parse(data.choices?.[0]?.message?.content ?? '{}');
+    if (parsed.county && parsed.stateAbbr) {
+      return { county: String(parsed.county), stateAbbr: String(parsed.stateAbbr) };
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
 export async function fetchLocationRiskData(property: PropertyDetails): Promise<GPTLocationRisk> {
   const apiKey = process.env.OPENAI_API_KEY;
   const model = process.env.OPENAI_MODEL ?? 'gpt-4o';

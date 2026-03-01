@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { findMockProperty } from '@/data/mock-properties';
 import { fetchAttomPropertyData } from '@/lib/attom';
 import { fetchRedfinData } from '@/lib/apify';
+import { extractCountyFromAddress } from '@/lib/openai';
+import { searchCounties, getCountyByLatLng } from '@/lib/nri';
 import type { PropertyApiResponse } from '@/lib/types';
 
 export async function GET(request: NextRequest) {
@@ -19,10 +21,17 @@ export async function GET(request: NextRequest) {
 
   if (useMock) {
     const mockRecord = findMockProperty(address);
+    // Resolve NRI county risk for mock properties too
+    const nriRisk = await resolveNriRisk(
+      mockRecord.property.address.fullAddress,
+      mockRecord.property.latitude,
+      mockRecord.property.longitude
+    );
     return NextResponse.json({
       property: mockRecord.property,
       history: mockRecord.history,
       priceHistory: mockRecord.priceHistory,
+      ...(nriRisk ? { nriRisk } : {}),
     });
   }
 
@@ -82,10 +91,48 @@ export async function GET(request: NextRequest) {
       result.property.zestimate = result.priceHistory[result.priceHistory.length - 1].price;
     }
 
+    // Resolve NRI county disaster risk (non-critical — skip on error)
+    const nriRisk = await resolveNriRisk(
+      address,
+      result.property.latitude,
+      result.property.longitude
+    );
+    if (nriRisk) (result as unknown as Record<string, unknown>).nriRisk = nriRisk;
+
     return NextResponse.json(result);
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unknown error';
     console.error('[/api/property]', message);
     return NextResponse.json({ error: message }, { status: 500 });
+  }
+}
+
+/**
+ * Resolve NRI county disaster score for a property.
+ * 1. FCC Census API using lat/lng — always accurate, no API key needed.
+ * 2. Fall back to GPT county name extraction if FCC fails.
+ */
+async function resolveNriRisk(address: string, lat: number, lng: number) {
+  try {
+    // Primary: FCC Census Block API — deterministic, uses exact coordinates
+    const fccResult = await getCountyByLatLng(lat, lng);
+    if (fccResult) {
+      console.log(`[NRI] FCC resolved lat=${lat},lng=${lng} → ${fccResult.county}, ${fccResult.stateAbbr} (FIPS ${fccResult.fips})`);
+      return fccResult;
+    }
+
+    // Fallback: GPT extracts county name from address string (requires OPENAI_API_KEY)
+    const gptCounty = await extractCountyFromAddress(address);
+    if (gptCounty) {
+      const results = searchCounties(gptCounty.county, gptCounty.stateAbbr);
+      if (results.length > 0) {
+        console.log(`[NRI] GPT resolved "${address}" → ${gptCounty.county}, ${gptCounty.stateAbbr} (FIPS ${results[0].fips})`);
+        return results[0];
+      }
+    }
+
+    return null;
+  } catch {
+    return null;
   }
 }
