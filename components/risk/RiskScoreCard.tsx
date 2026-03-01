@@ -30,7 +30,7 @@ export function RiskScoreCard({ title, icon: Icon, score, level, breakdown, extr
       {/* Header */}
       <div className="px-4 pt-4 pb-3 border-b border-[#1A2035] flex items-center justify-between gap-2">
         <div className="flex items-center gap-2">
-          <Icon className="h-4 w-4 text-[#3B4A65]" />
+          <Icon className="h-4 w-4 text-[#8EA5BE]" />
           <span className="text-sm font-semibold text-white" style={{ fontFamily: 'var(--font-syne)' }}>
             {title}
           </span>
@@ -54,7 +54,7 @@ export function RiskScoreCard({ title, icon: Icon, score, level, breakdown, extr
               {getRiskLabel(level)}
             </span>
             {extraInfo && (
-              <div className="text-[11px] font-data text-[#3B4A65] space-y-0.5 leading-relaxed text-center">
+              <div className="text-[11px] font-data text-[#8EA5BE] space-y-0.5 leading-relaxed text-center">
                 {extraInfo}
               </div>
             )}
@@ -64,12 +64,12 @@ export function RiskScoreCard({ title, icon: Icon, score, level, breakdown, extr
         {/* Breakdown */}
         {breakdown.length > 0 && (
           <div className="space-y-2.5 border-t border-[#1A2035] pt-3">
-            <p className="text-[9px] font-data text-[#3B4A65] tracking-[0.2em] uppercase">Risk Factors</p>
+            <p className="text-[9px] font-data text-[#8EA5BE] tracking-[0.2em] uppercase">Risk Factors</p>
             {breakdown.map((item, i) => (
               <div key={i} className="flex items-start justify-between gap-2">
                 <div className="min-w-0 flex-1">
                   <p className="text-xs font-medium text-[#D8DDE8] font-data">{item.label}</p>
-                  <p className="text-[11px] font-data text-[#64748B] leading-tight mt-0.5">{item.description}</p>
+                  <p className="text-[11px] font-data text-[#B0C0D0] leading-tight mt-0.5">{item.description}</p>
                 </div>
                 <span
                   className={`shrink-0 text-[10px] font-bold font-data px-1.5 py-0.5 rounded border ${
@@ -77,7 +77,7 @@ export function RiskScoreCard({ title, icon: Icon, score, level, breakdown, extr
                       ? 'bg-[#EF4444]/10 text-[#EF4444] border-[#EF4444]/30'
                       : item.points >= 10
                       ? 'bg-[#F97316]/10 text-[#F97316] border-[#F97316]/30'
-                      : 'bg-[#1A2035] text-[#64748B] border-[#1A2035]'
+                      : 'bg-[#1A2035] text-[#B0C0D0] border-[#1A2035]'
                   }`}
                 >
                   +{item.points}

@@ -151,29 +151,29 @@ function PropertyNotFound({ address, message }: { address: string; message?: str
         <h1 className="text-xl font-bold text-white" style={{ fontFamily: 'var(--font-syne)' }}>
           Property not found
         </h1>
-        <p className="text-sm font-data text-[#64748B]">
+        <p className="text-sm font-data text-[#B0C0D0]">
           No records found for{' '}
-          <span className="text-[#94A3B8] font-semibold">&ldquo;{address}&rdquo;</span>
+          <span className="text-[#B0C0D0] font-semibold">&ldquo;{address}&rdquo;</span>
         </p>
         {message && !message.includes(address) && (
-          <p className="text-xs font-data text-[#3B4A65] mt-1">{message}</p>
+          <p className="text-xs font-data text-[#8EA5BE] mt-1">{message}</p>
         )}
       </div>
 
       <div
-        className="w-full rounded-lg border border-[#1A2035] bg-[#0B0F1C] p-4 text-left text-xs font-data text-[#3B4A65] space-y-1"
+        className="w-full rounded-lg border border-[#1A2035] bg-[#0B0F1C] p-4 text-left text-xs font-data text-[#8EA5BE] space-y-1"
       >
         <p className="text-[#475569] font-semibold mb-2">Tips for a better match:</p>
         <p>· Include full street number, name, city, state and zip</p>
-        <p>· Example: <span className="text-[#64748B]">1642 Peacock Ave, Sunnyvale, CA 94087</span></p>
-        <p>· Avoid abbreviations — use <span className="text-[#64748B]">Street</span> not <span className="text-[#64748B]">St</span></p>
+        <p>· Example: <span className="text-[#B0C0D0]">1642 Peacock Ave, Sunnyvale, CA 94087</span></p>
+        <p>· Avoid abbreviations — use <span className="text-[#B0C0D0]">Street</span> not <span className="text-[#B0C0D0]">St</span></p>
       </div>
 
       <AddressSearchForm />
 
       <Link
         href="/"
-        className="inline-flex items-center gap-1.5 text-xs font-data text-[#3B4A65] hover:text-[#F5A11C] transition-colors tracking-wider uppercase"
+        className="inline-flex items-center gap-1.5 text-xs font-data text-[#8EA5BE] hover:text-[#F5A11C] transition-colors tracking-wider uppercase"
       >
         <ArrowLeft className="h-3.5 w-3.5" />
         Back to home

@@ -16,7 +16,7 @@
     --secondary: 222 30% 12%;
     --secondary-foreground: 214 20% 75%;
     --muted: 222 30% 10%;
-    --muted-foreground: 220 12% 42%;
+    --muted-foreground: 220 12% 72%;
     --accent: 222 30% 12%;
     --accent-foreground: 214 20% 88%;
     --destructive: 0 72% 51%;
@@ -41,8 +41,8 @@
     /* Text scale */
     --text-primary: #E8ECF4;
     --text-secondary: #9BA8BC;
-    --text-dim: #64748B;
-    --text-ghost: #3B4A65;
+    --text-dim: #B0C0D0;
+    --text-ghost: #8EA5BE;
   }
 }
 

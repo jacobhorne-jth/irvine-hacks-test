@@ -105,14 +105,14 @@ function CustomTooltip({
       }}
     >
       <p className="text-sm font-bold mb-1" style={{ color }}>{HAZARD_LABELS[d.hazard]}</p>
-      <p className="text-[11px] text-[#94A3B8]">
+      <p className="text-[11px] text-[#B0C0D0]">
         Score contribution: <span className="text-white font-semibold">{d.contribution.toFixed(2)}</span>
       </p>
-      <p className="text-[11px] text-[#64748B] mt-0.5">
-        Avg. annual loss: <span className="text-[#94A3B8]">${(d.eal * 1_000_000).toLocaleString(undefined, { maximumFractionDigits: 0 })}</span>
+      <p className="text-[11px] text-[#B0C0D0] mt-0.5">
+        Avg. annual loss: <span className="text-[#B0C0D0]">${(d.eal * 1_000_000).toLocaleString(undefined, { maximumFractionDigits: 0 })}</span>
       </p>
       {blurb && (
-        <p className="text-[10px] text-[#64748B] mt-2 leading-relaxed border-t border-[#1A2035] pt-2">
+        <p className="text-[10px] text-[#B0C0D0] mt-2 leading-relaxed border-t border-[#1A2035] pt-2">
           {blurb}
         </p>
       )}
@@ -138,7 +138,7 @@ export function HazardBreakdownChart({ breakdown, dominantHazard, hazardExplanat
           <CartesianGrid strokeDasharray="3 3" stroke="#1A2035" vertical={false} />
           <XAxis
             dataKey="label"
-            tick={{ fontSize: 10, fill: '#3B4A65', fontFamily: 'var(--font-mono)' }}
+            tick={{ fontSize: 10, fill: '#8EA5BE', fontFamily: 'var(--font-mono)' }}
             tickLine={false}
             axisLine={false}
             angle={-35}
@@ -146,7 +146,7 @@ export function HazardBreakdownChart({ breakdown, dominantHazard, hazardExplanat
             interval={0}
           />
           <YAxis
-            tick={{ fontSize: 10, fill: '#3B4A65', fontFamily: 'var(--font-mono)' }}
+            tick={{ fontSize: 10, fill: '#8EA5BE', fontFamily: 'var(--font-mono)' }}
             tickLine={false}
             axisLine={false}
             width={30}

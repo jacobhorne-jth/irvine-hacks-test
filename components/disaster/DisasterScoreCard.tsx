@@ -60,7 +60,7 @@ export function DisasterScoreCard({ score, zestimate, hazardExplanations }: Prop
         <div className="p-6 flex flex-col sm:flex-row items-start sm:items-center gap-6">
           {/* Big score */}
           <div className="flex flex-col items-center gap-1 shrink-0">
-            <p className="text-[10px] font-data text-[#3B4A65] tracking-[0.2em] uppercase">
+            <p className="text-[10px] font-data text-[#8EA5BE] tracking-[0.2em] uppercase">
               Risk Score
             </p>
             <p
@@ -86,13 +86,13 @@ export function DisasterScoreCard({ score, zestimate, hazardExplanations }: Prop
 
           {/* County info + dominant hazard */}
           <div className="flex-1 min-w-0">
-            <p className="text-[10px] font-data text-[#3B4A65] tracking-[0.2em] uppercase mb-1">
+            <p className="text-[10px] font-data text-[#8EA5BE] tracking-[0.2em] uppercase mb-1">
               County
             </p>
             <h2 className="text-2xl font-bold text-white leading-tight">
               {score.county} County
             </h2>
-            <p className="text-sm font-data text-[#64748B] mt-0.5">
+            <p className="text-sm font-data text-[#B0C0D0] mt-0.5">
               {score.state} · FIPS {score.fips}
             </p>
 
@@ -110,7 +110,7 @@ export function DisasterScoreCard({ score, zestimate, hazardExplanations }: Prop
                 />
               </div>
               <div>
-                <p className="text-[10px] font-data text-[#3B4A65] tracking-wider uppercase">
+                <p className="text-[10px] font-data text-[#8EA5BE] tracking-wider uppercase">
                   Dominant hazard
                 </p>
                 <p className="text-sm font-semibold text-white">
@@ -122,7 +122,7 @@ export function DisasterScoreCard({ score, zestimate, hazardExplanations }: Prop
 
           {/* Score bar */}
           <div className="shrink-0 w-full sm:w-32">
-            <p className="text-[10px] font-data text-[#3B4A65] tracking-[0.15em] uppercase mb-2">
+            <p className="text-[10px] font-data text-[#8EA5BE] tracking-[0.15em] uppercase mb-2">
               vs. national max
             </p>
             <div className="h-2 w-full bg-[#1A2035] rounded-full overflow-hidden">
@@ -131,7 +131,7 @@ export function DisasterScoreCard({ score, zestimate, hazardExplanations }: Prop
                 style={{ width: `${score.overall_score}%`, background: score.color }}
               />
             </div>
-            <p className="text-[10px] font-data text-[#3B4A65] mt-1 text-right">
+            <p className="text-[10px] font-data text-[#8EA5BE] mt-1 text-right">
               {score.overall_score} / 100
             </p>
           </div>
@@ -141,7 +141,7 @@ export function DisasterScoreCard({ score, zestimate, hazardExplanations }: Prop
       {/* ── Hazard breakdown chart ── */}
       <div className="border border-[#1A2035] bg-[#0B0F1C] rounded-lg overflow-hidden">
         <div className="px-6 py-4 border-b border-[#1A2035]">
-          <p className="text-[10px] font-data text-[#3B4A65] tracking-[0.2em] uppercase mb-0.5">
+          <p className="text-[10px] font-data text-[#8EA5BE] tracking-[0.2em] uppercase mb-0.5">
             Hazard Breakdown
           </p>
           <p className="font-bold text-white" style={{ fontFamily: 'var(--font-syne)' }}>
@@ -150,7 +150,7 @@ export function DisasterScoreCard({ score, zestimate, hazardExplanations }: Prop
         </div>
         <div className="p-6">
           <HazardBreakdownChart breakdown={score.breakdown} dominantHazard={score.dominant_hazard} hazardExplanations={hazardExplanations} />
-          <p className="text-[10px] font-data text-[#3B4A65] mt-3 text-center">
+          <p className="text-[10px] font-data text-[#8EA5BE] mt-3 text-center">
             Highlighted bar = dominant hazard · Scores weighted by actuarial model
           </p>
         </div>
@@ -163,7 +163,7 @@ export function DisasterScoreCard({ score, zestimate, hazardExplanations }: Prop
             Per-Hazard Detail
           </p>
           {hasPropertyLoss && (
-            <p className="text-[10px] font-data text-[#3B4A65] shrink-0">
+            <p className="text-[10px] font-data text-[#8EA5BE] shrink-0">
               est. annual loss for this property
             </p>
           )}
@@ -226,13 +226,13 @@ export function DisasterScoreCard({ score, zestimate, hazardExplanations }: Prop
                       {lossLabel}
                     </p>
                     {pctLabel && (
-                      <p className="text-[10px] font-data text-[#3B4A65] tabular-nums">
+                      <p className="text-[10px] font-data text-[#8EA5BE] tabular-nums">
                         {pctLabel} of value
                       </p>
                     )}
                   </div>
                 ) : (
-                  <p className="text-[11px] font-data text-[#3B4A65] shrink-0 text-right min-w-[90px]">
+                  <p className="text-[11px] font-data text-[#8EA5BE] shrink-0 text-right min-w-[90px]">
                     —
                   </p>
                 )}
@@ -241,7 +241,7 @@ export function DisasterScoreCard({ score, zestimate, hazardExplanations }: Prop
           })}
         </div>
         <div className="px-6 py-3 border-t border-[#1A2035]">
-          <p className="text-[10px] font-data text-[#3B4A65]">
+          <p className="text-[10px] font-data text-[#8EA5BE]">
             Source: FEMA National Risk Index (2023) ·{' '}
             {hasPropertyLoss
               ? 'Per-property loss estimated from county risk rate × property value — county averages may not reflect individual parcel exposure'

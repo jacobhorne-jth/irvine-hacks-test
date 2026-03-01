@@ -6,11 +6,11 @@ export default function HomePage() {
     <div className="flex flex-col">
 
       {/* ── Hero ── */}
-      <section className="relative overflow-hidden bg-[#080B14] dot-grid min-h-[88vh] flex items-center">
+      <section className="relative overflow-hidden bg-[#080B14] dot-grid min-h-screen flex items-center justify-center">
         {/* Ambient glow */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[#F5A11C]/5 blur-[100px] pointer-events-none" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[#F5A11C]/5 blur-[120px] pointer-events-none" />
 
-        <div className="relative max-w-4xl mx-auto px-4 py-24 w-full">
+        <div className="relative max-w-5xl mx-auto px-6 py-24 w-full flex flex-col items-center text-center">
 
           {/* Eyebrow */}
           <div className="flex items-center gap-3 mb-8">
@@ -29,23 +29,25 @@ export default function HomePage() {
             <span className="text-[#F5A11C]">Intelligence.</span>
           </h1>
 
-          <p className="text-lg text-[#64748B] max-w-xl mb-12 leading-relaxed">
+          <p className="text-lg text-[#B0C0D0] max-w-2xl mb-12 leading-relaxed">
             Ownership history, title risk, AI-assessed disaster exposure, and insurance
             recommendations — for any US address, in seconds.
           </p>
 
           {/* Search */}
-          <AddressSearchForm />
+          <div className="w-full flex justify-center">
+            <AddressSearchForm centered />
+          </div>
 
           {/* Feature pills */}
-          <div className="mt-14 pt-10 border-t border-[#1A2035] flex flex-wrap gap-5">
+          <div className="mt-14 pt-10 border-t border-[#1A2035] flex flex-wrap gap-6 justify-center w-full">
             {[
               { icon: FileText, label: 'Title Risk' },
               { icon: Flame,    label: 'Hazard Risk' },
               { icon: Sparkles, label: 'AI Summary' },
               { icon: BarChart3, label: 'Portfolio Tracker' },
             ].map(({ icon: Icon, label }) => (
-              <div key={label} className="flex items-center gap-2 text-[#3B4A65]">
+              <div key={label} className="flex items-center gap-2 text-[#8EA5BE]">
                 <Icon className="h-4 w-4" />
                 <span className="text-sm font-data tracking-wide">{label}</span>
               </div>
@@ -55,12 +57,12 @@ export default function HomePage() {
       </section>
 
       {/* ── Features ── */}
-      <section className="py-20 px-4 bg-[#060810] border-t border-[#1A2035]">
-        <div className="max-w-5xl mx-auto">
-          <p className="text-[11px] font-data text-[#3B4A65] tracking-[0.2em] uppercase mb-4">
+      <section className="py-20 px-6 bg-[#060810] border-t border-[#1A2035]">
+        <div className="max-w-6xl mx-auto">
+          <p className="text-[11px] font-data text-[#8EA5BE] tracking-[0.2em] uppercase mb-4 text-center">
             Capabilities
           </p>
-          <h2 className="text-3xl font-bold text-white mb-12">What you get</h2>
+          <h2 className="text-3xl font-bold text-white mb-12 text-center">What you get</h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-[#1A2035]">
             <Feature
@@ -92,12 +94,12 @@ export default function HomePage() {
       </section>
 
       {/* ── How it works ── */}
-      <section id="how-it-works" className="py-20 px-4 bg-[#080B14]">
-        <div className="max-w-3xl mx-auto">
-          <p className="text-[11px] font-data text-[#3B4A65] tracking-[0.2em] uppercase mb-4">
+      <section id="how-it-works" className="py-20 px-6 bg-[#080B14]">
+        <div className="max-w-4xl mx-auto">
+          <p className="text-[11px] font-data text-[#8EA5BE] tracking-[0.2em] uppercase mb-4 text-center">
             Process
           </p>
-          <h2 className="text-3xl font-bold text-white mb-12">How it works</h2>
+          <h2 className="text-3xl font-bold text-white mb-12 text-center">How it works</h2>
 
           <div className="space-y-0 border border-[#1A2035] divide-y divide-[#1A2035]">
             {[
@@ -128,7 +130,7 @@ export default function HomePage() {
                 </span>
                 <div>
                   <p className="font-semibold text-white mb-1">{title}</p>
-                  <p className="text-sm text-[#64748B] leading-relaxed">{desc}</p>
+                  <p className="text-sm text-[#B0C0D0] leading-relaxed">{desc}</p>
                 </div>
                 <ArrowRight className="h-4 w-4 text-[#1A2035] shrink-0 mt-1 ml-auto group-hover:text-[#F5A11C] transition-colors" />
               </div>
@@ -161,7 +163,7 @@ function Feature({
       </div>
       <div>
         <h3 className="font-semibold text-white text-sm mb-2">{title}</h3>
-        <p className="text-xs text-[#64748B] leading-relaxed">{description}</p>
+        <p className="text-xs text-[#B0C0D0] leading-relaxed">{description}</p>
       </div>
     </div>
   );

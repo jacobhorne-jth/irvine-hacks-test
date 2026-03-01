@@ -21,12 +21,12 @@ export function PropertyOverviewCard({ property }: PropertyOverviewCardProps) {
             <h1 className="text-2xl sm:text-3xl font-bold text-white leading-tight truncate">
               {address.street}
             </h1>
-            <p className="text-[#64748B] font-data text-sm mt-1">
+            <p className="text-[#B0C0D0] font-data text-sm mt-1">
               {address.city}, {address.state} {address.zip}
             </p>
           </div>
           <div className="text-right shrink-0">
-            <p className="text-[10px] font-data text-[#3B4A65] tracking-[0.15em] uppercase mb-1">Est. Value</p>
+            <p className="text-[10px] font-data text-[#8EA5BE] tracking-[0.15em] uppercase mb-1">Est. Value</p>
             <p className="text-2xl font-bold font-data text-white">
               {zestimate > 0 ? formatCurrency(zestimate) : '—'}
             </p>
@@ -44,7 +44,7 @@ export function PropertyOverviewCard({ property }: PropertyOverviewCardProps) {
 
       {/* Sale info */}
       <div className="px-6 py-3 flex items-center justify-between gap-2 border-t border-[#1A2035]">
-        <div className="flex items-center gap-2 text-xs font-data text-[#64748B]">
+        <div className="flex items-center gap-2 text-xs font-data text-[#B0C0D0]">
           <TrendingUp className="h-3.5 w-3.5 text-[#22C55E]" />
           {lastSalePrice > 0 ? (
             <>Last sold {formatDate(lastSaleDate)} for{' '}
@@ -72,9 +72,9 @@ export function PropertyOverviewCard({ property }: PropertyOverviewCardProps) {
 function Stat({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
   return (
     <div className="flex flex-col items-center gap-1 py-4 px-2">
-      <div className="text-[#3B4A65] mb-0.5">{icon}</div>
+      <div className="text-[#8EA5BE] mb-0.5">{icon}</div>
       <p className="text-lg font-bold font-data text-white leading-none">{value}</p>
-      <p className="text-[10px] font-data text-[#3B4A65] tracking-wider uppercase">{label}</p>
+      <p className="text-[10px] font-data text-[#8EA5BE] tracking-wider uppercase">{label}</p>
     </div>
   );
 }

@@ -57,7 +57,7 @@ export function SaveToPortfolioButton({ entry }: SaveToPortfolioButtonProps) {
       className={`flex items-center gap-1.5 text-xs font-data px-3 py-1.5 rounded border transition-all ${
         saved
           ? 'border-[#F5A11C]/40 bg-[#F5A11C]/10 text-[#F5A11C]'
-          : 'border-[#1A2035] bg-[#0B0F1C] text-[#3B4A65] hover:border-[#F5A11C]/30 hover:text-[#F5A11C]'
+          : 'border-[#1A2035] bg-[#0B0F1C] text-[#8EA5BE] hover:border-[#F5A11C]/30 hover:text-[#F5A11C]'
       }`}
     >
       {saved ? (

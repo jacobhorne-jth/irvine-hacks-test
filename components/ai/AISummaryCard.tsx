@@ -62,7 +62,7 @@ export function AISummaryCard({ summary }: AISummaryCardProps) {
 
         {summary.keyRisks.length > 0 && (
           <div>
-            <p className="text-[9px] font-data text-[#3B4A65] tracking-[0.2em] uppercase mb-3">
+            <p className="text-[9px] font-data text-[#8EA5BE] tracking-[0.2em] uppercase mb-3">
               Key Risk Factors
             </p>
             <ul className="space-y-2">
@@ -76,7 +76,7 @@ export function AISummaryCard({ summary }: AISummaryCardProps) {
           </div>
         )}
 
-        <p className="text-[10px] font-data text-[#3B4A65] border-t border-[#1A2035] pt-3">
+        <p className="text-[10px] font-data text-[#8EA5BE] border-t border-[#1A2035] pt-3">
           Generated {new Date(summary.generatedAt).toLocaleString()} · Model: {summary.model}
           {summary.model === 'mock-analysis' && ' · Add OPENAI_API_KEY for live analysis'}
         </p>

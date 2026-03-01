@@ -28,7 +28,7 @@ interface PortfolioRowProps {
 export function PortfolioRow({ entry, onRemove, index }: PortfolioRowProps) {
   const level = scoreToLevel(entry.overallScore);
   const scoreColor = getRiskColor(level);
-  const recColor = REC_COLORS[entry.recommendation] ?? '#64748B';
+  const recColor = REC_COLORS[entry.recommendation] ?? '#B0C0D0';
 
   return (
     <div

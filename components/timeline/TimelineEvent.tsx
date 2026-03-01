@@ -55,7 +55,7 @@ export function TimelineEvent({ event }: TimelineEventProps) {
               {hasLien && <EventBadge color="#F59E0B">Lien</EventBadge>}
             </div>
 
-            <div className="flex flex-wrap gap-x-4 gap-y-0.5 text-[11px] font-data text-[#64748B]">
+            <div className="flex flex-wrap gap-x-4 gap-y-0.5 text-[11px] font-data text-[#B0C0D0]">
               {event.date && (
                 <span className="flex items-center gap-1">
                   <DollarSign className="h-3 w-3" />
@@ -74,7 +74,7 @@ export function TimelineEvent({ event }: TimelineEventProps) {
           {event.price != null && (
             <div className="text-right shrink-0">
               <p className="font-bold text-sm font-data text-white">{formatCurrency(event.price)}</p>
-              <p className="text-[10px] font-data text-[#3B4A65]">purchase price</p>
+              <p className="text-[10px] font-data text-[#8EA5BE]">purchase price</p>
             </div>
           )}
         </div>
@@ -90,7 +90,7 @@ export function TimelineEvent({ event }: TimelineEventProps) {
           </div>
         )}
         {event.notes && !event.foreclosureDetails && !event.lienDetails && (
-          <div className="mt-2 text-[11px] font-data text-[#64748B]">{event.notes}</div>
+          <div className="mt-2 text-[11px] font-data text-[#B0C0D0]">{event.notes}</div>
         )}
       </div>
     </div>

@@ -28,8 +28,8 @@ function CustomTooltip({ active, payload }: {
   return (
     <div className="bg-[#0D1120] border border-[#1A2035] rounded p-3 font-data shadow-lg">
       <p className="text-sm font-bold text-white">{formatCurrency(payload[0].value)}</p>
-      <p className="text-[11px] text-[#64748B] mt-0.5">{formatDateShort(point.date)}</p>
-      <p className="text-[10px] text-[#3B4A65] capitalize mt-0.5">{point.event}</p>
+      <p className="text-[11px] text-[#B0C0D0] mt-0.5">{formatDateShort(point.date)}</p>
+      <p className="text-[10px] text-[#8EA5BE] capitalize mt-0.5">{point.event}</p>
     </div>
   );
 }
@@ -68,14 +68,14 @@ export function PriceHistoryChart({ data }: PriceHistoryChartProps) {
               <CartesianGrid strokeDasharray="3 3" stroke="#1A2035" />
               <XAxis
                 dataKey="label"
-                tick={{ fontSize: 10, fill: '#3B4A65', fontFamily: 'var(--font-mono)' }}
+                tick={{ fontSize: 10, fill: '#8EA5BE', fontFamily: 'var(--font-mono)' }}
                 tickLine={false}
                 axisLine={false}
                 interval="preserveStartEnd"
               />
               <YAxis
                 tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`}
-                tick={{ fontSize: 10, fill: '#3B4A65', fontFamily: 'var(--font-mono)' }}
+                tick={{ fontSize: 10, fill: '#8EA5BE', fontFamily: 'var(--font-mono)' }}
                 tickLine={false}
                 axisLine={false}
                 domain={[minPrice * 0.85, maxPrice * 1.05]}
@@ -103,7 +103,7 @@ export function PriceHistoryChart({ data }: PriceHistoryChartProps) {
             </AreaChart>
           </ResponsiveContainer>
         </div>
-        <p className="text-[10px] font-data text-[#3B4A65] mt-3 text-center">
+        <p className="text-[10px] font-data text-[#8EA5BE] mt-3 text-center">
           Red dots = actual sale prices · Amber line = estimated values
         </p>
       </div>

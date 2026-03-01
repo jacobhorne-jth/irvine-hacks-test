@@ -64,7 +64,7 @@ export function RiskVerdictBanner({
               >
                 {factor.points} pts
               </span>
-              <p className="text-xs font-data text-[#94A3B8] leading-snug">
+              <p className="text-xs font-data text-[#B0C0D0] leading-snug">
                 {factor.description}
               </p>
             </div>

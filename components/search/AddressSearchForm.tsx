@@ -10,7 +10,7 @@ const SAMPLE_ADDRESSES = [
   '891 Iris Ave, Newport Beach, CA 92625',
 ];
 
-export function AddressSearchForm() {
+export function AddressSearchForm({ centered = false }: { centered?: boolean }) {
   const router = useRouter();
   const [address, setAddress]           = useState('');
   const [loading, setLoading]           = useState(false);
@@ -102,7 +102,7 @@ export function AddressSearchForm() {
       <div className="relative">
         <form onSubmit={handleSubmit} className="flex items-center gap-3">
           <div className="flex-1 flex items-center gap-3 border border-[#1E2640] bg-[#0B0F1C] rounded-2xl px-4 py-3.5 focus-within:border-[#F5A11C]/40 transition-colors">
-            <Search className="h-4 w-4 text-[#3B4A65] shrink-0" />
+            <Search className="h-4 w-4 text-[#8EA5BE] shrink-0" />
             <input
               type="text"
               value={address}
@@ -110,7 +110,7 @@ export function AddressSearchForm() {
               onKeyDown={handleKeyDown}
               onFocus={() => suggestions.length > 0 && setShowDropdown(true)}
               placeholder="Enter any US property address..."
-              className="flex-1 bg-transparent text-white placeholder:text-[#3B4A65] text-sm font-data focus:outline-none"
+              className="flex-1 bg-transparent text-white placeholder:text-[#8EA5BE] text-sm font-data focus:outline-none"
               disabled={loading}
               autoComplete="off"
             />
@@ -131,8 +131,8 @@ export function AddressSearchForm() {
           <div className="absolute top-full left-0 right-0 z-50 mt-1 border border-[#1A2035] bg-[#0B0F1C] rounded-2xl overflow-hidden shadow-2xl shadow-black/60">
             {noResults ? (
               <div className="flex items-center gap-3 px-4 py-3">
-                <MapPin className="h-3.5 w-3.5 shrink-0 text-[#3B4A65]" />
-                <span className="text-sm font-data text-[#3B4A65] italic">No address found</span>
+                <MapPin className="h-3.5 w-3.5 shrink-0 text-[#8EA5BE]" />
+                <span className="text-sm font-data text-[#8EA5BE] italic">No address found</span>
               </div>
             ) : (
               suggestions.map((suggestion, i) => {
@@ -151,12 +151,12 @@ export function AddressSearchForm() {
                   >
                     <MapPin
                       className="h-3.5 w-3.5 shrink-0 transition-colors"
-                      style={{ color: i === activeIndex ? '#F5A11C' : '#3B4A65' }}
+                      style={{ color: i === activeIndex ? '#F5A11C' : '#8EA5BE' }}
                     />
                     <span className="min-w-0 truncate font-data text-sm">
                       <span className="text-white font-medium">{street}</span>
                       {rest.length > 0 && (
-                        <span className="text-[#64748B]">,{rest.join(',')}</span>
+                        <span className="text-[#B0C0D0]">,{rest.join(',')}</span>
                       )}
                     </span>
                   </button>
@@ -168,17 +168,17 @@ export function AddressSearchForm() {
       </div>
 
       {/* Sample address chips */}
-      <div className="flex flex-col gap-2">
-        <p className="text-[10px] font-data text-[#3B4A65] tracking-[0.15em] uppercase">
+      <div className={`flex flex-col gap-2${centered ? ' items-center' : ''}`}>
+        <p className="text-[10px] font-data text-[#8EA5BE] tracking-[0.15em] uppercase">
           Sample addresses:
         </p>
-        <div className="flex flex-wrap gap-2">
+        <div className={`flex flex-wrap gap-2${centered ? ' justify-center' : ''}`}>
           {SAMPLE_ADDRESSES.map((sample) => (
             <button
               key={sample}
               type="button"
               onClick={() => handleSelect(sample)}
-              className="text-xs font-data px-3 py-1.5 border border-[#1A2035] text-[#64748B] hover:border-[#F5A11C]/40 hover:text-[#F5A11C] transition-colors rounded"
+              className="text-xs font-data px-3 py-1.5 border border-[#1A2035] text-[#B0C0D0] hover:border-[#F5A11C]/40 hover:text-[#F5A11C] transition-colors rounded"
             >
               {sample}
             </button>
