@@ -120,7 +120,7 @@ function NodeLabel({
           {name}
         </span>
       )}
-      {event.price != null && (
+      {event.price != null && !isNaN(event.price) && (
         <span
           className="font-data font-bold"
           style={{ fontSize: 9, color: `${color}80` }}
@@ -231,11 +231,11 @@ function TooltipFixed({
             {formatDate(event.date)}
             {isCurrent
               ? ' · Current owner'
-              : event.tenureMonths != null
+              : event.tenureMonths != null && !isNaN(event.tenureMonths)
               ? ` · ${tenureLabel(event.tenureMonths)}`
               : ''}
           </span>
-          {event.price != null && (
+          {event.price != null && !isNaN(event.price) && (
             <span className="text-[11px] font-bold font-data" style={{ color }}>
               {formatCurrency(event.price)}
             </span>
@@ -315,7 +315,7 @@ function DetailDrawer({ event, color }: { event: OwnershipEvent; color: string }
             <span className="text-[#3B4A65]">Purchased  </span>
             <span className="text-[#64748B]">{formatDate(event.date)}</span>
           </span>
-          {event.price != null && (
+          {event.price != null && !isNaN(event.price) && (
             <span>
               <span className="text-[#3B4A65]">Price  </span>
               <span className="font-bold" style={{ color }}>
@@ -323,7 +323,7 @@ function DetailDrawer({ event, color }: { event: OwnershipEvent; color: string }
               </span>
             </span>
           )}
-          {event.tenureMonths != null && (
+          {event.tenureMonths != null && !isNaN(event.tenureMonths) && (
             <span>
               <span className="text-[#3B4A65]">Tenure  </span>
               <span className="text-[#64748B]">{tenureLabel(event.tenureMonths)}</span>
@@ -469,23 +469,46 @@ export function OwnershipTimeline({ history }: { history: OwnershipHistory }) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [tooltipPos, setTooltipPos] = useState<{ x: number; y: number } | null>(null);
 
-  // Sort oldest → newest for left-to-right layout
-  const events = [...history.events].sort(
-    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
-  );
+  // Sort oldest → newest; drop events with unparseable dates
+  const events = [...history.events]
+    .filter(e => !isNaN(new Date(e.date).getTime()))
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
   const timeMin = new Date(events[0].date).getTime();
   const timeMax = Date.now();
+  const timeSpan = timeMax - timeMin || 1;
 
   // Returns 0–100 representing position along the time axis
   const getPct = (d: string) =>
-    ((new Date(d).getTime() - timeMin) / (timeMax - timeMin)) * 100;
+    ((new Date(d).getTime() - timeMin) / timeSpan) * 100;
 
-  const lastEvent = events[events.length - 1];
-  const lastPct = getPct(lastEvent.date);
+  // ── Collision-resolved positions (always width: 100%, no scroll) ─────────
+  // Start with time-proportional positions, then push close nodes apart so
+  // they're at least MIN_GAP_PCT apart. If pushing causes overflow past
+  // NOW_PCT, compress everything back to fit.
+  const PAD_PCT = 2;   // % from left edge to first node
+  const NOW_PCT = 97;  // % where the NOW marker sits
+  const MIN_GAP_PCT = 7; // minimum % gap between adjacent nodes (~70px at 1000px width)
 
-  // Minimum track width keeps nodes from colliding
-  const minWidth = Math.max(events.length * 150, 540);
+  const rawPos = events.map(e =>
+    PAD_PCT + (getPct(e.date) / 100) * (NOW_PCT - PAD_PCT)
+  );
+
+  const nodePos = [...rawPos];
+  for (let i = 1; i < nodePos.length; i++) {
+    if (nodePos[i] - nodePos[i - 1] < MIN_GAP_PCT) {
+      nodePos[i] = nodePos[i - 1] + MIN_GAP_PCT;
+    }
+  }
+  // Compress if the last node was pushed past the NOW boundary
+  if (nodePos[nodePos.length - 1] > NOW_PCT) {
+    const scale = (NOW_PCT - PAD_PCT) / (nodePos[nodePos.length - 1] - PAD_PCT);
+    for (let i = 0; i < nodePos.length; i++) {
+      nodePos[i] = PAD_PCT + (nodePos[i] - PAD_PCT) * scale;
+    }
+  }
+
+  const trackStyle: React.CSSProperties = { width: '100%', height: 180 };
 
   const selectedEvent = selectedId
     ? (events.find((e) => e.id === selectedId) ?? null)
@@ -504,15 +527,15 @@ export function OwnershipTimeline({ history }: { history: OwnershipHistory }) {
 
         {/* Scrollable track area */}
         <div className="overflow-x-auto px-6 pb-4 pt-2">
-          <div className="relative" style={{ minWidth, height: 180 }}>
+          <div className="relative" style={trackStyle}>
 
-            {/* Solid line: oldest event → last event */}
+            {/* Solid line: first event → last event */}
             <div
               className="absolute"
               style={{
                 top: CENTER_Y - 1,
-                left: 0,
-                width: `${lastPct}%`,
+                left: `${nodePos[0]}%`,
+                width: `${nodePos[nodePos.length - 1] - nodePos[0]}%`,
                 height: 2,
                 background: 'linear-gradient(90deg, #1A2438, #2A3C58)',
               }}
@@ -523,7 +546,7 @@ export function OwnershipTimeline({ history }: { history: OwnershipHistory }) {
               className="absolute"
               style={{
                 top: CENTER_Y - 1,
-                left: `${lastPct}%`,
+                left: `${nodePos[nodePos.length - 1]}%`,
                 right: '28px',
                 height: 2,
                 backgroundImage:
@@ -535,7 +558,7 @@ export function OwnershipTimeline({ history }: { history: OwnershipHistory }) {
 
             {/* Commit nodes */}
             {events.map((event, index) => {
-              const pct = getPct(event.date);
+              const pct = nodePos[index];
               const color = nodeColor(event);
               const flagged = isFlagged(event);
               const hovered = hoveredId === event.id;
